@@ -1,0 +1,23 @@
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script>
+function postStatus() {
+        var url = '/pt-br/SalaAulas/UpdateSalaAulaStatus/';
+        var dados = { aulaId: 1, alunoId: 4, assistindo: true, assistida: true };
+        
+        $.post(url, dados,
+            function (returnedData) {
+                console.log(returnedData);
+            }
+        );
+    };
+</script>
+
+Na Action:
+
+[HttpPost]
+ public  IActionResult UpdateSalaAulaStatus(int aulaId, int alunoId, bool? assistindo, bool? assistida)
+        {
+
+            return Ok();
+        }

@@ -1,0 +1,65 @@
+﻿@model DAL.Models.Avaliacao
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<h4 localize-content>Evaluation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label" localize-content>Course</label>
+                <select id="Modulo_CursoId" class="form-control" asp-items="ViewBag.CursoId">
+                    <option value="" localize-content>-- Select Course --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModuloId" class="control-label" localize-content>Module</label>
+                @*<select asp-for="ModuloId" class="form-control" asp-items="ViewBag.ModuloId">*@
+                <select asp-for="ModuloId" class="form-control">
+                    <option value="" localize-content>-- Select Module --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer.Text("Create")" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" localize-content>Back to List</a>
+</div>
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script>
+	// Quando selecionar um Curso, preenche a combo de Modulos
+    $(function () {
+	// <Select> de Cursos
+        $("#Modulo_CursoId").change(function () {
+            var url = "@Url.Content("~/")" + "pt-BR/Aulas/GetModulosByCursoId";
+            var ddlsource = "#Modulo_CursoId";
+            $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                var items = "";
+		// <Select> de Modulos
+                $("#ModuloId").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                });
+                $("#ModuloId").html(items);
+            })
+
+            //alert(url);
+        })
+    })
+</script>

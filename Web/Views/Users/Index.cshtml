@@ -1,0 +1,55 @@
+﻿@model List<Web.ViewModels.UsersVM>
+
+@{
+    ViewData["Title"] = "Users";
+    
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<form asp-action="Edit">
+    <table class="table">
+        <thead>
+            <tr>
+                <th localize-content>User</th>
+                <th localize-content>Administrator</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+            <tr>
+                <td>
+                    <input name="users[@i].Email" class="form-control" hidden value="@Model[i].Email" />@Model[i].Email
+                </td>
+                <td>
+                    <input name="users[@i].Administrator" class="form-check-input" type="checkbox" value="true" @Html.Raw(Model[i].Administrator?"checked":"") @Html.Raw(User.Identity.Name == Model[i].Email?  "onclick='return false'" : "") />
+                </td>
+                <td>
+                    @if(User.Identity.Name != Model[i].Email) {
+                        <a asp-action="Delete" asp-route-email="@Model[i].Email" localize-content>Delete</a>}
+                </td>
+            </tr>
+            }
+
+            @*@foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <input asp-for="@item.Email" class="form-control" hidden />@item.Email
+                        </td>
+                        <td>
+                            <input asp-for="@item.Administrator" />
+                        </td>
+                    </tr>
+                }*@
+        </tbody>
+    </table>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" localize-content>Save</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,192 @@
+﻿@model DAL.Models.Avaliacao
+@{
+    Layout = "_LayoutUpFirst";
+    ViewData["Title"] = "Index";
+    var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+}
+
+<main class="othersPages" role="main">
+    <section class="questionario introducao">
+        <div class="containerMenor">
+            <h1>@Model.Descricao</h1>
+            <h2><span class="highlight">@Model.Modulo.Curso.Nome</span><span class="highlight ml-4">@Model.Modulo.Descricao</span></h2>
+            @*<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>*@
+
+            <form asp-action="Questionario">
+                @*<input asp-for=@Model.Aluno.Id hidden>*@
+                <input asp-for=@Model.ModuloId hidden>
+                <input asp-for=@Model.Id hidden>  @*Id da avaliacao*@
+                <input asp-for=@ViewData["AlunoId"] hidden>
+                @if (Model != null)
+                {
+                    @for (int p = 0; p < Model.Perguntas.Count(); p++)
+                    {
+                        <div>
+                            <h3 class="pergunta shadow" style="text-align: left">@Model.Perguntas[p].Descricao</h3>
+                        </div>
+                        <div class="mb-3">
+                            @for (int r = 0; r < Model.Perguntas[p].Respostas.Count(); r++)
+                            {
+                                <div class="ml-3">
+                                    <input class='resp @Html.Raw(Model.Perguntas[p].Respostas[r].Correta ? "corr" : "")' type='radio' name='@p' />
+                                    @Model.Perguntas[p].Respostas[r].Descricao
+                                    <span class="spanResp" hidden>@Html.Raw(Model.Perguntas[p].Respostas[r].Correta ? "*" : "")</span>
+                                </div>
+                            }
+                        </div>
+
+                        @*<div class="row containerMenor questionarioLinha">
+                                @{var id = "R" + i;}
+                                <div class="col-4">
+                                    <h3>@Model.Perguntas[i].Descricao</h3>
+                                </div>
+
+                                <div class="col-sm">
+                                    <div class="row">
+                                        @for (int j = 0; j < 10; j++)
+                                        {
+                                            var nameOpt = "Opt" + i; // Agrupar os radio options por nome para selecionar apenas um por vez dentro do grupo
+                                            <div class="col-sm questionarioRadio">
+                                                <input type="radio" name="@nameOpt" onclick=@String.Format("SetResposta('{0}','{1}')", id, j+1)>
+                                                <label>@String.Format("{0:D2}", (j + 1))</label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <input asp-for="@Model.Perguntas[i].Descricao" hidden />
+                                <input asp-for="@Model.Perguntas[i].Id" hidden />
+
+                                <input id="@id" asp-for="@Model.Perguntas[i].Descricao" value="0" hidden />
+                            </div>*@
+                    }
+                }
+
+                <!--<div>
+                <h3>Quantos segundos há em um minuto?</h3>
+                <p>Escolha 1 resposta</p>-->
+                @*<hr />*@
+
+                <!--<div id='block-11'>
+                    <label for='option-11'>
+                        <input type='radio' name='option' value='6/24' id='option-11' />
+                        10
+                    </label>
+                    <span id='result-11'></span>
+                </div>-->
+                @*<hr />*@
+
+                <!--<div id='block-12'>
+                    <label for='option-11'>
+                        <input type='radio' name='option' value='6/24' id='option-11' />
+                        20
+                    </label>
+                    <span id='result-11'></span>
+                </div>-->
+                @*<hr />*@
+
+                <!--<div id='block-13'>
+                    <label for='option-11'>
+                        <input type='radio' name='option' value='6/24' id='option-11' />
+                        30
+                    </label>
+                    <span id='result-11'></span>
+                </div>-->
+                @*<hr />*@
+
+                <!--<div id='block-14'>
+                        <label for='option-11'>
+                            <input type='radio' name='option' value='6/24' id='option-11' />
+                            60
+                        </label>
+                        <span id='result-11'></span>
+                    </div>
+                    <hr />
+                    <button type='button' onclick='displayAnswer1()' style='width: 100px; height: 40px; border-radius: 3px; background-color: lightblue; font-weight: 700;'>Submit</button>
+                </div>-->
+                <a id='showanswer1'></a>
+
+                <div class="containerMenor bt_questionario">
+                    <div>
+                        <input id="mResp" type="checkbox" localize-content />
+                        <label for="mResp">Mostrar Respostas Corretas</label>
+                    </div>
+                    <button type="button" onclick="Enviar()" class="btn-upf-action float-right" localize-content>Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </section>
+
+    <section class="comoFunciona">
+        <div class="container">
+            <div class="row">
+                <h2>Como funciona</h2>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis</p>
+            </div>
+            <div class="row">
+                <div class="col-sm boxComoUsar iconAlvo">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                </div>
+                <div class="col-sm boxComoUsar iconGrafico">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                </div>
+                <div class="col-sm boxComoUsar iconNote">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </section>
+</main>
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script>
+    function SetResposta(id, value) {
+        document.getElementById(id).value = value;
+    };
+
+    function Enviar() {
+        var corretas = 0;
+        var perguntas = $('.pergunta').length;
+        var respondidads = 0;
+        var nota = 0;
+
+        $(".resp").each(function (index) {
+            if ($(this).prop('checked')) {
+                respondidads++;
+            }
+        });
+
+        if (respondidads == perguntas) {
+            $(".resp.corr").each(function (index) {
+                if ($(this).prop('checked')) {
+                    corretas++;
+                };
+            });
+            nota = (corretas * 10 / perguntas).toFixed(1).replace(".", ",");
+
+            alert("Nota: " + nota + " Consulte Detalhes do Aluno para conferir.");
+
+            var url = '/pt-br/Home/UpdateNota/';
+            var dados = { alunoId: $("#ViewData_AlunoId_").attr("value"), moduloId: $("#ModuloId").attr("value"), valor: nota };
+
+            $.post(url, dados,
+                function (returnedData) {
+                    console.log(returnedData);
+                }
+            );
+        } else {
+            alert("Responda todas as questões !");
+        }
+    };
+
+    $("#mResp").click(function (obj) {
+        if ($(obj.target).prop("checked")) {
+            $(".spanResp").each(function (index) { $(this).removeAttr('hidden'); });
+        } else {
+            $(".spanResp").each(function (index) { $(this).attr('hidden', true); });
+        };
+    });
+
+</script>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<DAL.Models.Avaliacao>
+
+@{
+    ViewData["Title"] = "Evaluations";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" localize-content>Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th localize-content>Questions</th>
+            <th localize-content>Answers</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @{
+                        foreach (var pergunta in item.Perguntas)
+                        {
+                            @*@modulo.Curso.Id @: @modulo.Descricao <br />*@
+                            @pergunta.Descricao <br />
+                            @foreach (var resposta in pergunta.Respostas)
+                            {
+                                <br />
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    @foreach (var pergunta in item.Perguntas)
+                    {
+                        @foreach (var resposta in pergunta.Respostas)
+                        {
+                            @resposta.Descricao<br/><br />
+                        }
+                        <br />
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" localize-content>Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" localize-content>Details</a> |
+                    <a asp-controller="PerguntasAvaliacao" asp-action="Create" asp-route-avaliacaoId="@item.Id" localize-content>Add Question</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" localize-content>Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,52 @@
+cursosAlunos.Curso.Modulos[].Id
+
+FUNDAMENTAL
+EDUCAÇÃO FINANCEIRA
+INVESTIMENTOS
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod delenit augue duis dolore te.
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod delenit augue duis dolore te.
+
+
+<div class="row">
+            <div class="col-sm boxPlanos">
+                <h2>FUNDAMENTAL</h2>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                <p><a class="btn-upf-action">Comprar</a></p>
+            </div>
+
+            <div class="col-sm boxPlanos">
+                <h2>EDUCAÇÃO FINANCEIRA</h2>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                <p><a class="btn-upf-action">Comprar</a></p>
+            </div>
+
+            <div class="col-sm boxPlanos">
+                <h2>INVESTIMENTOS</h2>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                <p><a class="btn-upf-action">Comprar</a></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="colunaVazia">
+            </div>
+            <div class="col-sm boxPlanos">
+                <h2>FUNDAMENTAL</h2>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                <p><a class="btn-upf-action">Comprar</a></p>
+            </div>
+
+            <div class="col-sm boxPlanos">
+                <h2>EDUCAÇÃO FINANCEIRA</h2>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                <p><a class="btn-upf-action">Comprar</a></p>
+            </div>
+
+        </div>

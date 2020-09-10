@@ -1,0 +1,55 @@
+﻿@using DAL.Models
+@model List<Curso>
+
+@{ var checkoutIds = ViewData["CheckoutIds"] as List<string>;}
+
+<div class="row">
+    @for (int i2 = 0; i2 < 3 - Model.Count(); i2++)
+    {
+        <div class="colunaVazia">
+        </div>
+    }
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        <div class="col-md boxPlanos">
+            <h2>@Model[i].Nome</h2>
+            <p>@Model[i].Descricao</p>
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+            <h3>@Localizer.Text("$") @Model[i].Preco</h3>
+            @*<p><button id="curso_@Model[i].Id" class="btn-upf-action" data-toggle="modal" data-target="#myModal">Comprar</button></p>*@
+            @*<p><a id="curso_@Model[i].Id" asp-controller="Home" asp-action="GetCheckoutMercadoPago" >Comprar</a></p>*@
+            <form action="/processar_pagamento" method="POST">
+                <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
+                        data-preference-id="@checkoutIds[i]" data-button-label="Comprar" data-elements-color="#a0bf38">
+                </script>
+            </form>
+        </div>
+    }
+</div>
+<style>
+    .mercadopago-button {
+        background-color: #a0bf38;
+        border: solid #85992e 1px;
+        padding: 6px 22px;
+        border-radius: 4px;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.5s ease;
+    }
+
+        .mercadopago-button:hover {
+            background-color: #7e9922;
+            border-color: #85992e;
+            padding: 12px 22px;
+            border-radius: 4px;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.5s ease;
+        }
+</style>

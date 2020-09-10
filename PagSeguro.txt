@@ -1,0 +1,92 @@
+
+daniel.smidt@yahoo.com.br
+page3tha
+
+Token Produção: 5de982ba-a4e9-4ceb-bb6c-32eea523a657eeeb161647669fcc5f82e7f0113144767688-97af-4020-9cef-8abef7bf62db
+
+Chave da aplicação UpFirst: EEDEF6513D3D21E3349ADF80E3591780
+
+Código do Botão para Lightbox
+
+<!-- INICIO FORMULARIO BOTAO PAGSEGURO -->
+<form action="https://pagseguro.uol.com.br/checkout/v2/payment.html" method="post" onsubmit="PagSeguroLightbox(this); return false;">
+<!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO -->
+<input type="hidden" name="code" value="D0C5EDD09F9F24DCC44EFF8481A8BF0C" />
+<input type="hidden" name="iot" value="button" />
+<input type="image" src="https://stc.pagseguro.uol.com.br/public/img/botoes/pagamentos/120x53-comprar-azul.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" />
+</form>
+<script type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script>
+<!-- FINAL FORMULARIO BOTAO PAGSEGURO -->
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Vendedor de testes (https://sandbox.pagseguro.uol.com.br/vendedor/configuracoes.html)
+
+Credenciais
+Utilize as informações abaixo para acessar as APIs do PagSeguro Sandbox.
+
+Seu e-mail é: daniel.smidt@yahoo.com.br
+Seu token é: 9925EFC7E5574E0281BE0E0CA865C733
+
+Notificação de transações
+Essa configuração permite que seu sistema seja avisado sempre que uma transação muda de estado.
+
+URL para receber as notificações:
+https://upfirst.com.br/retornopagamentopagseguro
+
+Página de redirecionamento
+Ao final do pagamento você pode configurar uma página para redirecionarmos o seu cliente.
+
+A. Página fixa de redirecionamento:
+
+https://upfirst.com.br/redirecionamentopagseguro.html
+ 
+B. Redirecionamento com o código da transação
+Ao redirecionar o cliente para sua página, já podemos enviar o código da transação no PagSeguro, você pode escolher qual será o nome desse parâmetro.
+
+Nome para o parâmetro:
+transaction_id
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Aplicação (https://sandbox.pagseguro.uol.com.br/aplicacao/configuracoes.html)
+
+Credenciais
+Ao criar sua conta no Sandbox, criamos automaticamente uma Aplicação para você testar as integrações via API. Abaixo estão os dados de acesso.
+
+appID: app3332856833
+AppKey: C13B4104333342DBB40FDF825A66C1D1
+
+Vendedor de Testes
+Para simular um vendedor de testes no ambiente da Aplicação, utilize as credenciais abaixo:
+
+Vendedor 1
+E-mail: v76740335481380445555@sandbox.pagseguro.com.br
+Senha: W85r2v527l6555x0copiar
+Chave Pública: PUBE672E5C64BDB4EED9C330E8F2D07B3D2
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comprador de testes
+
+Comprador de teste
+Para testar o checkout com um comprador cadastrado, utilize o e-mail abaixo. Caso sinta a necessidade de fazer um checkout com um 
+usuário não cadastrado, basta informar qualquer e-mail no formato xxxxxxx@sandbox.pagseguro.com.br.
+
+Este comprador de teste só pode ser utilizado para se autenticar no checkout do PagSeguro Sandbox.
+
+Email: c81901614069859047077@sandbox.pagseguro.com.br
+Senha: 6T143vRH05279025
+
+Cartão de crédito de testes
+
+Você pode utilizar o cartão abaixo para fazer seus testes no checkout do Sandbox.
+
+Número: 4111111111111111
+Bandeira: VISA Válido até: 12/2030 CVV: 123
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PagSeguro Developers (https://dev.pagseguro.uol.com.br/reference/introducao)
+
+Checkout - https://dev.pagseguro.uol.com.br/reference/checkout-pagseguro

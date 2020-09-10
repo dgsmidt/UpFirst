@@ -1,0 +1,8 @@
+Nas propriedades do projeto, definir em Debug:
+
+Perfil: Web (É o nome do projeto)
+Inicializar: IIS
+URL do Aplicativo: http://localhost/Web
+
+Com o NoIp configurado e o redirecionamento de porta no roteador de 85 para 80, funcionará com:
+http://cyrex20.ddns.net:85/Web

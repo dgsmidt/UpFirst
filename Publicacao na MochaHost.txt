@@ -1,0 +1,21 @@
+Inicialmente desabilitar suporte para SSL nas propriedades do projeto.
+
+Na publicação via VS2019:
+
+Método de publicação: FTP
+Servidor: ftp://198.38.83.204
+Caminho do Site: upfirst.com\wwwroot (este é o padrão)
+URL de destino: upfirst.com.br
+Modo passivo: true
+Nome do usuario: ublack
+Senha: csrosa123
+Salvar senha: true
+
+
+
+Publish Profile file: upfirst.com.br.publishsettings
+
+Se escolher remover os arquivos existentes, setar o flag Write 
+na pasta de logs do site (clicar no cadeado da pasta no SolidCP Panel) 
+
+

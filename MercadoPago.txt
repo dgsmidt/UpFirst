@@ -1,0 +1,65 @@
+Usuário teste:
+
+User: test_user_9779768@testuser.com
+Senha: qatest4620
+Access token: TEST-2232361563785233-070207-f03b104eedffb3f7714c935d381c91e7-79937501
+
+Para criar usuários de teste que deverão ser usados para criar a Preference e realizar o pagamento (usar um para vendedor e outro para comprador)
+Executar no prompt do DOS duas vezes, cada resposta será um usuário de teste:
+
+curl -X POST -H "Content-Type: application/json" "https://api.mercadopago.com/users/test_user?access_token=TEST-2232361563785233-070207-f03b104eedffb3f7714c935d381c91e7-79937501" -d "{"site_id":"MLB"}"
+
+Resposta em 10/09/20:
+
+Assumi como Vendedor
+
+{"id":643459209,
+"nickname":"TETE1121106",
+"password":"qatest6765",
+"site_status":"active",
+"email":"test_user_59101266@testuser.com"}
+
+Assumi como Comprador
+
+{"id":643457503,
+"nickname":"TESTU104LZPM",
+"password":"qatest3464",
+"site_status":"active",
+"email":"test_user_96322874@testuser.com"}
+
+Importante
+
+Você pode gerar até 10 contas de usuários de teste ao mesmo tempo. Por isso, recomendamos salvar o e-mail e senha de cada um.
+Os usuários de teste caducam após 60 dias sem atividade no Mercado Pago.
+Para fazer pagamentos de teste, recomendamos usar valore baixos.
+Tanto o comprador como o vendedor devem ser usuários de teste.
+Use cartões de teste, já que não é possível retirar o dinheiro.
+
+
+
+
+		
+
+
+Comprar como usuário convidado
+
+Cartões de teste
+
+Cartão			Número			Código de segurança	Data de vencimento
+
+Mastercard		5031 4332 1540 6351	123			11/25
+Visa			4235 6477 2802 5682	123			11/25
+American Express	3753 651535 56885	1234			11/25
+
+
+
+Para testar diferentes resultados de pagamento, preencha o dado que quiser no nome do titular do cartão:
+
+APRO: Pagamento aprovado.
+CONT: Pagamento pendente.
+OTHE: Recusado por erro geral.
+CALL: Recusado com validação para autorizar.
+FUND: Recusado por quantia insuficiente.
+SECU: Recusado por código de segurança inválido.
+EXPI: Recusado por problema com a data de vencimento.
+FORM: Recusado por erro no formulário.

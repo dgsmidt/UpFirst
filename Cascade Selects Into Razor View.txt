@@ -1,0 +1,34 @@
+AulasController
+
+public JsonResult GetModulosByCursoId(int id)
+        {
+            var list = _context.Modulos.Where(m => m.CursoId == id).ToList();
+            list.Insert(0, new Modulo { Id = 0, Descricao = "-- Select Module --" });
+            return Json(new SelectList(list, "Id", "Descricao"));
+        }
+
+View Aulas/Create
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script>
+	// Quando selecionar um Curso, preenche a combo de Modulos
+    $(function () {
+	// <Select> de Cursos
+        $("#Modulo_CursoId").change(function () {
+            
+            var url = "@Url.Content("~/")" + "pt-BR/Aulas/GetModulosByCursoId";
+            var ddlsource = "#Modulo_CursoId";
+            $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                var items = "";
+		// <Select> de Modulos
+                $("#ModuloId").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                });
+                $("#ModuloId").html(items);
+            })
+
+            //alert(url);
+        })
+    })
+</script>

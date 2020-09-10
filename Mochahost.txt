@@ -1,0 +1,30 @@
+Mochahost
+
+You have now successfully registered at our Support Desk. Please refer to the following details:
+
+Fullname: csrclaudio@gmail.com
+Email: csrclaudio@gmail.com
+Password: csrosa123                
+
+You can visit the Support Desk at any time by going to 
+https://clientarea.mochahost.com/clientarea.php
+
+http://www.mochasupport.com/kayako/
+https://www.mochahost.com/pt/support.php
+
+CPanel
+User: ublack
+Senha: KinHkdBr7_
+
+FTP
+ftp://198.38.83.204
+
+user: ublack
+senha: csrosa123
+
+
+SQL Server
+
+IP: 198.38.83.200
+User name: ublack_daniel
+Password: MTc9zMWNIo8QS3xBGO

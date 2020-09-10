@@ -1,0 +1,36 @@
+﻿@model DAL.Models.Configuracao
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<h4 localize-content>Settings</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="CabecalhoTexto1_Index" class="control-label" localize-content>Header</label>
+                <input asp-for="CabecalhoTexto1_Index" class="form-control" />
+                <span asp-validation-for="CabecalhoTexto1_Index" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Texto1_Index" class="control-label" localize-content>Texto</label>
+                <input asp-for="Texto1_Index" class="form-control" />
+                <span asp-validation-for="Texto1_Index" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value=@Localizer.Text("Save") class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" localize-content>Back to List</a>
+</div>
+

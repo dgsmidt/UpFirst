@@ -1,0 +1,55 @@
+﻿@model IEnumerable<DAL.Models.RespostaAvaliacao>
+
+@{
+    ViewData["Title"] = "Answers";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" localize-content>Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Pergunta)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Correta)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Escolhida)
+            </th>*@
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pergunta.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correta)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Escolhida)
+            </td>*@
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" localize-content>Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" localize-content>Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" localize-content>Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

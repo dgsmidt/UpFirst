@@ -1,0 +1,77 @@
+﻿@model Web.ViewModels.QuestionarioVM
+@{
+    Layout = "_LayoutUpFirst";
+    ViewData["Title"] = "Index";
+    var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+}
+
+<main class="othersPages" role="main">
+    <section class="questionario introducao">
+        <div class="containerMenor">
+            <h1 localize-content>Register</h1>
+            <h2><span class="highlight" localize-content>Knowing your profile</span></h2>
+            <p>Cada pessoa tem uma personalidade própria, a forma como você lida com o dinheiro demonstra características que podemos utilizar no processo de determinação do seu perfil financeiro, a partir disso, iremos auxiliá-lo direcionando o conteúdo adequado ao seu conhecimento. </p>
+
+            <form asp-action="Questionario">
+                <input asp-for=@Model.AlunoId hidden/>
+                @for (int i = 0; i < Model.Questionario.Perguntas.Count(); i++)
+                {
+                    <div class="row containerMenor questionarioLinha">
+                        @{var id = "R" + i;}
+
+                        <div class="col-4">
+                            <h3>@Model.Questionario.Perguntas[i].Descricao</h3>
+                        </div>
+                        <div class="col-sm">
+                            <div class="row">
+                                @for (int j = 0; j < 10; j++)
+                                {
+                                    var nameOpt = "Opt" + i; // Agrupar os radio options por nome para selecionar apenas um por vez dentro do grupo
+                                    <div class="col-sm questionarioRadio">
+                                        <input type="radio" name="@nameOpt" onclick=@String.Format("SetResposta('{0}','{1}')", id, j+1)>
+                                        <label>@String.Format("{0:D2}", (j + 1))</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <input asp-for="@Model.Questionario.Perguntas[i].Descricao" hidden />
+                        <input asp-for="@Model.Questionario.Perguntas[i].Id" hidden />
+
+                        <input id="@id" asp-for="@Model.Questionario.Perguntas[i].Resposta" value="0" hidden />
+                    </div>
+                }
+
+                <div class="containerMenor bt_questionario">
+                    <button type="submit" class="btn-upf-action float-right" localize-content>Submit</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="comoFunciona">
+        <div class="container">
+            <div class="row">
+                <h2>Como funciona</h2>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis</p>
+            </div>
+            <div class="row">
+                <div class="col-sm boxComoUsar iconAlvo">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                </div>
+                <div class="col-sm boxComoUsar iconGrafico">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                </div>
+                <div class="col-sm boxComoUsar iconNote">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </section>
+</main>
+
+<script>
+    function SetResposta(id, value) {
+        document.getElementById(id).value = value;
+    }
+</script>

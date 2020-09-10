@@ -1,0 +1,36 @@
+﻿@model DAL.Models.Modulo
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<div>
+    <h4 localize-content>Module</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2" localize-content>
+            @Html.DisplayNameFor(model => model.NumeroModulo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumeroModulo)
+        </dd>
+        <dt class="col-sm-2" localize-content>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Curso)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Curso.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" localize-content>Edit</a> |
+    <a asp-action="Index" localize-content>Back to List</a>
+</div>

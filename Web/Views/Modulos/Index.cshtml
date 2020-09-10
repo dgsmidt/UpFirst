@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DAL.Models.Modulo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 localize-content>Modules</h1>
+
+<p>
+    <a asp-action="Create"  localize-content>Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.NumeroModulo)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Curso.Nome)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroModulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Curso.Nome)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" localize-content>Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" localize-content>Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" localize-content>Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

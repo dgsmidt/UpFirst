@@ -1,0 +1,203 @@
+﻿@using DAL.Models
+@model List<Curso>
+@{
+    Layout = "_LayoutUpFirst";
+    ViewData["Title"] = "Home Page";
+    var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+
+    ViewBag.Cursos = new[]
+    {
+        new SelectListItem(){ Value = "1", Text = "Curso 1"},
+        new SelectListItem(){ Value = "2", Text = "Curso 2"}
+    };
+}
+
+<main class="home" role="main">
+    <section class="intruducao">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm box boxTexto">
+                    <article>
+                        <h1>@ViewData["CabecalhoTexto1"]</h1>
+                        <p>@ViewData["Texto1"]</p>
+                        <img class="seta" src="~/assets/images/home_img_setas.svg" alt="Cadastre-se" border="0">
+                    </article>
+                </div>
+
+                <div class="col-sm box boxForm">
+                    <h2>Acesse nosso conteúdo Exclusivo</h2>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="cadNome" aria-describedby="nomeHelp" placeholder="Nome">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="cadWhatsapp" aria-describedby="whatsappHelp" placeholder="WhatsApp">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="cadEmail" aria-describedby="emailHelp" placeholder="E-mail">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="cadSenha" placeholder="Senha">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="cadConfirmaSenha" placeholder="Confirme a Senha">
+                        </div>
+                        <button type="submit" class="btn-upf-action">Inscreva-se</button>
+                    </form>
+                </div>
+            </div> <!-- CONTAINER  -->
+        </div>
+    </section>
+
+    <section class="container planos">
+        <h2>Conheça nossos Cursos</h2>
+        <p>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetue
+        </p>
+        @{List<Curso> modelo = new List<Curso>();}
+        @for (int i = 0; i < Model.Count(); i += 3)
+        {
+            modelo.Clear();
+            @for (int i2 = 0; i2 < 3; i2++)
+            {
+                if (i + i2 < Model.Count())
+                {
+                    modelo.Add(Model[i + i2]);
+                }
+            }
+
+            <partial name="_Plano.cshtml" model="@modelo" />
+        }
+
+    </section>
+
+    <section class="comoFunciona">
+        <div class="container">
+            <div class="row">
+                <h2>Como funciona</h2>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis</p>
+            </div>
+            <div class="row">
+                <div class="col-sm boxComoUsar iconAlvo">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                </div>
+                <div class="col-sm boxComoUsar iconGrafico">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                </div>
+                <div class="col-sm boxComoUsar iconNote">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </section>
+
+
+    @* MODAL *@
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Gateway de Pagamento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- INICIO FORMULARIO BOTAO PAGSEGURO -->
+                    @*<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="PagSeguroLightBox()">PagSeguro</button>*@
+                    @*<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="StartCheckoutPagSeguro()">PagSeguro</button>*@
+                      @* <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="StartCheckoutMercadoPago()">Mercado Pago</button>*@
+
+                    
+                    <!-- FINAL FORMULARIO BOTAO PAGSEGURO -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" localize-content>Fechar</button>
+                    @*<button type="button" class="btn btn-primary"><a class="text-white" asp-area="" asp-controller="SalaAulas" asp-action="Index" asp-route-culture=@culture>Entrar</a></button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script>
+<script>
+    function Hide() {
+        $('#myModal').modal('hide');
+    };
+    function StartCheckoutPagSeguro() {
+        $.ajax({
+            url: 'https://ws.sandbox.pagseguro.uol.com.br/v2/checkout',
+            contentType: 'application/x-www-form-urlencoded',
+            cache: false,
+            method: 'POST',
+            dataType: 'json',
+            data: JSON.stringify({
+                email: "daniel.smidt@yahoo.com.br",
+                token: "9925EFC7E5574E0281BE0E0CA865C733",
+                currency: "BRL",
+                itemId1: "001",
+                itemDescription1: "Curso UpFirst",
+                itemAmount1: "169.90",
+                itemQuantity1: "1",
+                reference: "reference=124665c23f7896adff508377925",
+                senderName: "Natalie",
+                senderAreaCode: "51",
+                senderPhone: "991504360",
+                senderEmail: "c81901614069859047077@sandbox.pagseguro.com.br",
+                shippingAddressRequired: "true",
+                extraAmount: "0.00"
+            }),
+            success: function (data) {
+                console.log(data);
+            }
+        });
+
+
+        //$.post("https://ws.sandbox.pagseguro.uol.com.br/v2/checkout", {
+        //    email: "daniel.smidt@yahoo.com.br",
+        //    token: "9925EFC7E5574E0281BE0E0CA865C733",
+        //    currency: "BRL",
+        //    itemId1: "001",
+        //    itemDescription1: "Curso UpFirst",
+        //    itemAmount1: "169.90",
+        //    itemQuantity1: "1",
+        //    reference: "reference=124665c23f7896adff508377925",
+        //    senderName: "Natalie",
+        //    senderAreaCode: "51",
+        //    senderPhone: "991504360",
+        //    senderEmail: "c81901614069859047077@sandbox.pagseguro.com.br",
+        //    shippingAddressRequired: "true",
+        //    extraAmount: "0.00"
+
+        //})
+        //    .done(function (data) {
+        //        alert(data);
+        //    });
+    };
+
+    function PagSeguroLightBox() {
+        //Insira o código de checkout gerado no Passo 1
+        var code = '8A9CA4D8BBBB190AA43AFFBE57C3ED92';
+        var callback = {
+            success: function (transactionCode) {
+                //Insira os comandos para quando o usuário finalizar o pagamento.
+                //O código da transação estará na variável "transactionCode"
+                console.log("Compra feita com sucesso, código de transação: " + transactionCode);
+            },
+            abort: function () {
+                //Insira os comandos para quando o usuário abandonar a tela de pagamento.
+                console.log("abortado");
+            }
+        };
+        //Chamada do lightbox passando o código de checkout e os comandos para o callback
+        var isOpenLightbox = PagSeguroLightbox(code, callback);
+        // Redireciona o comprador, caso o navegador não tenha suporte ao Lightbox
+        if (!isOpenLightbox) {
+            location.href = "https://pagseguro.uol.com.br/v2/checkout/payment.html?code=" + code;
+            console.log("Redirecionamento")
+        };
+    };
+</script>

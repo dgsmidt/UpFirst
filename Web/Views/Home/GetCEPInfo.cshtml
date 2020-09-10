@@ -1,0 +1,24 @@
+﻿@model ViaCep.ViaCepResult
+@{
+    ViewData["Title"] = "Consulta de CEP";
+}
+
+<h1>@ViewData["Title"]</h1>
+<form asp-action="GetCEPInfo" class="form-inline">
+    <div class="form-group">
+        <label class="mr-2">CEP</label>
+        <input type="text" class="form-control mr-2" placeholder="Digite o CEP" asp-for="@Model.ZipCode" />
+    </div>
+    <button class="btn btn-primary" type="submit">Buscar</button>
+</form>
+@if (Model.Street != null)
+{
+    <div class="form-group mt-5">
+        <label>@Model.Street</label>
+        <br />
+        <label>@Model.City - @Model.StateInitials</label>
+        <br />
+        <label>@Model.Neighborhood</label>
+    </div>
+}
+

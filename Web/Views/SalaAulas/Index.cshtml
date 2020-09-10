@@ -1,0 +1,253 @@
+﻿@model DAL.Models.Curso;
+
+@{
+    Layout = "_LayoutUpFirst";
+    ViewData["Title"] = "Sala de Aula";
+    var anotacoes = "";
+}
+
+<main class="othersPages" role="main">
+    <input class="form-control" id="assistindoAulaId" hidden />
+    <input class="form-control" value="@ViewData["AlunoId"]" id="alunoId" hidden />
+    @*<div class="container">
+            <div class="row">
+                <div class="col col-lg-2">
+                    <label class="text-white">AulaId</label>
+                    <input class="form-control" id="assistindoAulaId" /><br />
+                </div>
+                <div class="col col-lg-2">
+                    <label class="text-white">AlunoId</label>
+                    <input class="form-control" value="@Model.Alunos[0].Id" id="alunoId" />
+                </div>
+            </div>
+        </div>*@
+    <section class="container-fluid aula">
+        <div class="row">
+
+            <div class="col-3 menuAulas">
+                <h2>@Model.Nome</h2>
+                @foreach (var modulo in Model.Modulos)
+                {
+                    <ul class="modulo ativo">
+                        @* Tem a classe desativo tambem*@
+                        <h3>@modulo.Descricao</h3>
+                        @foreach (var aula in modulo.Aulas)
+                        {
+                            @*<li class="realizado"><a href="#">Aula 01</a></li>
+                                <li class="ativo"><a href="#">Aula 02</a></li>*@
+                            @if (aula.AulasAlunos.Count > 0)
+                            {
+                                var classToAdd = "li-aula";
+                                if (aula.AulasAlunos[0].Assistindo)
+                                {
+                                    classToAdd += " ativo";
+                                    anotacoes = aula.AulasAlunos[0].Anotacoes;
+                                }
+                                if (aula.AulasAlunos[0].Assistida) classToAdd += " realizado";
+                                <li @Html.Raw("class='" + classToAdd + "'")><a id="@aula.Id" class="itemAula" name="@aula.Video" style="cursor: pointer">@aula.Descricao</a></li>
+                            }
+                            else
+                            {
+                                <li class="li-aula"><a id="@aula.Id" class="itemAula" name="@aula.Video" style="cursor: pointer">@aula.Descricao</a></li>
+                            }
+
+                        }
+                        <hr />
+                    </ul>
+                }
+
+                <img class="btn-menu-video abrirMenu" onclick="AbrirMenu()" src="~/assets/images/abre_menu_video.svg" alt="abrir menu" border="0">
+                <img class="btn-menu-video fecharMenu" onclick="FecharMenu()" src="~/assets/images/fecha_menu_video.svg" alt="fechar menu" border="0">
+
+            </div>
+            <div class="col-9 videoAula">
+
+                <h1 id="nomeAula"></h1>
+                <section class="video">
+                    @*https://player.vimeo.com/video/141439971
+        https://player.vimeo.com/video/141561250
+        https://player.vimeo.com/video/444387842
+        https://player.vimeo.com/video/116629498
+        https://player.vimeo.com/video/436144408
+        https://player.vimeo.com/video/116619880*@
+                    <div style="padding:56.25% 0 0 0;position:relative;">
+                        @*<iframe id="iFrame" src="" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>*@
+                        <iframe id="iFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                                src=""
+                                frameborder="0"
+                                allowfullscreen></iframe>
+                    </div>
+                    @*<script src="https://player.vimeo.com/api/player.js"></script>*@
+                    <input id="checkAssistida" type="checkbox" class="mr-2 mt-2" localize-content />@Localizer.Text("Watched")
+                </section>
+
+                <section class="anotacaoAula">
+                    <h3 localize-content>Make notes of this Class:</h3>
+                    <form>
+                        <textarea class="form-control" id="validationTextarea" placeholder="@Localizer.Text("Make your notes here ...")" required="">@anotacoes</textarea>
+                    </form>
+                    @*<button id="btnSalvarAnotacoes" class="btn btn-primary mt-2">Salvar</button>*@
+                </section>
+
+                <section class="descricaoAula">
+                    <h3 localize-content>Support Material:</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetue
+                    </p>
+
+                </section>
+
+            </div>
+        </div>
+    </section>
+
+    @*<input type="text" id="YoutubeUrl" style="width:300px" />
+        <input type="button" id="PlayVideo" value="Play" />
+        <hr />
+        <iframe id="YouTubevideo" width="420" height="315"
+                frameborder="0" style="display:none"
+                allowfullscreen></iframe>*@
+</main>
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script>
+    var assistida = false;
+    var assistindo = false;
+    //var anotacoes = "";
+
+    $(document).ready(function () {
+        //console.log("ready!");
+        var haAtivo = false;
+
+        //$(".menuAulas").css("transition", "max-width 2s")
+        $(".menuAulas").css("transition", "max-height .2s")
+        //$(".modulo").css("transition", "display 2s");
+
+        $(".li-aula").each(function (index) {
+            //console.log(index + ": " + $(this).text());
+            if ($(this).hasClass("ativo")) {
+                $("#assistindoAulaId").attr("value", $(this).children().attr("id"));
+                $("#iFrame").attr("src", PlayVideo($(this).children().attr("name")));
+                $("#nomeAula").text($(this).children().text());
+                haAtivo = true;
+            };
+        });
+        if (!haAtivo) {
+            var firstAula = $(".li-aula").first();
+            firstAula.addClass("ativo");
+            $("#assistindoAulaId").attr("value", firstAula.children().attr("id"));
+            $("#iFrame").attr("src", PlayVideo(firstAula.children().attr("name")));
+            $("#nomeAula").text(firstAula.children().text());
+        }
+    });
+
+    $(function () {
+        $("#validationTextarea").focusout(function () {
+            //anotacoes = $("#validationTextarea").val();
+            postAnotacoes($("#assistindoAulaId").val(), $("#alunoId").val(), $("#validationTextarea").val());
+        });
+
+        $("#btnSalvarAnotacoes").click(function () {
+            //postStatus($("#assistindoAulaId").val(), $("#alunoId").val(), assistida, assistindo);
+            postAnotacoes($("#assistindoAulaId").val(), $("#alunoId").val(), $("#validationTextarea").val());
+        });
+
+        $(".itemAula").click(function (obj) {
+            $("#nomeAula").text($(obj.target).text());
+
+            $(".li-aula").each(function (index) {
+                //console.log(index + ": " + $(this).text());
+                $(this).removeClass("ativo");
+            });
+
+            $(obj.target).parent().addClass("ativo");
+
+            if ($(obj.target).parent().hasClass("realizado")) {
+                $("#checkAssistida").prop("checked", true);
+                assistida = true;
+            } else {
+                $("#checkAssistida").prop("checked", false);
+                assistida = false;
+            }
+            $("#iFrame").attr("src", PlayVideo($(obj.target).attr("name")));
+
+            $("#assistindoAulaId").attr("value", $(obj.target).attr("id"));
+            assistindo = true;
+            postStatus($("#assistindoAulaId").val(), $("#alunoId").val(), assistida, assistindo);
+
+            getAnotacoes($(obj.target).attr("id"), $("#alunoId").val());
+        });
+
+        $("#checkAssistida").click(function () {
+            if ($("#checkAssistida").is(":checked")) {
+                $("#" + $("#assistindoAulaId").val()).parent().addClass("realizado");
+                assistida = true;
+            } else {
+                $("#" + $("#assistindoAulaId").val()).parent().removeClass("realizado");
+                assistida = false;
+            }
+
+            postStatus($("#assistindoAulaId").val(), $("#alunoId").val(), assistida, assistindo);
+        });
+    });
+    function getAnotacoes(aulaId, alunoId) {
+        var url = '/pt-br/SalaAulas/GetAnotacoes/';
+        var dados = { aulaId: aulaId, alunoId: alunoId }
+        $.get(url, dados,
+            function (returnedData) {
+                $("#validationTextarea").val(returnedData);
+            }
+        )
+    };
+
+    function postAnotacoes(aulaId, alunoId, anotacoes) {
+        var url = '/pt-br/SalaAulas/PostAnotacoes/';
+        var dados = { aulaId: aulaId, alunoId: alunoId, anotacoes: anotacoes }
+        $.post(url, dados,
+            function (returnedData) {
+                //alert(returnedData);
+            }
+        )
+    };
+
+    function postStatus(aulaId, alunoId, assistida, assistindo, anotacoes) {
+        var url = '/pt-br/SalaAulas/UpdateSalaAulaStatus/';
+        var dados = { aulaId: aulaId, alunoId: alunoId, assistindo: assistindo, assistida: assistida };
+
+        $.post(url, dados,
+            function (returnedData) {
+                console.log(returnedData);
+            }
+        );
+    };
+
+    function AbrirMenu() {
+        $(".menuAulas").css("max-width", "600px");
+        $(".menuAulas").css("max-height", "1000px");
+        $(".modulo").css("display", "block");
+        $(".menuAulas h2").css("display", "block");
+        $(".fecharMenu").css("display", "block");
+        $(".videoAula").removeClass("col-11");
+        $(".videoAula").addClass("col-9");
+
+    };
+
+    function FecharMenu() {
+        $(".menuAulas").css("max-height", "50px");
+        $(".menuAulas").css("max-width", "40px");
+        
+        $(".modulo").css("display", "none");
+        $(".menuAulas h2").css("display", "none");
+        $(".fecharMenu").css("display", "none");
+        $(".videoAula").removeClass("col-9");
+        $(".videoAula").addClass("col-11");
+
+    };
+
+    function PlayVideo(url) {
+        url = url.split('v=')[1];
+        $("#iFrame")[0].src = "//www.youtube.com/embed/" + url;
+        $("#iFrame").show();
+    };
+
+</script>

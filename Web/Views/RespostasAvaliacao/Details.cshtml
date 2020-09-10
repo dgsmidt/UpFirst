@@ -1,0 +1,37 @@
+﻿@model DAL.Models.RespostaAvaliacao
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<div>
+    <h4 localize-content>Evaluation Answer</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Pergunta)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Pergunta.Descricao)
+        </dd>
+        <dt class="col-sm-2" localize-content>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Correta)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Correta)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" localize-content>Edit</a> |
+    <a asp-action="Index" localize-content>Back to List</a>
+</div>

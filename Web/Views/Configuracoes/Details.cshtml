@@ -1,0 +1,30 @@
+﻿@model DAL.Models.Configuracao
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<div>
+    <h4 localize-content>Settings</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2" localize-content>
+            @Html.DisplayNameFor(model => model.CabecalhoTexto1_Index)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CabecalhoTexto1_Index)
+        </dd>
+        <dt class = "col-sm-2" localize-content>
+            @Html.DisplayNameFor(model => model.Texto1_Index)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Texto1_Index)
+        </dd>
+    </dl>
+</div>
+<div>
+    @*<a asp-action="Edit" asp-route-id="@Model.Id"  localize-content>Edit</a> |*@
+    <a asp-action="Index" localize-content>Back to List</a>
+</div>

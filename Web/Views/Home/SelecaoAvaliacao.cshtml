@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DAL.Models.Avaliacao>
+@{
+    ViewData["Title"] = "Select Evaluation";
+}
+
+<h1 localize-content>
+    @ViewData["Title"]
+</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th localize-content>Evaluations</th>
+        </tr>
+        <tr></tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    <a asp-action="Avaliacao" asp-controller="Home" asp-route-avaliacaoId="@item.Id" asp-route-alunoId="@ViewData["AlunoId"]" localize-content>Select</a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

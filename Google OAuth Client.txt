@@ -1,0 +1,19 @@
+ID de cliente
+
+928383237400-sjrd859ssq7is8bm1nlebdssvg8mpt6u.apps.googleusercontent.com
+
+
+Chave secreta de cliente (only for server-side operations)
+
+Tdr9neSmBowPfkAjEhY4yEDh
+
+Para salvar no UserScrets do projeto:
+
+dotnet user-secrets set "Authentication:Google:ClientId" "407062989832-mmnl6f05osib27b86tf2mvlspt2m5poi.apps.googleusercontent.com" --project efarmcore
+dotnet user-secrets set "Authentication:Google:ClientSecret" "3ou6aZrmXZo_zCkZwIH01PVm" --project efarmcore
+
+Para gerenciar no Google: https://console.developers.google.com/apis/dashboard
+
+https://upfirst.com.br/signin_google
+https://localhost:44326/signin_google
+
