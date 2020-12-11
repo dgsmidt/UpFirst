@@ -1,0 +1,33 @@
+No Controller:
+
+public JsonResult GetAvaliacaoEnabled(int aulaId, int alunoId)
+        {
+
+            AulaAluno aa = _dbContext.AulasAlunos
+                .Include(aa => aa.Aula)
+                .Where(aa => aa.AlunoId == alunoId && aa.AulaId == aulaId)
+                .SingleOrDefault();
+
+            ModuloAluno moduloAluno = _dbContext.ModulosAlunos.Where(ma => ma.ModuloId == aa.Aula.ModuloId).SingleOrDefault();
+
+            Modulo modulo = _dbContext.Modulos.Find(moduloAluno.ModuloId);
+
+            return Json(new { enabled = moduloAluno.AvaliacaoLiberada, nomeBotao = "#avaliacao_" + modulo.AvaliacaoId.ToString() });
+        }
+
+
+No Script Java:
+
+function GetAvaliacaoEnabled(aulaId, alunoId) {
+        var url = '/pt-br/SalaAulas/GetAvaliacaoEnabled/';
+        var dados = { aulaId: aulaId, alunoId: alunoId }
+
+        $.get(url, dados,
+            function (returnedData) {
+                $(returnedData.nomeBotao).prop('hidden', !returnedData.enabled);
+                if (returnedData.enabled) {
+                    $('#avaliacaoLiberada').modal();
+                }
+            }, "json");
+
+    };

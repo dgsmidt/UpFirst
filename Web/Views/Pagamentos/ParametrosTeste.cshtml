@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "Parâmetros de Teste MP";
+}
+
+<h1>Parâmetros de Teste para o Mercado Pago</h1>
+<br />
+<blockquote>
+    <h4>Comprador</h4>
+
+    <p>email: test_user_96322874@testuser.com</p>
+    <p>password: qatest3464</p>
+    <br />
+    <H4>Cartões de teste</H4>
+
+
+    <table class="table">
+        <tr>
+            <th>Cartão</th>
+            <th>Número</th>
+            <th>Cód Segurança</th>
+            <th>Data de vencimento</th>
+
+        </tr>
+        <tr>
+            <td>Mastercard</td>
+            <td>5031 4332 1540 6351</td>
+            <td>123</td>
+            <td>11/25</td>
+        </tr>
+        <tr>
+            <td>Visa</td>
+            <td>4235 6477 2802 5682</td>
+            <td>123</td>
+            <td>11/25</td>
+        </tr>
+        <tr>
+            <td>American Express</td>
+            <td>3753 651535 56885</td>
+            <td>1234</td>
+            <td>11/25</td>
+        </tr>
+    </table>
+
+    <br />
+    <h4>Para testar diferentes resultados de pagamento, preencha o dado que quiser no nome do titular do cartão:</h4>
+    <br />
+
+    <table class="table">
+        <tr>
+            <td><b>APRO</b>: Pagamento aprovado.</td>
+            
+        </tr>
+        <tr>
+            <td><b>CONT</b>: Pagamento pendente.</td>
+            
+        </tr>
+        <tr>
+            <td><b>OTHE</b>: Recusado por erro geral.</td>
+            
+        </tr>
+        <tr>
+            <td><b>CALL</b>: Recusado com validação para autorizar.</td>
+            
+        </tr>
+        <tr>
+            <td><b>FUND</b>: Recusado por quantia insuficiente.</td>
+            
+        </tr>
+        <tr>
+            <td><b>SECU</b>: Recusado por código de segurança inválido.</td>
+            
+        </tr>
+        <tr>
+            <td><b>EXPI</b>: Recusado por problema com a data de vencimento.</td>
+            
+        </tr>
+        <tr>
+            <td><b>FORM</b>: Recusado por erro no formulário.</td>
+        </tr>
+    </table>
+
+</blockquote>

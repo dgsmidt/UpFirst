@@ -1,15 +1,10 @@
 ﻿@using DAL.Models
-@model List<Curso>
+@using Web.ViewModels
+@model Web.ViewModels.IndexVM
 @{
     Layout = "_LayoutUpFirst";
     ViewData["Title"] = "Home Page";
     var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
-
-    ViewBag.Cursos = new[]
-    {
-        new SelectListItem(){ Value = "1", Text = "Curso 1"},
-        new SelectListItem(){ Value = "2", Text = "Curso 2"}
-    };
 }
 
 <main class="home" role="main">
@@ -25,24 +20,35 @@
                 </div>
 
                 <div class="col-sm box boxForm">
-                    <h2>Acesse nosso conteúdo Exclusivo</h2>
-                    <form>
+                    <h2 localize-content>Access our Exclusive Content</h2>
+                    <form method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="cadNome" aria-describedby="nomeHelp" placeholder="Nome">
+                            @*<input type="text" class="form-control" id="cadNome" aria-describedby="nomeHelp" placeholder="Nome">*@
+                            <input asp-for="InputModel.Nome" class="form-control" placeholder=@Localizer.Text( "Name") />
+                            <span asp-validation-for="InputModel.Nome" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="cadWhatsapp" aria-describedby="whatsappHelp" placeholder="WhatsApp">
+                            @*<input type="text" class="form-control" id="cadWhatsapp" aria-describedby="whatsappHelp" placeholder="WhatsApp">*@
+                            <input asp-for="InputModel.WhatsApp" class="form-control" placeholder=@Localizer.Text( "WhatsApp") />
+                            <span asp-validation-for="InputModel.WhatsApp" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control" id="cadEmail" aria-describedby="emailHelp" placeholder="E-mail">
+                            @*<input type="email" class="form-control" id="cadEmail" aria-describedby="emailHelp" placeholder="E-mail">*@
+                            <input asp-for="InputModel.Email" class="form-control" placeholder=@Localizer.Text( "Email") />
+                            <span asp-validation-for="InputModel.Email" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="cadSenha" placeholder="Senha">
+                            @*<input type="password" class="form-control" id="cadSenha" placeholder="Senha">*@
+                            <input asp-for="InputModel.Password" class="form-control" placeholder=@Localizer.Text( "Password") />
+                            <span asp-validation-for="InputModel.Password" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="cadConfirmaSenha" placeholder="Confirme a Senha">
+                            @*<input type="password" class="form-control" id="cadConfirmaSenha" placeholder="Confirme a Senha">*@
+                            <input asp-for="InputModel.ConfirmPassword" class="form-control" placeholder=@Localizer.Text( "Confirm Password") />
+                            <span asp-validation-for="InputModel.ConfirmPassword" class="text-danger"></span>
                         </div>
-                        <button type="submit" class="btn-upf-action">Inscreva-se</button>
+                        <button type="submit" class="btn-upf-action" localize-content>Register</button>
                     </form>
                 </div>
             </div> <!-- CONTAINER  -->
@@ -50,19 +56,21 @@
     </section>
 
     <section class="container planos">
-        <h2>Conheça nossos Cursos</h2>
+        <h2 localize-content>Meet our Courses</h2>
         <p>
             Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetue
         </p>
-        @{List<Curso> modelo = new List<Curso>();}
-        @for (int i = 0; i < Model.Count(); i += 3)
+
+        @{List<CursoVM> modelo = new List<CursoVM>();}
+
+        @for (int i = 0; i < Model.Cursos.Count(); i += 3)
         {
             modelo.Clear();
             @for (int i2 = 0; i2 < 3; i2++)
             {
-                if (i + i2 < Model.Count())
+                if (i + i2 < Model.Cursos.Count())
                 {
-                    modelo.Add(Model[i + i2]);
+                    modelo.Add(new CursoVM { Curso = Model.Cursos[i + i2], CheckoutId = Model.CheckoutIds[i + i2] });
                 }
             }
 
@@ -74,7 +82,7 @@
     <section class="comoFunciona">
         <div class="container">
             <div class="row">
-                <h2>Como funciona</h2>
+                <h2 localize-content>How it Works</h2>
                 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis</p>
             </div>
             <div class="row">
@@ -107,9 +115,9 @@
                     <!-- INICIO FORMULARIO BOTAO PAGSEGURO -->
                     @*<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="PagSeguroLightBox()">PagSeguro</button>*@
                     @*<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="StartCheckoutPagSeguro()">PagSeguro</button>*@
-                      @* <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="StartCheckoutMercadoPago()">Mercado Pago</button>*@
+                    @* <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="StartCheckoutMercadoPago()">Mercado Pago</button>*@
 
-                    
+
                     <!-- FINAL FORMULARIO BOTAO PAGSEGURO -->
                 </div>
                 <div class="modal-footer">
@@ -121,39 +129,39 @@
     </div>
 </main>
 
-<script src="~/lib/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script>
+@*<script src="~/lib/jquery/jquery.min.js"></script>*@
+@*<script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script>*@
 <script>
     function Hide() {
         $('#myModal').modal('hide');
     };
-    function StartCheckoutPagSeguro() {
-        $.ajax({
-            url: 'https://ws.sandbox.pagseguro.uol.com.br/v2/checkout',
-            contentType: 'application/x-www-form-urlencoded',
-            cache: false,
-            method: 'POST',
-            dataType: 'json',
-            data: JSON.stringify({
-                email: "daniel.smidt@yahoo.com.br",
-                token: "9925EFC7E5574E0281BE0E0CA865C733",
-                currency: "BRL",
-                itemId1: "001",
-                itemDescription1: "Curso UpFirst",
-                itemAmount1: "169.90",
-                itemQuantity1: "1",
-                reference: "reference=124665c23f7896adff508377925",
-                senderName: "Natalie",
-                senderAreaCode: "51",
-                senderPhone: "991504360",
-                senderEmail: "c81901614069859047077@sandbox.pagseguro.com.br",
-                shippingAddressRequired: "true",
-                extraAmount: "0.00"
-            }),
-            success: function (data) {
-                console.log(data);
-            }
-        });
+    //function StartCheckoutPagSeguro() {
+    //    $.ajax({
+    //        url: 'https://ws.sandbox.pagseguro.uol.com.br/v2/checkout',
+    //        contentType: 'application/x-www-form-urlencoded',
+    //        cache: false,
+    //        method: 'POST',
+    //        dataType: 'json',
+    //        data: JSON.stringify({
+    //            email: "daniel.smidt@yahoo.com.br",
+    //            token: "9925EFC7E5574E0281BE0E0CA865C733",
+    //            currency: "BRL",
+    //            itemId1: "001",
+    //            itemDescription1: "Curso UpFirst",
+    //            itemAmount1: "169.90",
+    //            itemQuantity1: "1",
+    //            reference: "reference=124665c23f7896adff508377925",
+    //            senderName: "Natalie",
+    //            senderAreaCode: "51",
+    //            senderPhone: "991504360",
+    //            senderEmail: "c81901614069859047077@sandbox.pagseguro.com.br",
+    //            shippingAddressRequired: "true",
+    //            extraAmount: "0.00"
+    //        }),
+    //        success: function (data) {
+    //            console.log(data);
+    //        }
+    //    });
 
 
         //$.post("https://ws.sandbox.pagseguro.uol.com.br/v2/checkout", {
@@ -176,28 +184,28 @@
         //    .done(function (data) {
         //        alert(data);
         //    });
-    };
+    //};
 
-    function PagSeguroLightBox() {
-        //Insira o código de checkout gerado no Passo 1
-        var code = '8A9CA4D8BBBB190AA43AFFBE57C3ED92';
-        var callback = {
-            success: function (transactionCode) {
-                //Insira os comandos para quando o usuário finalizar o pagamento.
-                //O código da transação estará na variável "transactionCode"
-                console.log("Compra feita com sucesso, código de transação: " + transactionCode);
-            },
-            abort: function () {
-                //Insira os comandos para quando o usuário abandonar a tela de pagamento.
-                console.log("abortado");
-            }
-        };
-        //Chamada do lightbox passando o código de checkout e os comandos para o callback
-        var isOpenLightbox = PagSeguroLightbox(code, callback);
-        // Redireciona o comprador, caso o navegador não tenha suporte ao Lightbox
-        if (!isOpenLightbox) {
-            location.href = "https://pagseguro.uol.com.br/v2/checkout/payment.html?code=" + code;
-            console.log("Redirecionamento")
-        };
-    };
+    //function PagSeguroLightBox() {
+    //    //Insira o código de checkout gerado no Passo 1
+    //    var code = '8A9CA4D8BBBB190AA43AFFBE57C3ED92';
+    //    var callback = {
+    //        success: function (transactionCode) {
+    //            //Insira os comandos para quando o usuário finalizar o pagamento.
+    //            //O código da transação estará na variável "transactionCode"
+    //            console.log("Compra feita com sucesso, código de transação: " + transactionCode);
+    //        },
+    //        abort: function () {
+    //            //Insira os comandos para quando o usuário abandonar a tela de pagamento.
+    //            console.log("abortado");
+    //        }
+    //    };
+    //    //Chamada do lightbox passando o código de checkout e os comandos para o callback
+    //    var isOpenLightbox = PagSeguroLightbox(code, callback);
+    //    // Redireciona o comprador, caso o navegador não tenha suporte ao Lightbox
+    //    if (!isOpenLightbox) {
+    //        location.href = "https://pagseguro.uol.com.br/v2/checkout/payment.html?code=" + code;
+    //        console.log("Redirecionamento")
+    //    };
+    //};
 </script>

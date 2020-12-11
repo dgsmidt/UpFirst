@@ -73,8 +73,8 @@ namespace WebCore.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
-            returnUrl = returnUrl ?? Url.Content($"~/{culture}");
-            string msg;
+            returnUrl ??= Url.Content($"~/{culture}");
+            //string msg;
             if (remoteError != null)
             {
                 ErrorMessage = _loc.GetLocalizedString(culture, "Error from external provider: {0}", remoteError);
@@ -116,8 +116,8 @@ namespace WebCore.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content($"~/{culture}");
-            string msg;
+            returnUrl ??= Url.Content($"~/{culture}");
+            //string msg;
             // Get the information about the user from the external login provider
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
@@ -144,7 +144,7 @@ namespace WebCore.Areas.Identity.Pages.Account
                         var callbackUrl = Url.Page(
                             "/Account/ConfirmEmail",
                             pageHandler: null,
-                            values: new { area = "Identity", userId = userId, code = code, culture = culture },
+                            values: new { area = "Identity", userId, code, culture },
                             protocol: Request.Scheme);
 
                         var mailHeader = _loc.GetLocalizedString(culture, "Confirm your email");
@@ -155,7 +155,7 @@ namespace WebCore.Areas.Identity.Pages.Account
                         // If account confirmation is required, we need to show the link if we don't have a real email sender
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
-                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email, culture });
+                            return RedirectToPage("./RegisterConfirmation", new { Input.Email, culture });
                         }
 
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);

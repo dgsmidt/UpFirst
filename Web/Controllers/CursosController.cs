@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using DAL.Models;
-using System.Collections.Generic;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
@@ -19,22 +19,30 @@ namespace Web.Controllers
         }
 
         // GET: Cursos
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, int? moduloId)
         {
-            var cursos = new List<Curso>();
+            var viewModel = new CursosVM();
+
+            viewModel.Cursos = await _context.Cursos
+                .Include(c => c.Modulos)
+                    .ThenInclude(m => m.Avaliacao)
+                .AsNoTracking()
+                .ToListAsync();
 
             if (id != null)
             {
-                ViewData["CursoId"] = id.Value;
-                var curso = await _context.Cursos.Include(c=>c.Modulos).Where(c => c.Id == id.Value).SingleAsync();
-                cursos.Add(curso);
-            }
-            else
-            {
-                cursos = await _context.Cursos.Include(c => c.Modulos).AsNoTracking().ToListAsync();
+                viewModel.SelectedId = id.Value;
+                viewModel.Modulos = await _context.Modulos.Where(m => m.CursoId == id.Value).ToListAsync();
             }
 
-            return View(cursos);
+            if (moduloId != null)
+            {
+                viewModel.SelectedId = id.Value;
+                viewModel.ModuloId = moduloId.Value;
+                viewModel.Aulas = await _context.Aulas.Where(a => a.ModuloId == moduloId.Value).ToListAsync();
+            }
+
+            return View(viewModel);
         }
 
         // GET: Cursos/Details/5

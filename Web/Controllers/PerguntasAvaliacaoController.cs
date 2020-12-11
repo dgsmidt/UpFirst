@@ -1,30 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using DAL.Models;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
     public class PerguntasAvaliacaoController : Controller
     {
-        private readonly UpFirstDbContext _context;
+        private readonly UpFirstDbContext _dbContext;
 
         public PerguntasAvaliacaoController(UpFirstDbContext context)
         {
-            _context = context;
+            _dbContext = context;
         }
 
         // GET: PerguntasAvaliacao
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            return View(await _context.PerguntasAvaliacao
-                .Include(pa => pa.Respostas)
-                .ToListAsync());
+            var viewModel = new PerguntasAvaliacaoVM();
+
+            viewModel.PerguntasAvaliacao = await _dbContext.PerguntasAvaliacao
+                .Include(p => p.Respostas)
+                .AsNoTracking()
+                .OrderBy(p => p.Descricao)
+                .ToListAsync();
+
+            if (id != null)
+            {
+                var perguntaId = id.Value;
+                PerguntaAvaliacao perguntaAvaliacao = viewModel.PerguntasAvaliacao.Single(pa => pa.Id == perguntaId);
+                viewModel.RespostasAvaliacao = perguntaAvaliacao.Respostas.Where(ra => ra.PerguntaAvaliacaoId == perguntaId).ToList();
+                viewModel.SelectedId = perguntaId;
+                viewModel.AvaliacaoId = perguntaAvaliacao.AvaliacaoId;
+            }
+
+            return View(viewModel);
         }
 
         // GET: PerguntasAvaliacao/Details/5
@@ -35,7 +49,7 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var perguntaAvaliacao = await _context.PerguntasAvaliacao
+            var perguntaAvaliacao = await _dbContext.PerguntasAvaliacao
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (perguntaAvaliacao == null)
             {
@@ -48,7 +62,15 @@ namespace Web.Controllers
         // GET: PerguntasAvaliacao/Create
         public IActionResult Create(int? avaliacaoId)
         {
-            ViewData["AvaliacaoId"] = new SelectList(_context.Avaliacoes, "Id", "Descricao", avaliacaoId ?? -1);
+            if (avaliacaoId != null)
+            {
+                ViewData["AvaliacaoId"] = new SelectList(_dbContext.Avaliacoes.Where(a => a.Id == avaliacaoId), "Id", "Descricao", avaliacaoId ?? -1);
+            }
+            else
+            {
+                ViewData["AvaliacaoId"] = new SelectList(_dbContext.Avaliacoes, "Id", "Descricao", avaliacaoId ?? -1);
+            }
+
             //var model = new PerguntaAvaliacao { AvaliacaoId = avaliacaoId ?? -1 };
 
             return View();
@@ -63,9 +85,9 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(perguntaAvaliacao);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _dbContext.Add(perguntaAvaliacao);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction("Index", "Avaliacoes", new { perguntaId = perguntaAvaliacao.Id });
             }
             return View(perguntaAvaliacao);
         }
@@ -78,7 +100,7 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var perguntaAvaliacao = await _context.PerguntasAvaliacao.FindAsync(id);
+            var perguntaAvaliacao = await _dbContext.PerguntasAvaliacao.FindAsync(id);
             if (perguntaAvaliacao == null)
             {
                 return NotFound();
@@ -102,8 +124,8 @@ namespace Web.Controllers
             {
                 try
                 {
-                    _context.Update(perguntaAvaliacao);
-                    await _context.SaveChangesAsync();
+                    _dbContext.Update(perguntaAvaliacao);
+                    await _dbContext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -116,7 +138,7 @@ namespace Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Avaliacoes", new { perguntaId = perguntaAvaliacao.Id });
             }
             return View(perguntaAvaliacao);
         }
@@ -129,7 +151,7 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var perguntaAvaliacao = await _context.PerguntasAvaliacao
+            var perguntaAvaliacao = await _dbContext.PerguntasAvaliacao
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (perguntaAvaliacao == null)
             {
@@ -144,15 +166,15 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var perguntaAvaliacao = await _context.PerguntasAvaliacao.FindAsync(id);
-            _context.PerguntasAvaliacao.Remove(perguntaAvaliacao);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var perguntaAvaliacao = await _dbContext.PerguntasAvaliacao.FindAsync(id);
+            _dbContext.PerguntasAvaliacao.Remove(perguntaAvaliacao);
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction("Index", "Avaliacoes", new { perguntaId = id });
         }
 
         private bool PerguntaAvaliacaoExists(int id)
         {
-            return _context.PerguntasAvaliacao.Any(e => e.Id == id);
+            return _dbContext.PerguntasAvaliacao.Any(e => e.Id == id);
         }
     }
 }

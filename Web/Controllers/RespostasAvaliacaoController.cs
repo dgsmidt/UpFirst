@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -46,9 +44,26 @@ namespace Web.Controllers
         }
 
         // GET: RespostasAvaliacao/Create
-        public IActionResult Create(int? perguntaId)
+        public IActionResult Create(int? avaliacaoId, int? perguntaId)
         {
-            ViewData["PerguntaAvaliacaoId"] = new SelectList(_context.PerguntasAvaliacao, "Id", "Descricao", perguntaId);
+            ViewData["Disabled"] = false;
+
+            if (perguntaId != null)
+            {
+                int id = (int)perguntaId.Value;
+                ViewData["PerguntaAvaliacaoId"] = new SelectList(_context.PerguntasAvaliacao.Where(p => p.Id == id), "Id", "Descricao", perguntaId);
+                ViewData["Disabled"] = true;
+                ViewData["PerguntaId"] = id;
+                ViewData["AvaliacaoId"] = avaliacaoId;
+            }
+            else
+            {
+                ViewData["PerguntaAvaliacaoId"] = new SelectList(_context.PerguntasAvaliacao, "Id", "Descricao", perguntaId);
+                ViewData["PerguntaId"] = -1;
+                ViewData["AvaliacaoId"] = -1;
+            }
+
+
             return View();
         }
 
@@ -65,14 +80,16 @@ namespace Web.Controllers
 
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
-                return RedirectToAction("Index", "PerguntasAvaliacao");
+                PerguntaAvaliacao perguntaAvaliacao = await _context.PerguntasAvaliacao.FirstOrDefaultAsync(a => a.Id == respostaAvaliacao.PerguntaAvaliacaoId);
+
+                return RedirectToAction("Index", "Avaliacoes", new { id = perguntaAvaliacao.AvaliacaoId, perguntaId = respostaAvaliacao.PerguntaAvaliacaoId });
             }
             ViewData["PerguntaAvaliacaoId"] = new SelectList(_context.PerguntasAvaliacao, "Id", "Id", respostaAvaliacao.PerguntaAvaliacaoId);
             return View(respostaAvaliacao);
         }
 
         // GET: RespostasAvaliacao/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? perguntaId)
         {
             if (id == null)
             {
@@ -85,6 +102,17 @@ namespace Web.Controllers
                 return NotFound();
             }
             ViewData["PerguntaAvaliacaoId"] = new SelectList(_context.PerguntasAvaliacao, "Id", "Descricao", respostaAvaliacao.PerguntaAvaliacaoId);
+
+            if (perguntaId != null)
+            {
+                ViewData["PerguntaId"] = perguntaId.Value;
+            }
+            else
+            {
+                ViewData["PerguntaId"] = -1;
+            }
+
+
             return View(respostaAvaliacao);
         }
 
@@ -118,14 +146,20 @@ namespace Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                RespostaAvaliacao ra = _context.RespostasAvaliacao
+                    .Include(ra => ra.Pergunta)
+                    .AsNoTracking()
+                    .SingleOrDefault(ra => ra.Id == respostaAvaliacao.Id);
+
+                return RedirectToAction("Index", "Avaliacoes", new { id = ra.Pergunta.AvaliacaoId, perguntaId = ra.Pergunta.Id });
             }
             ViewData["PerguntaAvaliacaoId"] = new SelectList(_context.PerguntasAvaliacao, "Id", "Id", respostaAvaliacao.PerguntaAvaliacaoId);
             return View(respostaAvaliacao);
         }
 
         // GET: RespostasAvaliacao/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int? perguntaId)
         {
             if (id == null)
             {
@@ -135,6 +169,16 @@ namespace Web.Controllers
             var respostaAvaliacao = await _context.RespostasAvaliacao
                 .Include(r => r.Pergunta)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (perguntaId != null)
+            {
+                ViewData["PerguntaId"] = perguntaId.Value;
+            }
+            else
+            {
+                ViewData["PerguntaId"] = -1;
+            }
+
             if (respostaAvaliacao == null)
             {
                 return NotFound();
@@ -149,9 +193,11 @@ namespace Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var respostaAvaliacao = await _context.RespostasAvaliacao.FindAsync(id);
+            var perguntaAvaliacao = await _context.PerguntasAvaliacao.FindAsync(respostaAvaliacao.PerguntaAvaliacaoId);
+            var avaliacao = await _context.Avaliacoes.FindAsync(perguntaAvaliacao.AvaliacaoId);
             _context.RespostasAvaliacao.Remove(respostaAvaliacao);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Avaliacoes", new { id = avaliacao.Id, perguntaId = perguntaAvaliacao.Id });
         }
 
         private bool RespostaAvaliacaoExists(int id)

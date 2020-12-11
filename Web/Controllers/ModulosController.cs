@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using DAL;
+using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DAL;
-using DAL.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Web.Controllers
 {
@@ -21,7 +21,10 @@ namespace Web.Controllers
         // GET: Modulos
         public async Task<IActionResult> Index()
         {
-            var upFirstDbContext = _context.Modulos.Include(m => m.Curso);
+            var upFirstDbContext = _context.Modulos
+                .Include(m => m.Avaliacao)
+                .Include(m => m.Curso);
+
             return View(await upFirstDbContext.ToListAsync());
         }
 
@@ -45,9 +48,16 @@ namespace Web.Controllers
         }
 
         // GET: Modulos/Create
-        public IActionResult Create()
+        public IActionResult Create(int? cursoId)
         {
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Nome");
+            if (cursoId != null)
+            {
+                ViewData["CursoId"] = new SelectList(_context.Cursos.Where(c => c.Id == cursoId), "Id", "Nome", cursoId ?? -1);
+            }
+            else
+            {
+                ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Nome", cursoId ?? -1);
+            }
 
             return View();
         }
@@ -70,7 +80,7 @@ namespace Web.Controllers
 
                 _context.Add(modulo);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Cursos", new { id = modulo.CursoId, moduloId = modulo.Id });
             }
             ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", modulo.CursoId);
             return View(modulo);
@@ -123,7 +133,7 @@ namespace Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Cursos", new { id = modulo.CursoId, moduloId = modulo.Id });
             }
             ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Nome", modulo.CursoId);
             return View(modulo);
@@ -156,7 +166,7 @@ namespace Web.Controllers
             var modulo = await _context.Modulos.FindAsync(id);
             _context.Modulos.Remove(modulo);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Cursos", new { id = modulo.CursoId });
         }
 
         private bool ModuloExists(int id)

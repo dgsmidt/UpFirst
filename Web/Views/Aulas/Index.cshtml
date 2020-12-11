@@ -22,6 +22,9 @@
                 @Html.DisplayNameFor(model => model.Video)
             </th>
             <th localize-content>
+                @Html.DisplayNameFor(model => model.MaterialApoio)
+            </th>
+            <th localize-content>
                 Course
             </th>
             <th localize-content>
@@ -43,6 +46,9 @@
                 @Html.DisplayFor(modelItem => item.Video)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.MaterialApoio)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Modulo.Curso.Nome)
             </td>
             <td>
@@ -57,3 +63,5 @@
 }
     </tbody>
 </table>
+
+

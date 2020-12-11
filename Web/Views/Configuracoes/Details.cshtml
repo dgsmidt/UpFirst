@@ -10,16 +10,28 @@
     <h4 localize-content>Settings</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2" localize-content>
+        <dt class="col-sm-2" localize-content>
+            @Html.DisplayNameFor(model => model.Logo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Logo)
+        </dd>
+        <dt class="col-sm-2" localize-content>
+            @Html.DisplayNameFor(model => model.NotaDeCorte)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NotaDeCorte)
+        </dd>
+        <dt class="col-sm-2" localize-content>
             @Html.DisplayNameFor(model => model.CabecalhoTexto1_Index)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CabecalhoTexto1_Index)
         </dd>
-        <dt class = "col-sm-2" localize-content>
+        <dt class="col-sm-2" localize-content>
             @Html.DisplayNameFor(model => model.Texto1_Index)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Texto1_Index)
         </dd>
     </dl>

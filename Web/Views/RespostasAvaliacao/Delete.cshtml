@@ -30,17 +30,19 @@
             @Html.DisplayFor(model => model.Correta)
         </dd>
         @*<dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Escolhida)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Escolhida)
-        </dd>*@
+                @Html.DisplayNameFor(model => model.Escolhida)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Escolhida)
+            </dd>*@
 
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="@Localizer.Text("Delete")" class="btn btn-danger" /> |
-        <a asp-action="Index" localize-content>Back to List</a>
+
+        <a asp-controller="Avaliacoes" asp-action="Index" asp-route-id="@Model.Pergunta.AvaliacaoId"  asp-route-perguntaId="@Model.PerguntaAvaliacaoId" localize-content>Back to Evaluations</a>
+
     </form>
 </div>

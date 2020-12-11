@@ -1,19 +1,38 @@
 ﻿@using DAL.Models
-@model List<Nota>
+@model List<ModuloAluno>
 
 @{
-    ViewData["Title"] = "Evolucao";
+    ViewData["Title"] = Localizer.Text("Evolution");
 }
 
-<h1>Evolução</h1>
+<h1>@ViewData["Title"]</h1>
 <div class="mt-4">
     @if (Model.Count == 0)
     {
-        <h5>Ainda não há notas lançadas</h5>
+        <h5 localize-content>No notes released yet</h5>
     }
-    @foreach (var item in Model)
+    else
     {
-        <h6>@item.Modulo.Descricao - @item.Valor</h6>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th localize-content>Course</th>
+                    <th localize-content>Module</th>
+                    <th localize-content>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var modulo in Model)
+                {
+                    <tr>
+                        <td>@modulo.Modulo.Curso.Nome</td>
+                        <td>@modulo.Modulo.Descricao</td>
+                        <td>@modulo.Nota</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
 </div>
 

@@ -7,24 +7,33 @@
     @ViewData["Title"]
 </h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th localize-content>Evaluations</th>
-        </tr>
-        <tr></tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@if (Model.Count() == 0)
+{
+    <h0 localize-content>You haven't acquired any courses yet.</h0>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    <a asp-action="Avaliacao" asp-controller="Home" asp-route-avaliacaoId="@item.Id" asp-route-alunoId="@ViewData["AlunoId"]" localize-content>Select</a> 
-                </td>
+                <th localize-content>Evaluations</th>
             </tr>
-        }
-    </tbody>
-</table>
+            <tr></tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                    <td>
+                        <a asp-action="Avaliacao" asp-controller="Home" asp-route-avaliacaoId="@item.Id" asp-route-alunoId="@ViewData["AlunoId"]" localize-content>Select</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+

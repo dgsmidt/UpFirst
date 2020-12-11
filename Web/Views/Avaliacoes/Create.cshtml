@@ -12,16 +12,17 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input name="ModuloId" value="@ViewData["mId"]" hidden/>
             <div class="form-group">
                 <label class="control-label" localize-content>Course</label>
-                <select id="Modulo_CursoId" class="form-control" asp-items="ViewBag.CursoId">
+                <select id="Modulo_CursoId" class="form-control" asp-items="ViewBag.CursoId" disabled>
                     <option value="" localize-content>-- Select Course --</option>
                 </select>
             </div>
             <div class="form-group">
                 <label asp-for="ModuloId" class="control-label" localize-content>Module</label>
                 @*<select asp-for="ModuloId" class="form-control" asp-items="ViewBag.ModuloId">*@
-                <select asp-for="ModuloId" class="form-control">
+                <select asp-for="ModuloId" class="form-control" asp-items="ViewBag.ModuloId" disabled>
                     <option value="" localize-content>-- Select Module --</option>
                 </select>
             </div>

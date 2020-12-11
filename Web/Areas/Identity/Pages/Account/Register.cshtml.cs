@@ -57,6 +57,9 @@ namespace WebCore.Areas.Identity.Pages.Account
         public class InputModel
         {
             [ExRequired]
+            [Display(Name = "Name")]
+            public string Nome { get; set; }
+            [ExRequired]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -89,7 +92,8 @@ namespace WebCore.Areas.Identity.Pages.Account
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
-                    Email = Input.Email
+                    Email = Input.Email,
+                    Nome = Input.Nome
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -98,7 +102,9 @@ namespace WebCore.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _dbContext.Alunos.AddAsync(new Aluno { UserId = user.Id });
+                    await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Nome", user.Nome));
+
+                    await _dbContext.Alunos.AddAsync(new Aluno { UserId = user.Id, Nome = user.Nome, Email = user.Email, WhatsApp = user.WhatsApp });
                     await _dbContext.SaveChangesAsync();
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -132,7 +138,7 @@ namespace WebCore.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
-                    // model binding error already locaized by ExpressLocalization
+                    // model binding error already localized by ExpressLocalization
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }

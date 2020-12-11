@@ -11,10 +11,12 @@ namespace DAL.Models
         public int NumeroAula { get; set; }  // Sequencia da aula
         [Display(Name = "Description")]
         public string Descricao { get; set; }
-        [Display(Name = "Video")]
+        [Display(Name = "Online Video")]
         public string Video { get; set; }
+        public string MaterialApoio { get; set; }
         [Display(Name = "Module")]
         public Modulo Modulo { get; set; }
-        public List<AulasAlunos> AulasAlunos{ get; set; }
+        public List<AulaAluno> AulasAlunos { get; set; }
+        public IList<ArquivoApoio> ArquivosApoio { get; set; }
     }
 }

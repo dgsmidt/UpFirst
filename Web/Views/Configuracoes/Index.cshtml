@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DAL.Models.Configuracao>
+﻿@model DAL.Models.Configuracao
 
 @{
     ViewData["Title"] = "Settings";
@@ -13,6 +13,12 @@
     <thead>
         <tr>
             <th localize-content>
+                @Html.DisplayNameFor(model => model.Logo)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.NotaDeCorte)
+            </th>
+            <th localize-content>
                 @Html.DisplayNameFor(model => model.CabecalhoTexto1_Index)
             </th>
             <th localize-content>
@@ -22,20 +28,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CabecalhoTexto1_Index)
+                @Html.DisplayFor(modelItem => Model.Logo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Texto1_Index)
+                @Html.DisplayFor(modelItem => Model.NotaDeCorte)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" localize-content>Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id" localize-content>Details</a> 
+                @Html.DisplayFor(modelItem => Model.CabecalhoTexto1_Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Texto1_Index)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@Model.Id" localize-content>Edit</a> |
+                <a asp-action="Details" asp-route-id="@Model.Id" localize-content>Details</a>
                 @*<a asp-action="Delete" asp-route-id="@item.Id" localize-content>Delete</a>*@
             </td>
         </tr>
-}
     </tbody>
 </table>

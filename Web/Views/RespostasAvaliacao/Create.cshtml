@@ -6,7 +6,7 @@
 
 <h1 localize-content>@ViewData["Title"]</h1>
 
-<h4 localize-content>Evaluation Answer</h4>
+<h4 localize-content>Evaluation Question Answer</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,7 +14,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="PerguntaAvaliacaoId" class="control-label" localize-content>Evaluation Question</label>
-                <select asp-for="PerguntaAvaliacaoId" class ="form-control" asp-items="ViewBag.PerguntaAvaliacaoId"></select>
+                <select asp-for="PerguntaAvaliacaoId" class="form-control" asp-items="ViewBag.PerguntaAvaliacaoId">
+                    @if (!(bool)ViewData["Disabled"])
+                    {
+                        <option value="" localize-content>-- Select Question --</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Descricao" class="control-label" localize-content>Answer</label>
@@ -23,14 +28,14 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Correta" /> @Html.DisplayNameFor(model => model.Correta)
+                    <input class="form-check-input" asp-for="Correta" /> @Localizer.Text(Html.DisplayNameFor(model => model.Correta))
                 </label>
             </div>
             @*<div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Escolhida" /> @Html.DisplayNameFor(model => model.Escolhida)
-                </label>
-            </div>*@
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Escolhida" /> @Html.DisplayNameFor(model => model.Escolhida)
+                    </label>
+                </div>*@
             <div class="form-group">
                 <input type="submit" value="@Localizer.Text("Create")" class="btn btn-primary" />
             </div>
@@ -39,6 +44,6 @@
 </div>
 
 <div>
-    <a asp-action="Index" localize-content>Back to List</a>
+    <a asp-controller="Avaliacoes"  asp-action="Index" asp-route-id="@ViewData["AvaliacaoId"]" asp-route-perguntaId="@ViewData["PerguntaId"]" localize-content>Back to Evaluations</a>
 </div>
 

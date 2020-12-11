@@ -13,8 +13,8 @@ namespace Web.Controllers
     [Authorize(Policy = "RequireAdministratorRole")]
     public class UsersController : Controller
     {
-        private UserManager<ApplicationUser> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UpFirstDbContext _dbContext;
         public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, UpFirstDbContext dbConext)
         {
@@ -32,12 +32,15 @@ namespace Web.Controllers
             {
                 var roles = await _userManager.GetRolesAsync(user);
 
-                model.Add(new UsersVM { Email = user.UserName, Administrator = roles.Contains("Administrator") });
+                model.Add(new UsersVM { Email = user.UserName, Administrator = roles.Contains("Administrator"), Id = user.Id, Nome = user.Nome, EmailConfirmed = user.EmailConfirmed });
             }
 
             return View(model);
         }
-
+        public ActionResult Edit(string email)
+        {
+            return View();
+        }
         // POST: UsersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -53,13 +56,16 @@ namespace Web.Controllers
                 if (user.Administrator)
                 {
                     await _roleManager.CreateAsync(new IdentityRole("Administrator"));
-                    var res = await _userManager.AddToRoleAsync(usuario, "Administrator");
+                    _ = await _userManager.AddToRoleAsync(usuario, "Administrator");
                 }
                 else
                 {
-                    var res = await _userManager.RemoveFromRoleAsync(usuario, "Administrator");
+                    _ = await _userManager.RemoveFromRoleAsync(usuario, "Administrator");
                 }
 
+                usuario.EmailConfirmed = user.EmailConfirmed;
+
+                await _userManager.UpdateAsync(usuario);
             }
 
             try
@@ -67,7 +73,7 @@ namespace Web.Controllers
                 //return RedirectToAction(nameof(Index));
                 return RedirectToAction("Index", "Home");
             }
-            catch
+            catch 
             {
                 return View();
             }
@@ -79,9 +85,8 @@ namespace Web.Controllers
             var user = await _userManager.FindByEmailAsync(email);
 
             await _dbContext.ExcluirAlunoAsync(user.Id);
+            _ = await _userManager.DeleteAsync(user);
 
-            var result = await _userManager.DeleteAsync(user);
-            
             return RedirectToAction("Index");
         }
     }

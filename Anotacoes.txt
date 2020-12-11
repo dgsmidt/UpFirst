@@ -50,3 +50,30 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
             </div>
 
         </div>
+
+
+Reuniao 21/10
+
+OK - Traduzir os textos da tela inicial
+OK - Dividir configurações em sub menus: Home, e etc
+- Personailzar Logo (não funcionou passando pelo ViewData[])
+OK - Na selecao de curso para sala de aula em vez de link (Select) Usar um Botão com texto Select (trocar <a> por <button>)
+OK - Todos os módulos terão avaliacao: colocar na tela de cursos em módulos, criar link para avaliações. (Criar avaliacao) ou (Editar avaliação). 
+	Criar uma action CreateOrEditAvaliacao(int moduloId) e fazer um link: "Avaliação" na linha do Módulo com Label: Avaliação apontando
+	para esta Action. Nesta action direcionar para create or edit avaliacao, passando o moduloId
+OK - Colocar parametro de nota para prosseguir para o proximo modulo. Este parametro será uma nota de corte. Daí ativa o proximo modulo ou nao
+OK - Só liberar a avaliacao do módulo depois que o cara assistiu todas as aulas do modulo. Só deixar clicar em assistida, na aula, se clicou assistida nas anteriores
+OK - Colocar "Fazer Avaliacao" em abaixo da última aula de cada modulo na sala de aula
+OK - Parametrizar Material de Apoio (está na tela sala de aula). Colocar no cadastro de aula
+PARCIALMENTE OK - Poder Editar mais campos em usuários, tipo: confirmação do email..., nome...
+OK - Não está mostrando evolução (mudar Evolução para "Notas")
+OK - Colocar a selecao de cursos (quando for entrar na sala de aula) em submenus de Sala de Aula (mostrar os cursos adquiridos abaixo de Sala de Aula) 
+
+- Assistir Black Mirror
+
+System.Diagnostics.Debug.WriteLine("UploadPhysical");
+
+
+[RequestFormLimits(MultiPartBodyLenghtLimit=409715200)]
+[RequestSizeLimit(409715200)]
+

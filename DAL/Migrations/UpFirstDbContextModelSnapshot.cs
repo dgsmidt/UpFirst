@@ -15,7 +15,7 @@ namespace DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.7")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -26,10 +26,19 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("NotaQuestionario")
-                        .HasColumnType("decimal(3,1)");
+                        .HasColumnType("decimal(3, 1)");
 
                     b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WhatsApp")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -40,9 +49,72 @@ namespace DAL.Migrations
                         new
                         {
                             Id = 1,
+                            Email = "teste@teste.com",
+                            Nome = "Teste",
                             NotaQuestionario = 0m,
-                            UserId = "Teste"
+                            UserId = "Teste",
+                            WhatsApp = "12999888877"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "claudio.rosa@gswsoftware.com",
+                            Nome = "Cláudio",
+                            NotaQuestionario = 4.5m,
+                            UserId = "194ee88d-44fd-4168-b360-8da5c600726c"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Email = "csrclaudio@gmail.com",
+                            Nome = "Cláudio",
+                            NotaQuestionario = 0m,
+                            UserId = "7cb31e03-5a94-4527-b44d-a6791d20d842"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Email = "marcileychristovao@uol.com.br",
+                            Nome = "Marciley",
+                            NotaQuestionario = 2.8m,
+                            UserId = "966a4985-0049-405a-9685-38c37a03ca39"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Email = "claudio_vilanova@yahoo.com.br",
+                            Nome = "Cláudio",
+                            NotaQuestionario = 0m,
+                            UserId = "9adc3d2f-34f7-4c22-9ef2-2c19d8c8b7c4"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Email = "daniel.smidt@yahoo.com.br",
+                            Nome = "Daniel",
+                            NotaQuestionario = 2.0m,
+                            UserId = "cf1b9d7f-9881-4437-bcbb-0e32a6ec2525"
                         });
+                });
+
+            modelBuilder.Entity("DAL.Models.ArquivoApoio", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AulaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AulaId");
+
+                    b.ToTable("ArquivosApoio");
                 });
 
             modelBuilder.Entity("DAL.Models.Aula", b =>
@@ -53,6 +125,9 @@ namespace DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Descricao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaterialApoio")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ModuloId")
@@ -77,7 +152,7 @@ namespace DAL.Migrations
                             Descricao = "Aula 1",
                             ModuloId = 1,
                             NumeroAula = 1,
-                            Video = "https://player.vimeo.com/video/141439971"
+                            Video = "https://www.youtube.com/watch?v=eehO6YQycBQ"
                         },
                         new
                         {
@@ -85,7 +160,7 @@ namespace DAL.Migrations
                             Descricao = "Aula 2",
                             ModuloId = 1,
                             NumeroAula = 2,
-                            Video = "https://player.vimeo.com/video/141561250"
+                            Video = "https://www.youtube.com/watch?v=5niylfZuZ8k"
                         },
                         new
                         {
@@ -93,7 +168,7 @@ namespace DAL.Migrations
                             Descricao = "Aula 3",
                             ModuloId = 1,
                             NumeroAula = 3,
-                            Video = "https://player.vimeo.com/video/444387842"
+                            Video = "https://www.youtube.com/watch?v=wHsG4G3evWE"
                         },
                         new
                         {
@@ -101,7 +176,7 @@ namespace DAL.Migrations
                             Descricao = "Aula 4",
                             ModuloId = 1,
                             NumeroAula = 4,
-                            Video = "https://player.vimeo.com/video/116629498"
+                            Video = "https://www.youtube.com/watch?v=_DYno3fsLEw"
                         },
                         new
                         {
@@ -109,7 +184,7 @@ namespace DAL.Migrations
                             Descricao = "Aula 1",
                             ModuloId = 2,
                             NumeroAula = 1,
-                            Video = "https://player.vimeo.com/video/436144408"
+                            Video = "https://www.youtube.com/watch?v=fnv-o1kFI6g"
                         },
                         new
                         {
@@ -117,11 +192,11 @@ namespace DAL.Migrations
                             Descricao = "Aula 1",
                             ModuloId = 3,
                             NumeroAula = 1,
-                            Video = "https://player.vimeo.com/video/116619880"
+                            Video = "https://www.youtube.com/watch?v=PPbPy7BNvBs"
                         });
                 });
 
-            modelBuilder.Entity("DAL.Models.AulasAlunos", b =>
+            modelBuilder.Entity("DAL.Models.AulaAluno", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -143,11 +218,22 @@ namespace DAL.Migrations
                     b.Property<int>("AulaId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("HabilitarAssistida")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModuloAlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumeroAula")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AlunoId");
 
                     b.HasIndex("AulaId");
+
+                    b.HasIndex("ModuloAlunoId");
 
                     b.ToTable("AulasAlunos");
                 });
@@ -166,8 +252,6 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ModuloId");
 
                     b.ToTable("Avaliacoes");
 
@@ -190,6 +274,12 @@ namespace DAL.Migrations
                     b.Property<string>("CabecalhoTexto1_Index")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("NotaDeCorte")
+                        .HasColumnType("decimal(3, 1)");
+
                     b.Property<string>("Texto1_Index")
                         .HasColumnType("nvarchar(max)");
 
@@ -202,6 +292,8 @@ namespace DAL.Migrations
                         {
                             Id = 1,
                             CabecalhoTexto1_Index = "Suas finanças de maneira inteligente",
+                            Logo = "/assets/images/upfirst_logo.svg",
+                            NotaDeCorte = 0m,
                             Texto1_Index = "O objetivo desta plataforma é conectar suas FINANÇAS aos seus sonhos, através de nossos métodos você irá trilhar o caminho do conhecimento rumo ao seu objetivo de vida. Vem conosco !!!"
                         });
                 });
@@ -231,23 +323,23 @@ namespace DAL.Migrations
                         {
                             Id = 1,
                             Nome = "FUNDAMENTAL",
-                            Preco = 162.67m
+                            Preco = 5.1m
                         },
                         new
                         {
                             Id = 2,
                             Nome = "EDUCAÇÃO FINANCEIRA",
-                            Preco = 84.67m
+                            Preco = 5.2m
                         },
                         new
                         {
                             Id = 3,
                             Nome = "INVESTIMENTOS",
-                            Preco = 172.67m
+                            Preco = 5.3m
                         });
                 });
 
-            modelBuilder.Entity("DAL.Models.CursosAlunos", b =>
+            modelBuilder.Entity("DAL.Models.CursoAluno", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -259,6 +351,9 @@ namespace DAL.Migrations
 
                     b.Property<int>("CursoId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Liberado")
                         .HasColumnType("bit");
@@ -293,12 +388,36 @@ namespace DAL.Migrations
                     b.ToTable("MercadoPago_Ipns");
                 });
 
+            modelBuilder.Entity("DAL.Models.MercadoPago_WebHook", b =>
+                {
+                    b.Property<int>("MercadoPago_WebHookId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("DataId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MercadoPago_WebHookId");
+
+                    b.ToTable("MercadoPago_WebHooks");
+                });
+
             modelBuilder.Entity("DAL.Models.Modulo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AvaliacaoId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CursoId")
                         .HasColumnType("int");
@@ -311,6 +430,10 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AvaliacaoId")
+                        .IsUnique()
+                        .HasFilter("[AvaliacaoId] IS NOT NULL");
+
                     b.HasIndex("CursoId");
 
                     b.ToTable("Modulos");
@@ -319,6 +442,7 @@ namespace DAL.Migrations
                         new
                         {
                             Id = 1,
+                            AvaliacaoId = 1,
                             CursoId = 1,
                             Descricao = "Modulo 1",
                             NumeroModulo = 1
@@ -339,7 +463,7 @@ namespace DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DAL.Models.Nota", b =>
+            modelBuilder.Entity("DAL.Models.ModuloAluno", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -349,19 +473,79 @@ namespace DAL.Migrations
                     b.Property<int>("AlunoId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("AvaliacaoLiberada")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("CursoAlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Liberado")
+                        .HasColumnType("bit");
+
                     b.Property<int>("ModuloId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Valor")
-                        .HasColumnType("decimal(3,1)");
+                    b.Property<decimal?>("Nota")
+                        .HasColumnType("decimal(3, 1)");
+
+                    b.Property<int>("NumeroModulo")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AlunoId");
 
+                    b.HasIndex("CursoAlunoId");
+
                     b.HasIndex("ModuloId");
 
-                    b.ToTable("Notas");
+                    b.ToTable("ModulosAlunos");
+                });
+
+            modelBuilder.Entity("DAL.Models.Pagamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CursoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Forma")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("PaymentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusDetail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoPagamento")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(5, 2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AlunoId");
+
+                    b.HasIndex("CursoId");
+
+                    b.ToTable("Pagamentos");
                 });
 
             modelBuilder.Entity("DAL.Models.PerguntaAvaliacao", b =>
@@ -550,6 +734,15 @@ namespace DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("DAL.Models.ArquivoApoio", b =>
+                {
+                    b.HasOne("DAL.Models.Aula", null)
+                        .WithMany("ArquivosApoio")
+                        .HasForeignKey("AulaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DAL.Models.Aula", b =>
                 {
                     b.HasOne("DAL.Models.Modulo", "Modulo")
@@ -559,7 +752,7 @@ namespace DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DAL.Models.AulasAlunos", b =>
+            modelBuilder.Entity("DAL.Models.AulaAluno", b =>
                 {
                     b.HasOne("DAL.Models.Aluno", "Aluno")
                         .WithMany("AulasAlunos")
@@ -572,18 +765,13 @@ namespace DAL.Migrations
                         .HasForeignKey("AulaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("DAL.Models.ModuloAluno", null)
+                        .WithMany("AulasAlunos")
+                        .HasForeignKey("ModuloAlunoId");
                 });
 
-            modelBuilder.Entity("DAL.Models.Avaliacao", b =>
-                {
-                    b.HasOne("DAL.Models.Modulo", "Modulo")
-                        .WithMany()
-                        .HasForeignKey("ModuloId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DAL.Models.CursosAlunos", b =>
+            modelBuilder.Entity("DAL.Models.CursoAluno", b =>
                 {
                     b.HasOne("DAL.Models.Aluno", "Aluno")
                         .WithMany("CursosAlunos")
@@ -600,6 +788,10 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.Modulo", b =>
                 {
+                    b.HasOne("DAL.Models.Avaliacao", "Avaliacao")
+                        .WithOne("Modulo")
+                        .HasForeignKey("DAL.Models.Modulo", "AvaliacaoId");
+
                     b.HasOne("DAL.Models.Curso", "Curso")
                         .WithMany("Modulos")
                         .HasForeignKey("CursoId")
@@ -607,17 +799,36 @@ namespace DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DAL.Models.Nota", b =>
+            modelBuilder.Entity("DAL.Models.ModuloAluno", b =>
                 {
                     b.HasOne("DAL.Models.Aluno", "Aluno")
-                        .WithMany("Notas")
+                        .WithMany()
                         .HasForeignKey("AlunoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DAL.Models.CursoAluno", null)
+                        .WithMany("ModulosAlunos")
+                        .HasForeignKey("CursoAlunoId");
+
                     b.HasOne("DAL.Models.Modulo", "Modulo")
                         .WithMany()
                         .HasForeignKey("ModuloId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DAL.Models.Pagamento", b =>
+                {
+                    b.HasOne("DAL.Models.Aluno", "Aluno")
+                        .WithMany()
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Curso", "Curso")
+                        .WithMany()
+                        .HasForeignKey("CursoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

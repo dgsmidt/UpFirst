@@ -126,6 +126,9 @@
   <data name="-- Select Module --" xml:space="preserve">
     <value>-- Selecione o Módulo --</value>
   </data>
+  <data name="-- Select Question --" xml:space="preserve">
+    <value>-- Selecione a Pergunta --</value>
+  </data>
   <data name="2fa has been disabled. You can reenable 2fa when you setup an authenticator app" xml:space="preserve">
     <value>O 2FA foi desativado. Você pode reativar o 2FA quando você configurar um aplicativo autenticador</value>
     <comment>Custom back end message</comment>
@@ -183,6 +186,9 @@
     <value>Acesso negado</value>
     <comment>Areas/Identity/Pages/Account/AccessDenied.cshtml</comment>
   </data>
+  <data name="Access our Exclusive Content" xml:space="preserve">
+    <value>Acesse nosso Conteúdo Exclusivo</value>
+  </data>
   <data name="Add another service to log in." xml:space="preserve">
     <value>Adicionar outro serviço para efetuar login.</value>
     <comment>Areas/Identity/Pages/Account/Manage/ExternalLogins.cshtml</comment>
@@ -194,11 +200,17 @@
     <value>Adicionar aplicativo autenticador</value>
     <comment>Areas/Identity/Pages/Account/Manage/TwoFactorAuthentication.cshtml</comment>
   </data>
+  <data name="Add files..." xml:space="preserve">
+    <value>Adicionar arquivos...</value>
+  </data>
   <data name="Add Question" xml:space="preserve">
     <value>Nova Pergunta</value>
   </data>
   <data name="Administrator" xml:space="preserve">
     <value>Administrador</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Valor</value>
   </data>
   <data name="An error occurred while processing your request." xml:space="preserve">
     <value>Ocorreu um erro durante o processamento do seu pedido.</value>
@@ -220,11 +232,26 @@
   <data name="Authenticator app" xml:space="preserve">
     <value>App autenticador</value>
   </data>
+  <data name="Back to Courses" xml:space="preserve">
+    <value>Voltar para Cursos</value>
+  </data>
+  <data name="Back to Evaluations" xml:space="preserve">
+    <value>Voltar para Avaliações</value>
+  </data>
   <data name="Back to Full List" xml:space="preserve">
     <value>Voltar para Lista Completa</value>
   </data>
   <data name="Back to List" xml:space="preserve">
     <value>Voltar para a Listagem</value>
+  </data>
+  <data name="Back to Questions" xml:space="preserve">
+    <value>Voltar para as Perguntas</value>
+  </data>
+  <data name="Buy" xml:space="preserve">
+    <value>Comprar</value>
+  </data>
+  <data name="Cancel upload" xml:space="preserve">
+    <value>Cancelar upload</value>
   </data>
   <data name="Change email" xml:space="preserve">
     <value>Alterar e-mail</value>
@@ -240,13 +267,15 @@
   <data name="Classroom" xml:space="preserve">
     <value>Sala de Aula</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
   <data name="Configure authenticator app" xml:space="preserve">
     <value>Configurar aplicativo autenticador</value>
     <comment>Areas/Identity/Pages/Account/Manage/EnableAuthenticator.cshtml</comment>
   </data>
-  <data name="Confirm email" xml:space="preserve">
-    <value>E-mail confirmado</value>
-    <comment>Areas/Identity/Pages/Account/ConfirmEmail.cshtml</comment>
+  <data name="Confirm Password" xml:space="preserve">
+    <value>Confirme a Senha</value>
   </data>
   <data name="Confirm your email" xml:space="preserve">
     <value>Confirme seu email</value>
@@ -254,6 +283,12 @@
   </data>
   <data name="Confirmation link to change email sent. Please check your email." xml:space="preserve">
     <value>Link de confirmação para alteração de e-mail enviado. Por favor, verifique sua caixa de entrada.</value>
+  </data>
+  <data name="Corporate Office" xml:space="preserve">
+    <value>Escritório Corporativo</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Correta</value>
   </data>
   <data name="Course" xml:space="preserve">
     <value>Curso</value>
@@ -274,6 +309,9 @@
   <data name="Create New" xml:space="preserve">
     <value>Novo</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Data</value>
+  </data>
   <data name="Define geographic locations" xml:space="preserve">
     <value>Definir localizações geográficas</value>
   </data>
@@ -285,6 +323,9 @@
   </data>
   <data name="Delete Personal Data" xml:space="preserve">
     <value>Exclusão de Dados Pessoais</value>
+  </data>
+  <data name="Delete selected" xml:space="preserve">
+    <value>Excluir selecionados</value>
   </data>
   <data name="Deleting this data will permanently remove your account, and this cannot be recovered." xml:space="preserve">
     <value>Excluir estes dados irá remover permanentemente a sua conta, e isso não pode ser recuperado.</value>
@@ -328,6 +369,18 @@
   <data name="Edit" xml:space="preserve">
     <value>Editar</value>
   </data>
+  <data name="Edit Evaluation" xml:space="preserve">
+    <value>Editar Avaliação</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="Email Confirmed" xml:space="preserve">
+    <value>E-mail Confirmado</value>
+  </data>
+  <data name="Enrollments" xml:space="preserve">
+    <value>Matrículas</value>
+  </data>
   <data name="Enter your email." xml:space="preserve">
     <value>Informe seu email.</value>
     <comment>Areas/Identity/Pages/Account/ForgotPassword.cshtml</comment>
@@ -360,12 +413,24 @@
   <data name="Evaluation Questions" xml:space="preserve">
     <value>Perguntas da Avaliação</value>
   </data>
+  <data name="Evaluation Released" xml:space="preserve">
+    <value>Avaliação Liberada</value>
+  </data>
+  <data name="Evaluation Result" xml:space="preserve">
+    <value>Reusltado da Avaliação</value>
+  </data>
   <data name="Evaluations" xml:space="preserve">
     <value>Avaliações</value>
+  </data>
+  <data name="Evolution" xml:space="preserve">
+    <value>Evolução</value>
   </data>
   <data name="External logins" xml:space="preserve">
     <value>Logins externos</value>
     <comment>Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml</comment>
+  </data>
+  <data name="File Upload" xml:space="preserve">
+    <value>Upload de Arquivos</value>
   </data>
   <data name="Forget this browser" xml:space="preserve">
     <value>Esquecer este navegador</value>
@@ -379,6 +444,9 @@
     <value>Esqueceu sua senha?</value>
     <comment>Areas/Identity/Pages/Account/ForgotPassword.cshtml</comment>
   </data>
+  <data name="Form" xml:space="preserve">
+    <value>Forma</value>
+  </data>
   <data name="Generate Recovery Codes" xml:space="preserve">
     <value>Gerar Códigos de Recuperação</value>
     <comment>Areas/Identity/Pages/Account/Manage/GenerateRecoveryCodes.cshtml</comment>
@@ -390,20 +458,29 @@
   <data name="Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key used in an authenticator app you should" xml:space="preserve">
     <value>Desabilitar 2FA não altera as chaves usadas nos apps autenticadores. Se você deseja alterar as chaves usadas no app autenticador, deve</value>
   </data>
+  <data name="Go to Courses" xml:space="preserve">
+    <value>Ir para Cursos</value>
+  </data>
   <data name="Google Authenticator for &lt;a href=&quot;{3}&quot;&gt;Android&lt;/a&gt; and &lt;a href=&quot;{4}&quot;&gt;iOS&lt;/a&gt;." xml:space="preserve">
     <value>Google Authenticator para &lt;a href="{3}"&gt;Android&lt;/a&gt; e &lt;a href="{4}"&gt;iOS&lt;/a&gt;.</value>
     <comment>Areas/Identity/Pages/Account/Manage/EnableAuthenticator.cshtml</comment>
   </data>
+  <data name="Grades" xml:space="preserve">
+    <value>Notas</value>
+  </data>
   <data name="Header" xml:space="preserve">
     <value>Cabeçalho</value>
   </data>
-  <data name="Hello {0}!" xml:space="preserve">
-    <value>Olá {0}!</value>
+  <data name="Hello {0} !" xml:space="preserve">
+    <value>Olá {0} !</value>
     <comment>Pages/Shared/_LoginPartial.cshtml</comment>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Início</value>
     <comment>Pages/Shared/_Layout.cshtml</comment>
+  </data>
+  <data name="How it Works" xml:space="preserve">
+    <value>Como Funciona</value>
   </data>
   <data name="If you lose your device and don't have the recovery codes you will lose access to your account." xml:space="preserve">
     <value>Se você perder o seu dispositivo e não tiver os códigos de recuperação, perderá o acesso à sua conta.</value>
@@ -513,6 +590,9 @@
   <data name="Medicines" xml:space="preserve">
     <value>Medicamentos</value>
   </data>
+  <data name="Meet our Courses" xml:space="preserve">
+    <value>Conheça nossos Cursos</value>
+  </data>
   <data name="Module" xml:space="preserve">
     <value>Módulo</value>
   </data>
@@ -525,11 +605,23 @@
   <data name="Modules" xml:space="preserve">
     <value>Módulos</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
   <data name="New email" xml:space="preserve">
     <value>Novo e-mail</value>
   </data>
+  <data name="New Evaluation" xml:space="preserve">
+    <value>Nova Avaliação</value>
+  </data>
   <data name="Next" xml:space="preserve">
     <value>Próxima</value>
+  </data>
+  <data name="No Course Purchased" xml:space="preserve">
+    <value>Nenhum Curso Adquirido</value>
+  </data>
+  <data name="No notes released yet" xml:space="preserve">
+    <value>Ainda não há notas lançadas</value>
   </data>
   <data name="Offers" xml:space="preserve">
     <value>Ofertas</value>
@@ -538,6 +630,15 @@
     <value>Depois de você ter escaneado o QR code ou introduzido a chave acima, seu aplicativo de autenticação de dois fatores irá lhe fornecer um código único. Digite o código na caixa de confirmação abaixo.</value>
     <comment>Areas/Identity/Pages/Account/Manage/EnableAuthenticator.cshtml</comment>
   </data>
+  <data name="Online Video" xml:space="preserve">
+    <value>Vídeo Online</value>
+  </data>
+  <data name="Order Id" xml:space="preserve">
+    <value>Id da Compra</value>
+  </data>
+  <data name="Passing Score" xml:space="preserve">
+    <value>Nota de Corte</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Senha</value>
     <comment>Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml</comment>
@@ -545,6 +646,24 @@
   <data name="Password not correct." xml:space="preserve">
     <value>Senha incorreta.</value>
     <comment>Custom back end message</comment>
+  </data>
+  <data name="Payment Approved" xml:space="preserve">
+    <value>Pagamento Aprovado</value>
+  </data>
+  <data name="Payment Id" xml:space="preserve">
+    <value>Id do Pagamento</value>
+  </data>
+  <data name="Payment in process" xml:space="preserve">
+    <value>Pagamento em processamento</value>
+  </data>
+  <data name="Payment Rejected" xml:space="preserve">
+    <value>Pagamento Rejeitado</value>
+  </data>
+  <data name="Payment Type" xml:space="preserve">
+    <value>Tipo do Pagamento</value>
+  </data>
+  <data name="Payments" xml:space="preserve">
+    <value>Pagamentos</value>
   </data>
   <data name="Personal data" xml:space="preserve">
     <value>Dados pessoais</value>
@@ -639,6 +758,9 @@
     <value>Logins registrados</value>
     <comment>Areas/Identity/Pages/Account/Manage/ExternalLogins.cshtml</comment>
   </data>
+  <data name="Released" xml:space="preserve">
+    <value>Liberado</value>
+  </data>
   <data name="Remember me?" xml:space="preserve">
     <value>Lembrar de mim?</value>
     <comment>Login.cshtml</comment>
@@ -706,6 +828,9 @@
   <data name="Scan the QR Code or enter this key &lt;kbd&gt;{0}&lt;/kbd&gt; into your two factor authenticator app. Spaces and casing do not matter." xml:space="preserve">
     <value>Escaneie o código QR ou insira esta chave &lt;kbd&gt;{0}&lt;/kbd&gt; no seu app autenticador de dois fatores. Espaços e maiúsculo/minúsculo não importam.</value>
   </data>
+  <data name="Score" xml:space="preserve">
+    <value>Nota</value>
+  </data>
   <data name="Search" xml:space="preserve">
     <value>Pesquisar</value>
   </data>
@@ -718,8 +843,26 @@
   <data name="Select a Course" xml:space="preserve">
     <value>Selecione o Curso</value>
   </data>
+  <data name="Select all" xml:space="preserve">
+    <value>Selecionar todos</value>
+  </data>
   <data name="Select Evaluation" xml:space="preserve">
     <value>Selecione a Avaliação</value>
+  </data>
+  <data name="Selected Assessment Responses" xml:space="preserve">
+    <value>Respostas da Avaliação Selecionada</value>
+  </data>
+  <data name="Selected Course Modules" xml:space="preserve">
+    <value>Módulos do Curso Selecionado</value>
+  </data>
+  <data name="Selected Evaluation Questions" xml:space="preserve">
+    <value>Questões da Avaliação Selecionada</value>
+  </data>
+  <data name="Selected Module Lessons" xml:space="preserve">
+    <value>Aulas do Módulo Selecionado</value>
+  </data>
+  <data name="Selected Question Answers" xml:space="preserve">
+    <value>Respostas da Questão Selecionada</value>
   </data>
   <data name="Send verification email" xml:space="preserve">
     <value>Enviar e-mail de verificação</value>
@@ -742,8 +885,17 @@
     <value>Configurar aplicativo autenticador</value>
     <comment>Areas/Identity/Pages/Account/Manage/TwoFactorAuthentication.cshtml</comment>
   </data>
+  <data name="Social Networks" xml:space="preserve">
+    <value>Redes Sociais</value>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Iniciar</value>
+  </data>
+  <data name="Start upload" xml:space="preserve">
+    <value>Iniciar upload</value>
+  </data>
+  <data name="Status Detail" xml:space="preserve">
+    <value>Detalhe do Status</value>
   </data>
   <data name="Stores" xml:space="preserve">
     <value>Lojas</value>
@@ -764,8 +916,14 @@
   <data name="Substance" xml:space="preserve">
     <value>Substância</value>
   </data>
+  <data name="Support Material" xml:space="preserve">
+    <value>Material de Apoio</value>
+  </data>
   <data name="Support Material:" xml:space="preserve">
     <value>Material de Apoio:</value>
+  </data>
+  <data name="Test Parameters" xml:space="preserve">
+    <value>Parêmetros para Teste</value>
   </data>
   <data name="Test Quiz" xml:space="preserve">
     <value>Testar Questionário</value>
@@ -839,6 +997,9 @@
     <value>Alterar senha</value>
     <comment>Areas/Identity/Pages/Account/Manage/ChangePassword.cshtml</comment>
   </data>
+  <data name="Upload video" xml:space="preserve">
+    <value>Fazer upload do vídeo</value>
+  </data>
   <data name="Use a local account to log in." xml:space="preserve">
     <value>Use uma conta local para efetuar login.</value>
     <comment>Areas/Identity/Pages/Account/Login.cshtml</comment>
@@ -875,12 +1036,13 @@
     <value>E-mail de verificação enviado. Por favor, verifique sua caixa de entrada de e-mail.</value>
     <comment>Custom back end message</comment>
   </data>
+  <data name="Verified email" xml:space="preserve">
+    <value>E-mail confirmado</value>
+    <comment>Areas/Identity/Pages/Account/ConfirmEmail.cshtml</comment>
+  </data>
   <data name="Verify" xml:space="preserve">
     <value>Verificar</value>
     <comment>Areas/Identity/Pages/Account/Manage/EnableAuthenticator.cshtml</comment>
-  </data>
-  <data name="Video" xml:space="preserve">
-    <value>Vídeo</value>
   </data>
   <data name="Watched" xml:space="preserve">
     <value>Assistida</value>
@@ -893,6 +1055,9 @@
   <data name="Welcome" xml:space="preserve">
     <value>Bem vindo</value>
     <comment>Pages/Index.cshtml</comment>
+  </data>
+  <data name="You can now evaluate this module !" xml:space="preserve">
+    <value>Agora você já pode fazer a avaliação deste módulo !</value>
   </data>
   <data name="You do not have a local username/password for this site. Add a local account so you can log in without an external login." xml:space="preserve">
     <value>Você não tem um nome de usuário/senha local para este site. Adicione uma conta local para que você possa entrar sem um login externo.</value>
@@ -913,6 +1078,9 @@
   <data name="You have successfully logged out of the application." xml:space="preserve">
     <value>Você fez login com sucesso na aplicação.</value>
     <comment>Areas/Identity/Pages/Account/Logout.cshtml</comment>
+  </data>
+  <data name="You haven't acquired any courses yet." xml:space="preserve">
+    <value>Você ainda não adquiriu nenhum curso.</value>
   </data>
   <data name="You've successfully authenticated with &lt;strong&gt;{0}&lt;/strong&gt;.&#xD;&#xA;    Please enter an email address for this site below and click the Register button to finish&#xD;&#xA;    logging in." xml:space="preserve">
     <value>Você foi autenticado com sucesso com &lt;strong&gt;{0}&lt;/strong&gt;. Por favor, informe seu endereço de e-mail para este site e clique no botão Registrar para concluir o login.</value>
@@ -952,5 +1120,8 @@
   <data name="Your profile has been updated" xml:space="preserve">
     <value>Seu perfil foi atualizado</value>
     <comment>Custom back end message</comment>
+  </data>
+  <data name="| Edit" xml:space="preserve">
+    <value>| Editar</value>
   </data>
 </root>

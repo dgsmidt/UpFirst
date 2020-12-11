@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Web.Controllers
 {
+    //[Produces("application/json")]
     public class SalaAulasController : Controller
     {
         private readonly UpFirstDbContext _dbContext;
@@ -16,71 +17,49 @@ namespace Web.Controllers
         }
         public IActionResult Index(int alunoId, int? cursoId)
         {
-            //var model = await _dbContext.Cursos
-            //    .Include(c => c.Modulos)
-            //        .ThenInclude(m => m.Aulas)
-            //            .ThenInclude(a => a.AulasAlunos)
-            //    .FirstOrDefaultAsync();
-
-            Curso curso;
+            CursoAluno cursoAluno;
 
             if (cursoId != null)
-            {
-                curso = _dbContext.Cursos
-                    .Where(c => c.Id == cursoId)
-                .FirstOrDefault();
-            }
+                cursoAluno = _dbContext.CursosAlunos.Where(ca => ca.CursoId == cursoId && ca.AlunoId == alunoId)
+                    .Include(ca => ca.ModulosAlunos)
+                    .Include(ca => ca.Curso)
+                    .SingleOrDefault();
             else
+                cursoAluno = _dbContext.CursosAlunos
+                    .Include(ca => ca.Curso)
+                    .FirstOrDefault();
+
+            IEnumerable<Modulo> modulos = _dbContext.Modulos.OrderBy(m => m.NumeroModulo).Where(m => m.CursoId == cursoId).ToList();
+
+            int i = 0;
+
+            foreach (var modulo in modulos)
             {
-                curso = _dbContext.Cursos
-                .FirstOrDefault();
-            }
+                ModuloAluno ma = _dbContext.ModulosAlunos.Where(ma => ma.ModuloId == modulo.Id && ma.AlunoId == alunoId).SingleOrDefault();
 
-            var cursoEntry = _dbContext.Entry(curso);
-
-            // Preenche Modulos
-            cursoEntry.Collection(c => c.Modulos)
-                .Query()
-                .OrderBy(m => m.NumeroModulo)
-                .Load();
-
-            // Preenche Aulas
-            foreach (var modulo in curso.Modulos)
-            {
-                var moduleEntry = _dbContext.Entry(modulo);
-                moduleEntry.Collection(m => m.Aulas)
-                    .Query()
-                    .Include(a => a.AulasAlunos)
-                    .OrderBy(a => a.NumeroAula)
-                    .Load();
-            }
-
-            // Filtrar AulasAlunos pelo AlunoId
-
-            var aulasAlunosToRemove = new List<AulasAlunos>();
-
-            foreach (var modulo in curso.Modulos)
-            {
-                foreach (var aula in modulo.Aulas)
+                // Carregar somente modulos liberados
+                if (ma.Liberado)
                 {
-                    foreach (var aulaAluno in aula.AulasAlunos)
+                    cursoAluno.ModulosAlunos.Add(ma);
+
+                    IEnumerable<Aula> aulas = _dbContext.Aulas.OrderBy(a => a.NumeroAula).Where(a => a.ModuloId == modulo.Id).ToList();
+
+                    cursoAluno.ModulosAlunos[i].AulasAlunos = new List<AulaAluno>();
+
+                    foreach (var aula in aulas)
                     {
-                        if (aulaAluno.AlunoId != alunoId)
-                        {
-                            aulasAlunosToRemove.Add(aulaAluno);
-                        }
+                        AulaAluno aa = _dbContext.AulasAlunos.Where(aa => aa.AulaId == aula.Id && aa.AlunoId == alunoId).SingleOrDefault();
+
+                        cursoAluno.ModulosAlunos[i].AulasAlunos.Add(aa);
                     }
 
-                    foreach (var item in aulasAlunosToRemove)
-                    {
-                        aula.AulasAlunos.Remove(item);
-                    }
+                    i += 1;
                 }
             }
 
             ViewData["AlunoId"] = alunoId;
 
-            return View(curso);
+            return View(cursoAluno);
         }
         [HttpPost]
         public IActionResult PostAnotacoes(int aulaId, int alunoId, string anotacoes)
@@ -92,7 +71,7 @@ namespace Web.Controllers
 
             if (aulaAluno == null)
             {
-                _dbContext.AulasAlunos.Add(new AulasAlunos { AlunoId = alunoId, AulaId = aulaId, Anotacoes = anotacoes });
+                _dbContext.AulasAlunos.Add(new AulaAluno { AlunoId = alunoId, AulaId = aulaId, Anotacoes = anotacoes });
             }
             else
             {
@@ -106,10 +85,8 @@ namespace Web.Controllers
             }
             catch (System.Exception ex)
             {
-
-                throw;
+                throw ex;
             }
-            
 
             return Ok();
         }
@@ -120,32 +97,147 @@ namespace Web.Controllers
                 Where(aa => aa.AulaId == aulaId).Select(aa => aa.Anotacoes)
                 .SingleOrDefault();
 
-            return (anotacoes != null ? anotacoes : "");
+            return (anotacoes ?? "");
+        }
+        public JsonResult GetStatusCheckAssistida(int aulaId, int alunoId)
+        {
+            AulaAluno aa = _dbContext.AulasAlunos
+                .Where(aa => aa.AlunoId == alunoId && aa.AulaId == aulaId)
+                .SingleOrDefault();
+
+            return Json(new { habilitar = aa.HabilitarAssistida, assistida = aa.Assistida });
+        }
+        public JsonResult GetAvaliacaoEnabled(int aulaId, int alunoId)
+        {
+
+            //Aula a = _dbContext.Aulas
+            //    .Include(a => a.Modulo)
+            //    .Where(a => a.Id == aulaId)
+            //    .SingleOrDefault();
+
+            try
+            {
+                AulaAluno aa = _dbContext.AulasAlunos
+                .Include(aa => aa.Aula)
+                .Where(aa => aa.AlunoId == alunoId && aa.AulaId == aulaId)
+                .SingleOrDefault();
+
+                List<ModuloAluno> moduloAluno = _dbContext.ModulosAlunos
+                .Where(ma => ma.ModuloId == aa.Aula.ModuloId && aa.AlunoId == alunoId)
+                .ToList();
+
+                int avaliacaoId = 0;
+                bool avaliacaoLiberada = false;
+
+                foreach (var item in moduloAluno)
+                {
+                    if (item.AlunoId == alunoId)
+                    {
+                        Modulo modulo = _dbContext.Modulos.Find(item.ModuloId);
+                        avaliacaoId = modulo.AvaliacaoId ?? 0;
+                        avaliacaoLiberada = item.AvaliacaoLiberada;
+                    }
+                }
+
+                return Json(new { enabled = avaliacaoLiberada, nomeBotao = "#avaliacao_" + avaliacaoId.ToString() });
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+
+            // Se houver aula não assistida, deasbilitar
+            //foreach (var item in aa)
+            //    if (!item.Assistida)
+            //    {
+            //        return Json(new { disabled = true, nomeBotao = "#avaliacao_" + a.Modulo.AvaliacaoId.ToString() });
+            //    }
+
+            // Senão, habilitar
+            //moduloAluno.AvaliacaoLiberada = true;
+
+            //_dbContext.Update(moduloAluno);
+            //_dbContext.SaveChanges();
+
+
+        }
+        public string GetMaterialApoio(int aulaId)
+        {
+            var aula = _dbContext.Aulas.Find(aulaId);
+
+            return (aula != null ? aula.MaterialApoio : "");
+        }
+        public JsonResult GetArquivosApoio(int aulaId)
+        {
+            var arquivosApoio = _dbContext.ArquivosApoio.Where(aa => aa.AulaId == aulaId).Select(aa=>aa.FileName).ToList();
+
+            return  Json(arquivosApoio);
         }
         [HttpPost]
-        public IActionResult UpdateSalaAulaStatus(int aulaId, int alunoId, bool assistindo, bool assistida)
+        public IActionResult UpdateAulaAssistida(int aulaId, int alunoId)
         {
-            var aulasAluno = _dbContext.AulasAlunos.Where(aa => aa.AlunoId == alunoId).ToList();
+            AulaAluno aulaAluno = _dbContext.AulasAlunos
+                .Include(aa => aa.Aula)
+                .Where(aa => aa.AlunoId == alunoId && aa.AulaId == aulaId)
+                .SingleOrDefault();
 
-            foreach (var item in aulasAluno)
+            if (aulaAluno != null)
             {
-                item.Assistindo = false;
+                aulaAluno.Assistida = true;
+                aulaAluno.HabilitarAssistida = false;
             }
 
-            AulasAlunos aa = _dbContext.AulasAlunos
+            // Habilitar assistida para a proxima aula do modulo
+            Aula aula = _dbContext.Aulas
+                .Where(a => a.ModuloId == aulaAluno.Aula.ModuloId && a.NumeroAula == aulaAluno.Aula.NumeroAula + 1)
+                .SingleOrDefault();
+
+            // Se não assistiu todas
+            if (aula != null)
+            {
+                AulaAluno aa = _dbContext.AulasAlunos
+                    .Where(aa => aa.AlunoId == alunoId && aa.AulaId == aula.Id)
+                    .SingleOrDefault();
+                aa.HabilitarAssistida = true;
+            }
+            else // Habilitar avaliacao
+            {
+                AulaAluno aa = _dbContext.AulasAlunos
+                    .Where(aa => aa.AlunoId == alunoId && aa.AulaId == aulaId)
+                    .FirstOrDefault();
+
+                ModuloAluno ma = _dbContext.ModulosAlunos
+                    .Where(ma => ma.AlunoId == alunoId && ma.ModuloId == aa.Aula.ModuloId)
+                    .SingleOrDefault();
+
+                Avaliacao a = _dbContext.Avaliacoes
+                    .Where(a => a.ModuloId == ma.ModuloId)
+                    .SingleOrDefault();
+
+                if (a != null) // Se há avaliacao cadastrada para o modulo
+                    ma.AvaliacaoLiberada = true;
+            }
+
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+        [HttpPost]
+        public IActionResult UpdateAssistindoAula(int aulaId, int alunoId)
+        {
+            var aulasAluno = _dbContext.AulasAlunos
+                .Include(aa => aa.Aula)
                 .Where(aa => aa.AlunoId == alunoId)
-                .Where(aa => aa.AulaId == aulaId)
-                .FirstOrDefault();
+                .ToList();
 
-            if (aa == null)
+            foreach (var aulaAluno in aulasAluno)
             {
-                _dbContext.AulasAlunos.Add(new AulasAlunos { AulaId = aulaId, AlunoId = alunoId, Assistida = assistida, Assistindo = assistindo });
+                if (aulaAluno.Assistindo)
+                    aulaAluno.Assistindo = false;
 
-            }
-            else
-            {
-                aa.Assistida = assistida;
-                aa.Assistindo = assistindo;
+                if (aulaAluno.AulaId == aulaId)
+                    aulaAluno.Assistindo = true;
             }
 
             _dbContext.SaveChanges();

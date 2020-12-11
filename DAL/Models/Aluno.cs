@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime;
 
 namespace DAL.Models
@@ -8,10 +9,14 @@ namespace DAL.Models
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        [Display(Name= "Questionnaire")]
+        [Display(Name = "Name")]
+        public string Nome { get; set; }
+        public string Email { get; set; }
+        public string WhatsApp { get; set; }
+        [Display(Name = "Questionnaire")]
+        [Column(TypeName = "decimal(3, 1)")]
         public decimal NotaQuestionario { get; set; }
-        public List<Nota> Notas { get; set; }
-        public List<AulasAlunos> AulasAlunos { get; set; }
-        public List<CursosAlunos> CursosAlunos { get; set; }
+        public List<AulaAluno> AulasAlunos { get; set; }
+        public List<CursoAluno> CursosAlunos { get; set; }
     }
 }

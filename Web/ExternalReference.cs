@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Web
+﻿namespace Web
 {
     public class ExternalReference
     {
@@ -13,7 +8,7 @@ namespace Web
 
         public ExternalReference(string valor)
         {
-            int posCurso = Value.IndexOf("C");
+            int posCurso = valor.IndexOf("C");
 
             Value = valor;
 

@@ -16,12 +16,16 @@ using DAL;
 using Web.Utilities;
 using ViaCep;
 using System;
+using Microsoft.AspNetCore.Http.Features;
+using Web.Hubs;
+using Web.Filters;
 
 namespace Web
 {
     public class Startup
     {
-
+        public static long Progress { get; set; }
+        public static string UploadedFileName { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -36,7 +40,7 @@ namespace Web
             {
                 new CultureInfo("pt-br"),
                 new CultureInfo("en")
-                
+
             };
 
             services.AddCors();
@@ -56,9 +60,36 @@ namespace Web
 
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddScoped<HeaderService>();
+
+            // Usado para o Upload de grandes arquivos
+            services.Configure<FormOptions>(x =>
+            {
+                //x.ValueLengthLimit = 5000; // Limit on individual form values
+                x.MultipartBodyLengthLimit = long.MaxValue; // Limit on form body size
+                //x.MultipartHeadersLengthLimit = int.MaxValue; // Limit on form header size
+            });
+
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.MaxRequestBodySize = long.MaxValue; // Limit on request body size
+            });
+
+
             services.AddControllersWithViews();
 
-            services.AddRazorPages()
+            services.AddRazorPages(options =>
+            {
+                options.Conventions
+                    .AddPageApplicationModelConvention("/StreamedSingleFileUploadPhysical",
+                        model =>
+                        {
+                            model.Filters.Add(
+                                new GenerateAntiforgeryTokenCookieAttribute());
+                            model.Filters.Add(
+                                new DisableFormValueModelBindingAttribute());
+                        });
+            })
                 //.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
                 .AddExpressLocalization<ExpressLocalizationResource, ViewLocalizationResource>(
                     ops =>
@@ -90,6 +121,8 @@ namespace Web
                             o.DefaultRequestCulture = new RequestCulture("en");
                         };
                     });
+
+            services.AddSignalR();
 
             services.AddAuthorization(options =>
             {
@@ -156,6 +189,7 @@ namespace Web
                     name: "default",
                     pattern: "{culture=en}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<UploadHub>("/uploadhub");
             });
         }
     }

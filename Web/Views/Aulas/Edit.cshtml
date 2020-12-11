@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
 }
 
 <h1 localize-content>@ViewData["Title"]</h1>
@@ -9,10 +10,15 @@
 <h4 localize-content>Lesson</h4>
 <hr />
 <div class="row">
-    <div class="col-md-5">
-        <form asp-action="Edit">
+    <div class="col-md-6">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            @*<input type="button" class="btn btn-primary" id="sendButton" value="Send"/>*@
+            <div>
+                <p id="mensagem"></p>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Modulo" class="control-label" localize-content>Module</label>
                 <select asp-for="ModuloId" class="form-control" asp-items="ViewBag.ModuloId"></select>
@@ -29,18 +35,171 @@
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Video" class="control-label" localize-content>Video</label>
-                <input asp-for="Video" class="form-control" />
-                <span asp-validation-for="Video" class="text-danger"></span>
+                <label class="control-label" localize-content>Vídeo</label>
+                <!--<dl>-->
+                @*<dt>
+                <Label>Arquivo de Vídeo</Label>
+            </dt>*@
+                <!--<dd>-->
+                @*<input id="FormFile" type="file" onchange="ShowFileName()">*@
+                <!--<input id="FormFile" type="file">-->
+                @*<span asp-validation-for="FormFile"></span>*@
+                <!--</dd>
+        </dl>-->
+                @*<label class="control-label" localize-content>Arquivo de Vídeo</label>
+            <div class="input-group mb-3">
+                <input type="file" asp-for="FormFile" class="form-control" placeholder="Video" aria-label="Video" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" onclick="@("window.location.href='" + @Url.Action("UploadAula", new { aulaId = @Model.Aula.Id}) + "'");">Upload</button>
+                </div>
+            </div>*@
+                @*<input asp-for="Video" class="form-control" />*@
+                @*<span asp-validation-for="FormFile" class="text-danger"></span>*@
+
+                @*<select asp-for="Video" class="form-control" asp-items="ViewBag.Video"></select>*@
+                <div class="input-group mb-3">
+                    <input asp-for="Video" class="form-control" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#exampleModal">Escolher</button>
+                    </div>
+                    <span asp-validation-for="Video" class="text-danger"></span>
+                </div>
+                <!--<div class="input-group mb-3">
+
+        <input asp-for="Video" class="form-control">
+        <div class="input-group-append">-->
+                @*<button class="btn btn-outline-secondary" type="button" onclick="uploadFiles('FormFile')">Upload</button>*@
+                <!--<button class="btn btn-outline-secondary" type="button" onclick="@("window.location.href='" + @Url.Action("Teste","Aulas") + "'");">Upload</button>
             </div>
+        </div>-->
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MaterialApoio" class="control-label" localize-content>Support Material</label>
+                <input asp-for="MaterialApoio" class="form-control" />
+                <span asp-validation-for="MaterialApoio" class="text-danger"></span>
+            </div>
+
+            @{
+                await Html.RenderPartialAsync("_ArquivosPartial", Model);
+            }
+
             <div class="form-group">
                 <input type="submit" value="@Localizer.Text("Save")" class="btn btn-primary" />
             </div>
         </form>
+
     </div>
 </div>
-
 <div>
-    <a asp-action="Index" localize-content>Back to List</a>
+    <a asp-controller="Cursos" asp-action="Index" localize-content>Back to Courses</a>
 </div>
+
+<!--<div id="uploadStatus" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload de Arquivo</h5>-->
+@*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>*@
+<!--</div>
+<div class="modal-body">
+    <p id="msg">Preparando...</p>
+    <div id="progress" class="progress h-100">
+        <div id="bar" class="bar">
+        </div>
+        <div id="label" class="label">
+            0%
+        </div>
+    </div>
+</div>-->
+@*<div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>*@
+<!--</div>
+    </div>
+</div>-->
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+@*<script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/upload.js"></script>*@
+
+<script>
+    
+    //function SetVideoField() {
+    //    $('#Video').val("/uploads/" + $('#SelectVideo').val());
+
+    //}
+    //function ShowFileName() {
+    //    $('#Aula_Video').val($('#FormFile').val());
+    //};
+
+            //function uploadFiles(inputId) {
+            //    var input = document.getElementById(inputId);
+            //    var files = input.files;
+            //    var formData = new FormData();
+            //    $('#mensagem').text('Preparando...');
+            //    for (var i = 0; i != files.length; i++) {
+            //        formData.append("files", files[i]);
+            //    }
+            //    //startUpdatingProgressIndicator();
+            //    $.ajax(
+            //        {
+            //            url: "/en/uploader",
+            //            data: formData,
+            //            processData: false,
+            //            contentType: false,
+            //            type: "POST",
+            //            success: function (data) {
+            //                //stopUpdatingProgressIndicator();
+            //                $("#uploadStatus").hide();
+            //                getUploadedFileName();
+            //                $('#mensagem').text('');
+            //                alert("Files Uploaded!");
+            //            }
+            //        }
+            //    );
+            //};
+
+            //function getUploadedFileName() {
+            //    $.get(
+            //        "/en/uploader/getuploadedfileName",
+            //        function (result) {
+            //            $("#Video").val('/uploads/' + result);
+            //        }
+            //    );
+            //};
+
+            //var intervalId;
+
+            //function startUpdatingProgressIndicator() {
+            //    $('#msg').text('Preparando...');
+            //    $("#progress").show();
+
+            //    $("#uploadStatus").show();
+            //    intervalId = setInterval(
+            //        function () {
+            //            // We use the POST requests here to avoid caching problems (we could use the GET requests and disable the cache instead)
+            //            $.get(
+            //                "/en/uploader/progress",
+            //                function (progress) {
+            //                    $('#msg').text('Enviando ' + progress + ' bytes...');
+            //                    //$("#bar").css({ width: progress + "%" });
+            //                    //$("#label").html(progress + "%");
+            //                    //console.log('Progress: ' + progress);
+            //                }
+            //            );
+            //        },
+            //        1000  // miliseconds interval
+            //    );
+            //}
+
+            //function stopUpdatingProgressIndicator() {
+            //    clearInterval(intervalId);
+            //}
+
+</script>
+
 

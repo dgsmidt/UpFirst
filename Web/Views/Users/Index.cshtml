@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Users";
-    
+
 }
 
 <h1 localize-content>@ViewData["Title"]</h1>
@@ -11,25 +11,41 @@
     <table class="table">
         <thead>
             <tr>
-                <th localize-content>User</th>
+                @*<th localize-content>Id</th>*@
+                <th localize-content>Name</th>
+                <th localize-content>Email</th>
                 <th localize-content>Administrator</th>
+                <th localize-content>Email Confirmed</th>
+
             </tr>
         </thead>
         <tbody>
             @for (int i = 0; i < Model.Count(); i++)
             {
-            <tr>
-                <td>
-                    <input name="users[@i].Email" class="form-control" hidden value="@Model[i].Email" />@Model[i].Email
-                </td>
-                <td>
-                    <input name="users[@i].Administrator" class="form-check-input" type="checkbox" value="true" @Html.Raw(Model[i].Administrator?"checked":"") @Html.Raw(User.Identity.Name == Model[i].Email?  "onclick='return false'" : "") />
-                </td>
-                <td>
-                    @if(User.Identity.Name != Model[i].Email) {
-                        <a asp-action="Delete" asp-route-email="@Model[i].Email" localize-content>Delete</a>}
-                </td>
-            </tr>
+                <tr>
+                    @*<td>
+                            <input name="users[@i].Id" class="form-control" hidden value="@Model[i].Id" />@Model[i].Id
+                        </td>*@
+                    <td>
+                        <input name="users[@i].Nome" class="form-control" hidden value="@Model[i].Nome" />@Model[i].Nome
+                    </td>
+                    <td>
+                        <input name="users[@i].Email" class="form-control" hidden value="@Model[i].Email" />@Model[i].Email
+                    </td>
+                    <td>
+                        <input name="users[@i].Administrator" class="form-check-input" type="checkbox" value="true" @Html.Raw(Model[i].Administrator ? "checked" : "") @Html.Raw(User.Identity.Name == Model[i].Email ? "onclick='return false'" : "") />
+                    </td>
+                    <td>
+                        <input name="users[@i].EmailConfirmed" class="form-check-input" type="checkbox" value="true" @Html.Raw(Model[i].EmailConfirmed ? "checked" : "") />
+                    </td>
+                    <td>
+                        @if (User.Identity.Name != Model[i].Email)
+                        {
+                            <a asp-action="Delete" asp-route-email="@Model[i].Email" localize-content>Delete</a>
+                            @*<a asp-action="Edit" asp-route-email="@Model[i].Email" localize-content> | Edit</a>*@
+                        }
+                    </td>
+                </tr>
             }
 
             @*@foreach (var item in Model)

@@ -10,6 +10,7 @@ namespace DAL.Models
         public int PerguntaAvaliacaoId { get; set; }
         [Display(Name = "Answer")]
         public string Descricao { get; set; }
+        [Display(Name = "Correct")]
         public bool Correta { get; set; }
         public PerguntaAvaliacao Pergunta { get; set; }
     }

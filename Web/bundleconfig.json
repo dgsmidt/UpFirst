@@ -13,8 +13,7 @@
     "minify": {
       "enabled": true,
       "renameLocals": true
-    },
-    "sourceMap": false
+    }
   },
   {
     "outputFileName": "wwwroot/css/site.min.css",
@@ -30,7 +29,12 @@
     "minify": {
       "enabled": true,
       "renameLocals": true
-    },
-    "sourceMap": false
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/arquivos.min.js",
+    "inputFiles": [
+      "wwwroot/js/arquivos.js"
+    ]
   }
 ]

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DAL.Models.PerguntaAvaliacao>
+﻿@model Web.ViewModels.PerguntasAvaliacaoVM
 
 @{
     ViewData["Title"] = "Questions";
@@ -13,34 +13,62 @@
     <thead>
         <tr>
             <th localize-content>
-                @Html.DisplayNameFor(model => model.Descricao)
+                Description
             </th>
-            <th localize-content>Answers</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                @{
-                    foreach (var resposta in item.Respostas)
-                    {
-                        @*@modulo.Curso.Id @: @modulo.Descricao <br />*@
-                        @resposta.Descricao <br /><br />
-                    }
-                }
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" localize-content>Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id" localize-content>Details</a> |
-                <a asp-controller="RespostasAvaliacao" asp-action="Create" asp-route-perguntaId="@item.Id" localize-content localize-content>Add Answer</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id" localize-content>Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.PerguntasAvaliacao)
+        {
+            string selectedRow = "";
+            if (item.Id == Model.SelectedId)
+            {
+                selectedRow = "table-success";
+            }
+
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.Id" localize-content>Select</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id" localize-content>Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" localize-content>Details</a> |
+                    @*<a asp-controller="RespostasAvaliacao" asp-action="Create" asp-route-perguntaId="@item.Id" localize-content localize-content>Add Answer</a> |*@
+                    <a asp-action="Delete" asp-route-id="@item.Id" localize-content>Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@if (Model.RespostasAvaliacao != null)
+{
+    <h3 localize-content>Selected Assessment Responses</h3>
+    <p>
+        <a asp-controller="RespostasAvaliacao" asp-action="Create" asp-route-perguntaId="@Model.SelectedId" localize-content>Create New</a>
+    </p>
+    <table class="table">
+        <tr>
+            <th localize-content>Description</th>
+            <th localize-content>Correct</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.RespostasAvaliacao)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Correta)
+                </td>
+                <td>
+                    <a asp-controller="RespostasAvaliacao" asp-action="Edit" asp-route-id="@item.Id" asp-route-perguntaId="@Model.SelectedId" localize-content>Edit</a> |
+                    <a asp-controller="RespostasAvaliacao" asp-action="Delete" asp-route-id="@item.Id" asp-route-perguntaId="@Model.SelectedId" localize-content>Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+}

@@ -1,28 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using DAL.Models;
+using System.IO;
+using Web.ViewModels;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace Web.Controllers
 {
     public class ConfiguracoesController : Controller
     {
         private readonly UpFirstDbContext _context;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public ConfiguracoesController(UpFirstDbContext context)
+        public ConfiguracoesController(UpFirstDbContext context, IWebHostEnvironment environment)
         {
+            _hostingEnvironment = environment;
             _context = context;
         }
 
         // GET: Configuracoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Configuracoes.ToListAsync());
+            return View(await _context.Configuracoes.SingleOrDefaultAsync());
         }
 
         // GET: Configuracoes/Details/5
@@ -54,7 +58,7 @@ namespace Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CabecalhoTexto1_Index,Texto1_Index")] Configuracao configuracao)
+        public async Task<IActionResult> Create([Bind("Id,CabecalhoTexto1_Index,Texto1_Index,Logo, NotaDeCorte")] Configuracao configuracao)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +90,7 @@ namespace Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CabecalhoTexto1_Index,Texto1_Index")] Configuracao configuracao)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CabecalhoTexto1_Index,Texto1_Index,Logo,NotaDeCorte")] Configuracao configuracao)
         {
             if (id != configuracao.Id)
             {
@@ -95,6 +99,7 @@ namespace Web.Controllers
 
             if (ModelState.IsValid)
             {
+
                 try
                 {
                     _context.Update(configuracao);
@@ -115,7 +120,46 @@ namespace Web.Controllers
             }
             return View(configuracao);
         }
+        public IActionResult UploadLogo()
+        {
+            var model = new UploadFile();
 
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadLogo(UploadFile logoFile)
+        {
+            long size = logoFile.FormFile.Length;
+
+            var uniqueFileName = GetUniqueFileName(logoFile.FormFile.FileName);
+
+            //using (var stream = System.IO.File.Create(tempFileName))
+            //{
+            //    await uploadLogo.FormFile.CopyToAsync(stream);
+            //}
+
+            var uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "assets\\logos");
+
+            var filePath = Path.Combine(uploadPath, uniqueFileName);
+            await logoFile.FormFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+            var conf = await _context.Configuracoes.SingleOrDefaultAsync();
+
+            conf.Logo = "/assets/logos/" + uniqueFileName;
+
+            await _context.SaveChangesAsync();
+
+            //return Ok(new { size });
+            return View("Index", conf);
+        }
+        private string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                      + "_"
+                      + Guid.NewGuid().ToString().Substring(0, 4)
+                      + Path.GetExtension(fileName);
+        }
         // GET: Configuracoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

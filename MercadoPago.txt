@@ -4,20 +4,228 @@ User: test_user_9779768@testuser.com
 Senha: qatest4620
 Access token: TEST-2232361563785233-070207-f03b104eedffb3f7714c935d381c91e7-79937501
 
+Para usar o Checkout Pro:
+
+1. Criar os usuários de teste (consultar o final deste doc)
+
+2. Instalar o pacote Lexim.MercadoPago.Sdk pelo Nuget
+
+3. Gerar a Preference_Id para usar no script do botão do Mercado Pago:
+
+using MercadoPago;
+using MercadoPago.Common;
+using MercadoPago.DataStructures.Preference;
+using MercadoPago.Resources;
+
+public string GetCheckoutMercadoPago(string titulo, decimal preco, int alunoId, int cursoId)
+        {
+            // Cria um objeto de preferência
+            Preference preference = new Preference();
+
+            // Cria um item na preferência
+            preference.Items.Add(
+              new Item()
+              {
+                  Title = titulo,
+                  Quantity = 1,
+                  CurrencyId = CurrencyId.BRL,
+                  UnitPrice = (decimal)preco
+              }
+            );
+
+            preference.ExternalReference = "A" + alunoId + "C" + cursoId;
+            preference.Save();
+
+            return preference.Id;
+        }
+
+4. Usar o código de script do botão do Mercado Pago onde quiser que ele apareça na página, informando a action para ProcessarPagamento e o Preference_Id:
+
+		<form action="/ProcessarPagamentoMP" method="POST">
+                    <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
+                            data-preference-id="preference_id" data-button-label="Comprar" data-elements-color="#a0bf38">
+                    </script>
+                </form>
+	
+5. Implementar a action ProcessarPagamentoMP informada no script do botão acima (ela será chamada ao término de um processo de compra antes do WebHook receber dados):
+
+	public class RetornoPagamentoMP
+    	{
+        	public string preference_id { get; set; }
+        	public string external_reference { get; set; }
+        	public string merchant_order_id { get; set; }
+        	public string payment_id { get; set; }
+        	public string payment_status { get; set; }
+        	public string payment_status_detail { get; set; }
+        	public string processing_mode { get; set; }
+        	public string Descricao { get; set; }
+    	}
+
+	public IActionResult Processar_PagamentoMP([Bind("preference_id,external_reference,merchant_order_id,payment_id,payment_status,payment_status_detail,processing_mode")] RetornoPagamentoMP retornoMp)
+        {
+            switch (retornoMp.payment_status)
+            {
+                case "approved":
+                    retornoMp.Descricao = "Payment Approved";
+                    break;
+                case "pending":
+                    retornoMp.Descricao = "Payment in process";
+                    break;
+                case "in_process":
+                    retornoMp.Descricao = "Payment in process";
+                    break;
+                case "rejected":
+                    retornoMp.Descricao = "Payment Rejected";
+                    break;
+                default:
+                    break;
+            }
+
+            return View(retornoMp);
+        }
+
+6. Implementar a Action para o WebHook e informá-la (configurar) no site do Mercado Pago:
+
+	[AllowAnonymous]
+        [HttpPost]
+        // Instruções: https://www.mercadopago.com.br/developers/pt/guides/notifications/webhooks/
+        // Configurar WebHook: https://www.mercadopago.com/mlb/account/webhooks
+        // Ajustar para: https://upfirst.com.br/en/pagamentos/MercadoPagoWebHook
+        // Teste no IIS local: http://cyrex20.ddns.net:85/Web/us/pagamentos/MercadoPagoWebHook
+        public IActionResult MercadoPagoWebHook(MercadoPagoData data, string type)
+        {
+            _context.MercadoPago_WebHooks.Add(new MercadoPago_WebHook { Data = DateTime.Now, DataId = data.id, Type = type });
+            _context.SaveChanges();
+
+            switch (type)
+            {
+                case "test":
+                    break;
+
+                case "payment":
+                    try
+                    {
+                        Payment pay = Payment.FindById(data.id);
+
+                        string tipoPagemento = string.Empty;
+
+                        switch (pay.PaymentTypeId)
+                        {
+                            case PaymentTypeId.account_money:
+                                tipoPagemento = "account_money";
+                                break;
+                            case PaymentTypeId.ticket:
+                                tipoPagemento = "ticket";
+                                break;
+                            case PaymentTypeId.bank_transfer:
+                                tipoPagemento = "bank_transfer";
+                                break;
+                            case PaymentTypeId.atm:
+                                tipoPagemento = "atm";
+                                break;
+                            case PaymentTypeId.credit_card:
+                                tipoPagemento = "credit_card";
+                                break;
+                            case PaymentTypeId.debit_card:
+                                tipoPagemento = "debit_card";
+                                break;
+                            case PaymentTypeId.prepaid_card:
+                                tipoPagemento = "prepaid_card";
+                                break;
+                            case PaymentTypeId.digital_currency:
+                                tipoPagemento = "account_money";
+                                break;
+                            default:
+                                break;
+                        }
+
+                        RegistrarPagamento(
+                            "Mercado Pago",
+                            pay.ExternalReference,
+                            pay.Order.Value.Id.ToString(),
+                            long.Parse(pay.Id.ToString()),
+                            pay.Status.Value.ToString(),
+                            pay.StatusDetail,
+                            Decimal.Parse(pay.TransactionAmount.ToString()),
+                            tipoPagemento
+                            );
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            return Ok();
+        }
+
+	private void RegistrarPagamento(string forma, string externalReference, string orderId, long paymentId,
+            string status, string paymentStatusDetail, decimal valor, string tipoPagamento)
+        {
+            ExternalReference extRef = new ExternalReference(externalReference);
+
+            _context.Pagamentos.Add(new Pagamento
+            {
+                AlunoId = extRef.AlunoId,
+                CursoId = extRef.CursoId,
+                Forma = forma,
+                Data = DateTime.Now,
+                OrderId = orderId,
+                PaymentId = paymentId,
+                Status = status,
+                Valor = valor,
+                StatusDetail = paymentStatusDetail,
+                TipoPagamento = tipoPagamento
+            });
+
+            if (status == "approved")
+            {
+                CursosAlunos ca = _context.CursosAlunos.Where(ca => ca.CursoId == extRef.CursoId & ca.AlunoId == extRef.AlunoId).FirstOrDefault();
+
+                if (ca != null)
+                {
+                    ca.Liberado = true;
+                    _context.CursosAlunos.Update(ca);
+                }
+                else
+                    _context.CursosAlunos.Add(new CursosAlunos { AlunoId = extRef.AlunoId, CursoId = extRef.CursoId, Liberado = true });
+            }
+
+            _context.SaveChanges();
+        }
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Para criar usuários de teste que deverão ser usados para criar a Preference e realizar o pagamento (usar um para vendedor e outro para comprador)
-Executar no prompt do DOS duas vezes, cada resposta será um usuário de teste:
+Executar no prompt do DOS duas vezes o comando abaixo, cada resposta será um usuário de teste:
+Obs.: Usei aqui o token do usuário de teste acima. Talvez o correto seja usar o Token de um usuário real. (Com estes gerados não lança movimentos na conta deles)
 
 curl -X POST -H "Content-Type: application/json" "https://api.mercadopago.com/users/test_user?access_token=TEST-2232361563785233-070207-f03b104eedffb3f7714c935d381c91e7-79937501" -d "{"site_id":"MLB"}"
 
 Resposta em 10/09/20:
 
-Assumi como Vendedor
+Assumi como Vendedor (entrar no mercado pago com este usuário para obter o Access Token e configurar as notificações IPN)
 
 {"id":643459209,
 "nickname":"TETE1121106",
 "password":"qatest6765",
 "site_status":"active",
 "email":"test_user_59101266@testuser.com"}
+
+Access Token: TEST-1920092947670068-091015-1a0930cbd0faab1032667bb1ce5ec106-643459209 (Obtido em: Seu Negócio->Configurações->Credenciais->Acessar->Credenciais de Teste)
+
+Aplicação: 643459209 - MercadoPago application - 11312829 (mp-app-643459209-11312829)
+
+Ajustar o WebHook: https://www.mercadopago.com/mlb/account/webhooks (ajustei para: ajustei para:  https://upfirst.com.br/us/pagamentos/MercadoPagoWebHook)
+
+Ajustar o IPN, ativando a notificação "merchant_order" e "payments" em:
+  https://www.mercadopago.com.br/ipn-notifications (ajustei para:  https://upfirst.com.br/us/pagamentos/MercadoPagoIpn)
+
 
 Assumi como Comprador
 
@@ -35,10 +243,6 @@ Para fazer pagamentos de teste, recomendamos usar valore baixos.
 Tanto o comprador como o vendedor devem ser usuários de teste.
 Use cartões de teste, já que não é possível retirar o dinheiro.
 
-
-
-
-		
 
 
 Comprar como usuário convidado
@@ -63,3 +267,12 @@ FUND: Recusado por quantia insuficiente.
 SECU: Recusado por código de segurança inválido.
 EXPI: Recusado por problema com a data de vencimento.
 FORM: Recusado por erro no formulário.
+
+
+Mensagens de Erro que podem Ocorrer
+
+- Ops, um erro ocorreu: Significa que a máquina está logada em uma conta do MercadoPago. Fazer Logout do mercado pago (não basta fechar o browser), 
+	se não resolver: na hora de pagar logar com o usuário "comprador teste" na tela do sandbox: test_user_96322874@testuser.com - Senha: qatest3464
+
+- Uma das partes é de teste: Significa que você se identificou na compra usando um email de conta real do Mercado Pago
+

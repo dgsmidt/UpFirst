@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using DAL.Models;
@@ -34,9 +31,9 @@ namespace Web.Controllers
             }
 
             var aluno = await _context.Alunos
-                .Include(a => a.Notas)
-                    .ThenInclude(n => n.Modulo)
-                        .ThenInclude(m=>m.Curso)
+                //.Include(a => a.Notas)
+                //    .ThenInclude(n => n.Modulo)
+                //        .ThenInclude(m=>m.Curso)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (aluno == null)
@@ -58,7 +55,7 @@ namespace Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,RespondeuQuestionario")] Aluno aluno)
+        public async Task<IActionResult> Create([Bind("Id,UserId,NotaQuestionario,Nome,Email,WhatsApp")] Aluno aluno)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +87,7 @@ namespace Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,RespondeuQuestionario")] Aluno aluno)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,NotaQuestionario,Nome,Email,WhatsApp")] Aluno aluno)
         {
             if (id != aluno.Id)
             {

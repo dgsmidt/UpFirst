@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using DAL;
 using DAL.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
@@ -18,14 +19,33 @@ namespace Web.Controllers
         }
 
         // GET: Avaliacoes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id, int? perguntaId)
         {
-            var model = await _context.Avaliacoes
+            var viewModel = new AvaliacoesVM
+            {
+                Avaliacoes = await _context.Avaliacoes
                 .Include(a => a.Perguntas)
                  .ThenInclude(p => p.Respostas)
-                .ToListAsync();
+                 .AsNoTracking()
+                .ToListAsync()
+            };
 
-            return View(model);
+            if (perguntaId != null)
+            {
+                viewModel.PerguntaId = perguntaId.Value;
+                PerguntaAvaliacao perguntaAvaliacao = await _context.PerguntasAvaliacao.SingleOrDefaultAsync(pa => pa.Id == perguntaId.Value);
+                viewModel.RespostasAvaliacao = await _context.RespostasAvaliacao.Where(ra => ra.PerguntaAvaliacaoId == perguntaId).ToListAsync();
+                id = perguntaAvaliacao.AvaliacaoId;
+            }
+
+            if (id != null)
+            {
+                viewModel.SelectedId = id.Value;
+                Avaliacao avaliacao = viewModel.Avaliacoes.Single(a => a.Id == id.Value);
+                viewModel.PerguntasAvaliacao = avaliacao.Perguntas.Where(pa => pa.AvaliacaoId == id.Value).ToList();
+            }
+
+            return View(viewModel);
         }
         // GET: Avaliacoes/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -46,10 +66,22 @@ namespace Web.Controllers
         }
 
         // GET: Avaliacoes/Create
-        public IActionResult Create()
+        public IActionResult Create(int? moduloId)
         {
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Nome");
-            ViewData["ModuloId"] = new SelectList(_context.Modulos, "Id", "Descricao");
+            if (moduloId != null)
+            {
+                Modulo modulo = _context.Modulos.Find(moduloId);
+
+                ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Nome", modulo.CursoId);
+                ViewData["ModuloId"] = new SelectList(_context.Modulos, "Id", "Descricao", moduloId);
+                ViewData["mId"] = moduloId;
+            }
+            else
+            {
+                ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Nome");
+                ViewData["ModuloId"] = new SelectList(_context.Modulos, "Id", "Descricao");
+                ViewData["mId"] = 0;
+            }
 
             return View();
         }
@@ -70,6 +102,9 @@ namespace Web.Controllers
             {
                 _context.Add(avaliacao);
                 await _context.SaveChangesAsync();
+                var modulo = await _context.Modulos.FindAsync(avaliacao.ModuloId);
+                modulo.AvaliacaoId = avaliacao.Id;
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(avaliacao);
@@ -88,7 +123,7 @@ namespace Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["ModuloId"] = new SelectList(_context.Modulos, "Id", "Nome", avaliacao.ModuloId);
+            //ViewData["ModuloId"] = new SelectList(_context.Modulos, "Id", "Descricao", avaliacao.ModuloId);
             return View(avaliacao);
         }
 
@@ -97,7 +132,7 @@ namespace Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Descricao, CursoId")] Avaliacao avaliacao)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Descricao, CursoId, ModuloId")] Avaliacao avaliacao)
         {
             if (id != avaliacao.Id)
             {
@@ -137,6 +172,7 @@ namespace Web.Controllers
 
             var avaliacao = await _context.Avaliacoes
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (avaliacao == null)
             {
                 return NotFound();

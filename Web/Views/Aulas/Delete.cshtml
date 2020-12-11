@@ -29,6 +29,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Video)
         </dd>
+        <dt class="col-sm-2" localize-content>
+            @Html.DisplayNameFor(model => model.MaterialApoio)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaterialApoio)
+        </dd>
         <dt class="col-sm-2">
             @Localizer.Text("Module")
         </dt>
@@ -40,6 +46,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="@Localizer.Text("Delete")" class="btn btn-danger" /> |
-        <a asp-action="Index" localize-content>Back to List</a>
+        <a asp-controller="Cursos" asp-action="Index" asp-route-Id="@Model.Modulo.CursoId" asp-route-moduloId="@Model.Modulo.Id" localize-content>Back to Courses</a>
     </form>
 </div>

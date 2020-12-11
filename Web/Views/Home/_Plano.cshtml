@@ -1,7 +1,11 @@
 ﻿@using DAL.Models
-@model List<Curso>
+@using Web.ViewModels
+@model List<CursoVM>
 
-@{ var checkoutIds = ViewData["CheckoutIds"] as List<string>;}
+@{
+    var checkoutIds = ViewData["CheckoutIds"] as List<string>;
+    var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+}
 
 <div class="row">
     @for (int i2 = 0; i2 < 3 - Model.Count(); i2++)
@@ -12,17 +16,27 @@
     @for (int i = 0; i < Model.Count(); i++)
     {
         <div class="col-md boxPlanos">
-            <h2>@Model[i].Nome</h2>
-            <p>@Model[i].Descricao</p>
+            <h2>@Model[i].Curso.Nome</h2>
+            <p>@Model[i].Curso.Descricao</p>
             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
-            <h3>@Localizer.Text("$") @Model[i].Preco</h3>
-            @*<p><button id="curso_@Model[i].Id" class="btn-upf-action" data-toggle="modal" data-target="#myModal">Comprar</button></p>*@
-            @*<p><a id="curso_@Model[i].Id" asp-controller="Home" asp-action="GetCheckoutMercadoPago" >Comprar</a></p>*@
-            <form action="/processar_pagamento" method="POST">
-                <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
-                        data-preference-id="@checkoutIds[i]" data-button-label="Comprar" data-elements-color="#a0bf38">
-                </script>
-            </form>
+            <h3>@Localizer.Text("$") @Model[i].Curso.Preco</h3>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <form action="@ViewData["PathProcessarPagamentoMP"]" method="POST">
+                    <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
+                            data-preference-id="@Model[i].CheckoutId" data-button-label=@Localizer.Text("Buy") data-elements-color="#a0bf38">
+                    </script>
+                    <p><a style="font-size: small;" asp-area="" asp-controller="Pagamentos" asp-action="ParametrosTeste" asp-route-culture=@culture localize-content>Test Parameters</a></p>
+                </form>
+            }
+            else
+            {
+                <div class="m-4">
+                    <a class="btn-upf-action" asp-area="Identity" asp-page="/Account/Login" asp-route-culture=@culture localize-content>Buy</a>
+
+                </div>
+            }
         </div>
     }
 </div>

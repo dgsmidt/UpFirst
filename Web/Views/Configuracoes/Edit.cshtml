@@ -14,6 +14,16 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
+                <label asp-for="Logo" class="control-label" localize-content>Logo</label>
+                <input asp-for="Logo" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NotaDeCorte" class="control-label" localize-content>Passing Score</label>
+                <input asp-for="NotaDeCorte" class="form-control" />
+                <span asp-validation-for="NotaDeCorte" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="CabecalhoTexto1_Index" class="control-label" localize-content>Header</label>
                 <input asp-for="CabecalhoTexto1_Index" class="form-control" />
                 <span asp-validation-for="CabecalhoTexto1_Index" class="text-danger"></span>

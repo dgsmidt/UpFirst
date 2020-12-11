@@ -2,7 +2,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
-var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+    var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
 }
 <ul class="nav nav-pills flex-column">
     <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index"  localize-content>Profile</a></li>

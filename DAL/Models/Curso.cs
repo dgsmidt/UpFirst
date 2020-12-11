@@ -15,7 +15,7 @@ namespace DAL.Models
         [Column(TypeName = "decimal(6, 2)")]
         public decimal Preco { get; set; }
         public List<Modulo> Modulos { get; set; }
-        public List<CursosAlunos> CursosAlunos { get; set; }
+        public List<CursoAluno> CursosAlunos { get; set; }
 
     }
 }
