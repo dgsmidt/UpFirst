@@ -43,10 +43,12 @@ namespace Web.Controllers
         private readonly UpFirstDbContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IViaCepClient _viaCepClient;
+        private readonly IHttpContextAccessor _httpContext;
 
         private readonly string culture;
 
         public HomeController(ILogger<HomeController> logger,
+            IHttpContextAccessor httpContext,
             ISharedCultureLocalizer loc,
             UpFirstDbContext dbContext,
             UserManager<ApplicationUser> userManager,
@@ -57,6 +59,7 @@ namespace Web.Controllers
             _dbContext = dbContext;
             _userManager = userManager;
             _viaCepClient = viaCepClient;
+            _httpContext = httpContext;
             culture = System.Globalization.CultureInfo.CurrentCulture.Name;
 
 
@@ -71,7 +74,7 @@ namespace Web.Controllers
             SDK sdk = new SDK();
 
             // Configura credenciais
-            sdk.AccessToken = "TEST-6467456385943763-071019-80668c976238c969667630c1bfe3673b-450980286";
+            sdk.AccessToken = "TEST-1920092947670068-091015-1a0930cbd0faab1032667bb1ce5ec106-643459209";
 
             // Cria um objeto de preferência
             Preference preference = new Preference(sdk);
@@ -87,6 +90,16 @@ namespace Web.Controllers
               }
             );
 
+            //var request = _httpContext.HttpContext.Request;
+            //var basePath = request.Host + request.PathBase;
+
+            //preference.BackUrls = new BackUrls()
+            //{
+            //    Success = basePath + "/Pagamentos/MercadoPagoSuccess",
+            //    Failure = basePath + "/Pagamentos/MercadoPagoFailure",
+            //    Pending = basePath + "/Pagamentos/MercadoPagoPending"
+            //};
+
             preference.ExternalReference = "A" + alunoId + "C" + cursoId;
             preference.Save();
 
@@ -94,7 +107,25 @@ namespace Web.Controllers
 
             return preference.Id;
         }
+        [HttpPost]
+        public IActionResult Processar_Pagamento([Bind("preference_id,external_reference,merchant_order_id,payment_id,payment_status,payment_status_detail,processing_mode")] RetornoPagamentoMP retornoMp)
+        {
+            switch (retornoMp.payment_status)
+            {
+                case "approved":
+                    ExternalReference eReference = new ExternalReference(retornoMp.external_reference);
+                    CursosAlunos ca = new CursosAlunos { AlunoId = eReference.AlunoId, CursoId = eReference.CursoId , Liberado = true};
 
+                    _dbContext.CursosAlunos.Add(ca);
+                    _dbContext.SaveChanges();
+                    break;
+
+                default:
+                    break;
+            }
+
+            return View(retornoMp);
+        }
         [EnableCors]
         public async Task<IActionResult> GetCheckoutPagSeguro()
         {
@@ -172,6 +203,12 @@ namespace Web.Controllers
             Aluno aluno;
 
             ViewData["AlunoId"] = 0;
+
+            var request = _httpContext.HttpContext.Request;
+            var basePath = request.PathBase;
+
+            ViewData["PathProcessarPagamento"] = basePath + "/en/home/processar_pagamento";
+
             var cursos = await _dbContext.Cursos.ToListAsync();
 
             foreach (var item in cursos)
