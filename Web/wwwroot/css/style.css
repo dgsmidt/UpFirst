@@ -6,10 +6,10 @@
 {
 	padding: 10px 0;
 }
-.heading-title
-{
-	margin-bottom: 100px;
-        color: #fff;
+.heading-title {
+    margin-bottom: 100px;
+    margin-left: 20px;
+    color: #fff;
 }
 .testimonial .description{
     position: relative;
