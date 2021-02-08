@@ -155,6 +155,32 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Cupom Desconto-->
+    <div class="modal fade" id="modalDesconto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDescontoLongTitle">Possui um cupom de desconto?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cancelar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Digite o número:</label>
+                            <input type="text" class="form-control" id="numeroCupom" onkeyup="CheckEnableOK()">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Não, comprar sem Cupom</button>
+                    <button id="btnOkDesconto" type="button" class="btn btn-primary" data-dismiss="modal" disabled onclick="ContinuarCompra()">Sim, usar o cupom</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 
@@ -165,6 +191,17 @@
     function Hide() {
         $('#myModal').modal('hide');
     };
+    function ContinuarCompra() {
+        alert($('#numeroCupom').val());
+    }
+
+    function CheckEnableOK() {
+        if ($('#numeroCupom').val().length > 0) {
+            $('#btnOkDesconto').prop('disabled', false);
+        } else {
+            $('#btnOkDesconto').prop('disabled', true);
+        }
+    }
     //function StartCheckoutPagSeguro() {
     //    $.ajax({
     //        url: 'https://ws.sandbox.pagseguro.uol.com.br/v2/checkout',

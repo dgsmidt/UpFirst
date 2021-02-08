@@ -28,6 +28,15 @@
       "provider": "unpkg",
       "library": "jquery-file-upload@4.0.11",
       "destination": "wwwroot/lib/jquery-file-upload/"
+    },
+    {
+      "library": "owl-carousel@1.3.3",
+      "destination": "wwwroot/lib/owl-carousel/",
+      "files": [
+        "owl.carousel.min.js",
+        "owl.carousel.min.css",
+        "owl.theme.min.css"
+      ]
     }
   ]
 }
