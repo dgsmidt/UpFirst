@@ -1,4 +1,4 @@
-﻿@model DAL.Models.CursoAluno;
+﻿@model Web.ViewModels.SalaAulaVM
 
 @{
     Layout = "_LayoutUpFirst";
@@ -19,7 +19,8 @@
 
 <main class="othersPages" role="main">
     <input class="form-control" id="assistindoAulaId" hidden />
-    <input class="form-control" value="@ViewData["AlunoId"]" id="alunoId" hidden />
+    <input class="form-control" value="@Model.StatusAulas.Matricula.AlunoId" id="alunoId" hidden />
+    <input class="form-control" value="@Model.StatusAulas.Matricula.Id" id="matriculaId" hidden />
     @*<div class="container">
             <div class="row">
                 <div class="col col-lg-2">
@@ -37,13 +38,13 @@
 
             <div class="col-3 menuAulas">
                 <h2>@Model.Curso.Nome</h2>
-                @foreach (var modulo in Model.ModulosAlunos)
+                @foreach (var modulo in Model.Curso.Modulos.Where(m => m.Liberado))
                 {
                     <ul class="modulo ativo">
                         @* Tem a classe desativo tambem*@
 
-                        @modulo.Modulo.Descricao
-                        @foreach (var aula in modulo.AulasAlunos)
+                        @modulo.Descricao
+                        @foreach (var aula in modulo.Aulas)
                         {
                             @*<li class="realizado"><a href="#">Aula 01</a></li>
                                 <li class="ativo"><a href="#">Aula 02</a></li>*@
@@ -71,21 +72,20 @@
                                 anotacoes = aula.Anotacoes;
                             }
                             if (aula.Assistida) classToAdd += " realizado";
-                            <li @Html.Raw("class='" + classToAdd + "'")><a id="@aula.AulaId" class="itemAula" name="@aula.Aula.Video" style="cursor: pointer">@aula.Aula.Descricao</a></li>
+                            <li @Html.Raw("class='" + classToAdd + "'")><a id="@aula.Id" class="itemAula" name="@aula.Video" style="cursor: pointer">@aula.Descricao</a></li>
                         }
                         @*Avaliação*@
                         @*<li class="li-aula"><a class="itemAula" asp-controller="Home" asp-action="Avaliacao" asp-route-alunoId="@ViewData["AlunoId"]" asp-route-avaliacaoId="@modulo.AvaliacaoId" style="cursor: pointer" localize-content>Evaluation</a></li>*@
 
-
                     </ul>
                     @*<button id="avaliacao_@modulo.AvaliacaoId" disabled class="btn btn-primary mb-5" localize-content>Avaliação</button>*@
-                    if (modulo.AvaliacaoLiberada && modulo.Modulo.AvaliacaoId != null)
+                    if (modulo.AvaliacaoLiberada && modulo.AvaliacaoId != null)
                     {
-                        <input id="avaliacao_@modulo.Modulo.AvaliacaoId" type="button" class="btn btn-primary mb-5 btn-avaliacao" value="@avaliacaoText" onclick="@("window.location.href='" + @Url.Action("Avaliacao", "Home", new { alunoId = @ViewData["AlunoId"], avaliacaoId =  @modulo.Modulo.AvaliacaoId}) + "'");" />
+                        <input id="avaliacao_@modulo.AvaliacaoId" type="button" class="btn btn-primary mb-5 btn-avaliacao" value="@avaliacaoText" onclick="@("window.location.href='" + @Url.Action("Avaliacao", "Home", new { alunoId = @Model.StatusAulas.Matricula.AlunoId, avaliacaoId =  @modulo.AvaliacaoId}) + "'");" />
                     }
                     else
                     {
-                        <input id="avaliacao_@modulo.Modulo.AvaliacaoId" type="button" hidden class="btn btn-primary mb-5 btn-avaliacao" value="@avaliacaoText" onclick="@("window.location.href='" + @Url.Action("Avaliacao", "Home", new { alunoId = @ViewData["AlunoId"], avaliacaoId =  @modulo.Modulo.AvaliacaoId}) + "'");" />
+                        <input id="avaliacao_@modulo.AvaliacaoId" type="button" hidden class="btn btn-primary mb-5 btn-avaliacao" value="@avaliacaoText" onclick="@("window.location.href='" + @Url.Action("Avaliacao", "Home", new { alunoId = @Model.StatusAulas.Matricula.AlunoId, avaliacaoId =  @modulo.AvaliacaoId}) + "'");" />
                     }
 
                 }
@@ -104,12 +104,13 @@
                         https://player.vimeo.com/video/116629498
                         https://player.vimeo.com/video/436144408
                         https://player.vimeo.com/video/116619880*@
-                    <div style="padding:56.25% 0 0 0;position:relative;">
+                    <div id="videoFrame" style="padding:56.25% 0 0 0;position:relative;">
                         @*<iframe id="iFrame" src="" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>*@
-                        <iframe id="iFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;"
-                                src=""
-                                frameborder="0"
-                                allowfullscreen></iframe>
+                        @*<iframe id="iFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                            src=""
+                            frameborder="0"
+                            allowfullscreen
+                            ></iframe>*@
                     </div>
                     @*<script src="https://player.vimeo.com/api/player.js"></script>*@
                     <input id="checkAssistida" type="checkbox" class="mr-2 mt-2" localize-content />@Localizer.Text("Watched")
@@ -124,11 +125,11 @@
                 </section>
 
                 <section class="descricaoAula">
-                    <h3 localize-content>Support Material:</h3>
-                    <p id="materialApoio">
+                    <!--<h3 localize-content>Support Material:</h3>
+                    <p id="materialApoio">-->
                         @*Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetue*@
-                    </p>
-                    <h3 localize-content>Support Files:</h3>
+                    <!--</p>-->
+                    <h3 localize-content>Support Material:</h3>
                     <p id="arquivosApoio">
                         @*<a href="https://example.com">Website</a>*@
                         @*Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetue*@
@@ -174,205 +175,9 @@
     </div>
 </div>
 
-<script src="~/lib/jquery/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
+@*<script src="~/lib/jquery/jquery.min.js"></script>*@
 
-        //$(".menuAulas").css("transition", "max-width 2s")
-        $(".menuAulas").css("transition", "max-height .2s")
-        //$(".modulo").css("transition", "display 2s");
+@* Para debugar usar ~/js/sala_aula.js *@
+<script src="~/js/sala_aula.min.js"></script>
 
-        // Ajustes finais da aula sendo assistida
-        $(".li-aula").each(function (index) {
-            if ($(this).hasClass("ativo")) {
-                $("#assistindoAulaId").attr("value", $(this).children().attr("id"));
-                $("#iFrame").attr("src", PlayVideo($(this).children().attr("name")));
-                $("#nomeAula").text($(this).children().text());
-                getMaterialApoio($(this).children().attr("id"));
-                getStatusCheckAssistida($(this).children().attr("id"), $("#alunoId").val());
-                getArquivosApoio($(this).children().attr("id"));
-            };
-        });
-    });
 
-    $(function () {
-        // Quando tira o foco de anotações da aula
-        $("#validationTextarea").focusout(function () {
-            postAnotacoes($("#assistindoAulaId").val(), $("#alunoId").val(), $("#validationTextarea").val());
-        });
-
-        // Quando clica em salvar anotações
-        $("#btnSalvarAnotacoes").click(function () {
-            postAnotacoes($("#assistindoAulaId").val(), $("#alunoId").val(), $("#validationTextarea").val());
-        });
-
-        // Quando clica numa aula
-        $(".itemAula").click(function (obj) {
-            $("#nomeAula").text($(obj.target).text());
-
-            // Limpa ativo de todas as aulas
-            $(".li-aula").each(function (index) {
-                $(this).removeClass("ativo");
-            });
-
-            // Adiciona ativo à aula clicada
-            $(obj.target).parent().addClass("ativo");
-
-            // Obter status de aula assistida (da aula clicada) e habilitar ou não o checkBox
-            getStatusCheckAssistida($(obj.target).attr("id"), $("#alunoId").val());
-
-            // Carregar o video da aula clicada
-            $("#iFrame").attr("src", PlayVideo($(obj.target).attr("name")));
-
-            $("#assistindoAulaId").attr("value", $(obj.target).attr("id"));
-
-            // Atualiza status "assistindo" da aula clicada
-            postStatusAssistindo($("#assistindoAulaId").val(), $("#alunoId").val());
-
-            getAnotacoes($(obj.target).attr("id"), $("#alunoId").val());
-            getMaterialApoio($(obj.target).attr("id"));
-            getArquivosApoio($(obj.target).attr("id"));
-
-        });
-
-        // Quando clica em Assistida
-        $("#checkAssistida").click(function () {
-            if ($("#checkAssistida").is(":checked")) {
-                $("#" + $("#assistindoAulaId").val()).parent().addClass("realizado");
-
-                // Atualiza status "assistida" da aula clicada
-                postStatusAssistida($("#assistindoAulaId").val(), $("#alunoId").val());
-            }
-        });
-    });
-    function getAnotacoes(aulaId, alunoId) {
-        var url = '/pt-br/SalaAulas/GetAnotacoes/';
-        var dados = { aulaId: aulaId, alunoId: alunoId }
-        $.get(url, dados,
-            function (returnedData) {
-                $("#validationTextarea").val(returnedData);
-            }
-        )
-    };
-    function getMaterialApoio(aulaId) {
-        var url = '/pt-br/SalaAulas/GetMaterialApoio/';
-        var dados = { aulaId: aulaId }
-
-        $("#materialApoio").text('');
-
-        $.get(url, dados,
-            function (returnedData) {
-                $("#materialApoio").text(returnedData);
-            }
-        )
-    };
-    function getArquivosApoio(aulaId) {
-        var url = '/pt-br/SalaAulas/GetArquivosApoio/';
-        var dados = { aulaId: aulaId }
-
-        $("#arquivosApoio").text('');
-
-        $.get(url, dados,
-            function (returnedData) {
-                for (i = 0; i < returnedData.length; i++) {
-                    $("#arquivosApoio").append('<a href="' + returnedData[i] + '">' + returnedData[i] + '</a><br>');
-                }
-            }, "json");
-
-    };
-    function GetAvaliacaoEnabled(aulaId, alunoId) {
-        var url = '/pt-br/SalaAulas/GetAvaliacaoEnabled/';
-        var dados = { aulaId: aulaId, alunoId: alunoId }
-
-        $.get(url, dados,
-            function (returnedData) {
-                $(returnedData.nomeBotao).prop('hidden', !returnedData.enabled);
-                if (returnedData.enabled) {
-                    $('#avaliacaoLiberada').modal();
-                }
-            }, "json");
-
-    };
-    function getStatusCheckAssistida(aulaId, alunoId) {
-        var url = '/pt-br/SalaAulas/GetStatusCheckAssistida/';
-        var dados = { aulaId: aulaId, alunoId: alunoId }
-
-        $.get(url, dados,
-            function (returnedData) {
-                $("#checkAssistida").prop("disabled", !returnedData.habilitar);
-                $("#checkAssistida").prop("checked", returnedData.assistida);
-            }
-        )
-    };
-    function postAnotacoes(aulaId, alunoId, anotacoes) {
-        var url = '/pt-br/SalaAulas/PostAnotacoes/';
-        var dados = { aulaId: aulaId, alunoId: alunoId, anotacoes: anotacoes }
-        $.post(url, dados,
-            function (returnedData) {
-                //alert(returnedData);
-            }
-        )
-    };
-
-    function postStatusAssistindo(aulaId, alunoId) {
-        var url = '/pt-br/SalaAulas/UpdateAssistindoAula/';
-        var dados = { aulaId: aulaId, alunoId: alunoId };
-
-        $.post(url, dados,
-            function (returnedData) {
-                //console.log(returnedData);
-            }
-        );
-    };
-
-    function postStatusAssistida(aulaId, alunoId) {
-        var url = '/pt-br/SalaAulas/UpdateAulaAssistida/';
-        var dados = { aulaId: aulaId, alunoId: alunoId };
-
-        $.post(url, dados,
-            function (returnedData) {
-                //console.log(returnedData);
-                $("#checkAssistida").prop("disabled", true);
-                GetAvaliacaoEnabled($("#assistindoAulaId").val(), $("#alunoId").val());
-            }
-        );
-    };
-
-    function AbrirMenu() {
-        $(".btn-avaliacao").css("display", "block")
-        $(".menuAulas").css("max-width", "600px");
-        $(".menuAulas").css("max-height", "1000px");
-        $(".modulo").css("display", "block");
-        $(".menuAulas h2").css("display", "block");
-        $(".fecharMenu").css("display", "block");
-        $(".videoAula").removeClass("col-11");
-        $(".videoAula").addClass("col-9");
-
-    };
-
-    function FecharMenu() {
-        $(".btn-avaliacao").css("display", "none")
-        $(".menuAulas").css("max-height", "50px");
-        $(".menuAulas").css("max-width", "40px");
-
-        $(".modulo").css("display", "none");
-        $(".menuAulas h2").css("display", "none");
-        $(".fecharMenu").css("display", "none");
-        $(".videoAula").removeClass("col-9");
-        $(".videoAula").addClass("col-11");
-
-    };
-
-    function PlayVideo(url) {
-
-        if (url.indexOf("www.youtube") >= 0) {
-            url = url.split('v=')[1];
-            $("#iFrame")[0].src = "//www.youtube.com/embed/" + url;
-        } else {
-            $("#iFrame")[0].src = url;
-        }
-
-        $("#iFrame").show();
-    };
-
-</script>

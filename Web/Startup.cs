@@ -19,6 +19,7 @@ using System;
 using Microsoft.AspNetCore.Http.Features;
 using Web.Hubs;
 using Web.Filters;
+using Finbuckle.MultiTenant;
 
 namespace Web
 {
@@ -60,7 +61,9 @@ namespace Web
 
             services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddScoped<HeaderService>();
+            services.AddScoped<HomeConfigService>();
+
+            services.AddScoped<IEmailConfigService, EmailConfigService>();
 
             // Usado para o Upload de grandes arquivos
             services.Configure<FormOptions>(x =>
@@ -77,6 +80,10 @@ namespace Web
 
 
             services.AddControllersWithViews();
+
+            services.AddMultiTenant<TenantInfo>()
+                    .WithConfigurationStore()
+                    .WithRouteStrategy();
 
             services.AddRazorPages(options =>
             {
@@ -149,8 +156,26 @@ namespace Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager)
         {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<UpFirstDbContext>();
+                //context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+                //context.Database.Migrate();
+            }
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                //context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+                //context.Database.Migrate();
+            }
+
+            ApplicationDbInitializer.SeedUsers(userManager);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -168,6 +193,7 @@ namespace Web
 
             app.UseRouting();
 
+            app.UseMultiTenant();
 
             // Shows UseCors with CorsPolicyBuilder.
             app.UseCors(builder =>
@@ -188,6 +214,7 @@ namespace Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{culture=en}/{controller=Home}/{action=Index}/{id?}");
+                    //pattern: "{__tenant__=}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
                 endpoints.MapHub<UploadHub>("/uploadhub");
             });

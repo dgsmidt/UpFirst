@@ -44,57 +44,31 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Alunos");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "teste@teste.com",
-                            Nome = "Teste",
-                            NotaQuestionario = 0m,
-                            UserId = "Teste",
-                            WhatsApp = "12999888877"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "claudio.rosa@gswsoftware.com",
-                            Nome = "Cláudio",
-                            NotaQuestionario = 4.5m,
-                            UserId = "194ee88d-44fd-4168-b360-8da5c600726c"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Email = "csrclaudio@gmail.com",
-                            Nome = "Cláudio",
-                            NotaQuestionario = 0m,
-                            UserId = "7cb31e03-5a94-4527-b44d-a6791d20d842"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Email = "marcileychristovao@uol.com.br",
-                            Nome = "Marciley",
-                            NotaQuestionario = 2.8m,
-                            UserId = "966a4985-0049-405a-9685-38c37a03ca39"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Email = "claudio_vilanova@yahoo.com.br",
-                            Nome = "Cláudio",
-                            NotaQuestionario = 0m,
-                            UserId = "9adc3d2f-34f7-4c22-9ef2-2c19d8c8b7c4"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Email = "daniel.smidt@yahoo.com.br",
-                            Nome = "Daniel",
-                            NotaQuestionario = 2.0m,
-                            UserId = "cf1b9d7f-9881-4437-bcbb-0e32a6ec2525"
-                        });
+            modelBuilder.Entity("DAL.Models.AnotacaoAula", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Anotacao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AulaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AlunoId");
+
+                    b.HasIndex("AulaId");
+
+                    b.ToTable("AnotacoesAulas");
                 });
 
             modelBuilder.Entity("DAL.Models.ArquivoApoio", b =>
@@ -115,6 +89,98 @@ namespace DAL.Migrations
                     b.HasIndex("AulaId");
 
                     b.ToTable("ArquivosApoio");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AulaId = 11,
+                            FileName = "/uploads/1 E se ... Modulo_1_aula_2.pdf"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AulaId = 11,
+                            FileName = "/uploads/2 Questionário Financeiro_Modulo_1_aula_2.pdf"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AulaId = 12,
+                            FileName = "/uploads/1 Anamnese Financeira_Modulo_1_aula_3.pdf"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AulaId = 13,
+                            FileName = "/uploads/Parâmetros do MAF_Modulo_1_aula_4.pdf"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AulaId = 7,
+                            FileName = "/uploads/Caderno de exercício__Modulo_2_aula_1.pdf"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AulaId = 15,
+                            FileName = "/uploads/Caderno de exercícios_Modulo_2_aula_2.pdf"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AulaId = 8,
+                            FileName = "/uploads/Pirâmide do Indivíduo_Modulo_3_aula_1.pdf"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            AulaId = 14,
+                            FileName = "/uploads/Caderno de Exercícios__Modulo_1_aula_5.pdf"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            AulaId = 16,
+                            FileName = "/uploads/Caderno de exercício_Modulo_2_aula_3.pdf"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            AulaId = 17,
+                            FileName = "/uploads/Caderno de exercício_Modulo_2_aula_4.pdf"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            AulaId = 18,
+                            FileName = "/uploads/Caderno de exercício_Modulo_3_aula_2.pdf"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            AulaId = 18,
+                            FileName = "/uploads/Planilha Negociação Dívidas_Modulo_3_aula_2.pdf"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            AulaId = 9,
+                            FileName = "/uploads/Agenda pag 1_Modulo_4_aula_1.pdf"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            AulaId = 9,
+                            FileName = "/uploads/Agenda pag 2_Modulo_4_aula_1.pdf"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            AulaId = 9,
+                            FileName = "/uploads/Caderno de exercícios_Modulo_4_aula_1.pdf"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Models.Aula", b =>
@@ -148,55 +214,111 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Descricao = "Aula 1",
-                            ModuloId = 1,
-                            NumeroAula = 1,
-                            Video = "https://www.youtube.com/watch?v=eehO6YQycBQ"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Descricao = "Aula 2",
-                            ModuloId = 1,
-                            NumeroAula = 2,
-                            Video = "https://www.youtube.com/watch?v=5niylfZuZ8k"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Descricao = "Aula 3",
-                            ModuloId = 1,
-                            NumeroAula = 3,
-                            Video = "https://www.youtube.com/watch?v=wHsG4G3evWE"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Descricao = "Aula 4",
-                            ModuloId = 1,
-                            NumeroAula = 4,
-                            Video = "https://www.youtube.com/watch?v=_DYno3fsLEw"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Descricao = "Aula 1",
-                            ModuloId = 2,
-                            NumeroAula = 1,
-                            Video = "https://www.youtube.com/watch?v=fnv-o1kFI6g"
-                        },
-                        new
-                        {
                             Id = 6,
                             Descricao = "Aula 1",
                             ModuloId = 3,
                             NumeroAula = 1,
-                            Video = "https://www.youtube.com/watch?v=PPbPy7BNvBs"
+                            Video = "/uploads/Aula_1.mp4"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Descricao = "Aula 1",
+                            ModuloId = 4,
+                            NumeroAula = 1,
+                            Video = "/uploads/Mod 02 - Aula 1.mp4"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Descricao = "Aula 1",
+                            ModuloId = 5,
+                            NumeroAula = 1,
+                            Video = "/uploads/Mod 03 - Aula 1.mp4"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Descricao = "Aula 1",
+                            ModuloId = 6,
+                            NumeroAula = 1,
+                            Video = "/uploads/Mod 04 - Aula 1.mp4"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Descricao = "Aula 1",
+                            ModuloId = 7,
+                            NumeroAula = 1,
+                            Video = "/uploads/Mod 05 - Aula 1.mp4"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Descricao = "Aula 2",
+                            ModuloId = 3,
+                            NumeroAula = 2,
+                            Video = "/uploads/Aula 2.mp4"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Descricao = "Aula 3",
+                            ModuloId = 3,
+                            NumeroAula = 3,
+                            Video = "/uploads/Aula 3.mp4"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Descricao = "Aula 4",
+                            ModuloId = 3,
+                            NumeroAula = 4,
+                            Video = "/uploads/Aula 4.mp4"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Descricao = "Aula 5",
+                            ModuloId = 3,
+                            NumeroAula = 5,
+                            Video = "/uploads/Aula 5.mp4"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Descricao = "Aula 2",
+                            ModuloId = 4,
+                            NumeroAula = 2,
+                            Video = "/uploads/Mod 02 - Aula 2.mp4"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Descricao = "Aula 3",
+                            ModuloId = 4,
+                            NumeroAula = 3,
+                            Video = "/uploads/Mod 02 - Aula 3.mp4"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Descricao = "Aula 4",
+                            ModuloId = 4,
+                            NumeroAula = 4,
+                            Video = "/uploads/Mod 02 - Aula 4.mp4"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Descricao = "Aula 2",
+                            ModuloId = 5,
+                            NumeroAula = 2,
+                            Video = "/uploads/Mod 03 - Aula 2.mp4"
                         });
                 });
 
-            modelBuilder.Entity("DAL.Models.AulaAluno", b =>
+            modelBuilder.Entity("DAL.Models.AulaAssistida", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -206,36 +328,17 @@ namespace DAL.Migrations
                     b.Property<int>("AlunoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Anotacoes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Assistida")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Assistindo")
-                        .HasColumnType("bit");
-
                     b.Property<int>("AulaId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("HabilitarAssistida")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("ModuloAlunoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumeroAula")
+                    b.Property<int?>("StatusAulasId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AlunoId");
+                    b.HasIndex("StatusAulasId");
 
-                    b.HasIndex("AulaId");
-
-                    b.HasIndex("ModuloAlunoId");
-
-                    b.ToTable("AulasAlunos");
+                    b.ToTable("AulasAssistidas");
                 });
 
             modelBuilder.Entity("DAL.Models.Avaliacao", b =>
@@ -261,6 +364,36 @@ namespace DAL.Migrations
                             Id = 1,
                             Descricao = "Avaliação 1",
                             ModuloId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descricao = "Modulo 1 - Prova",
+                            ModuloId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Descricao = "Modulo 2 - Prova",
+                            ModuloId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Descricao = "Modulo 3 - Prova",
+                            ModuloId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Descricao = "Modulo 4 - Prova",
+                            ModuloId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Descricao = "Modulo 5 - Prova",
+                            ModuloId = 1
                         });
                 });
 
@@ -274,13 +407,55 @@ namespace DAL.Migrations
                     b.Property<string>("CabecalhoTexto1_Index")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CabecalhoTexto2_Index")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CabecalhoTexto3_Index")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailContato")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EnderecoLinha1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EnderecoLinha2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EnderecoLinha3")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogoBackground")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("NotaDeCorte")
                         .HasColumnType("decimal(3, 1)");
 
                     b.Property<string>("Texto1_Index")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Texto2_Index")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Texto3_Index")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TextoAlvo_Index")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TextoComputador_Index")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TextoGrafico_Index")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Titulo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Video_Index")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -292,9 +467,23 @@ namespace DAL.Migrations
                         {
                             Id = 1,
                             CabecalhoTexto1_Index = "Suas finanças de maneira inteligente",
+                            CabecalhoTexto2_Index = "CONHEÇA NOSSOS CURSOS",
+                            CabecalhoTexto3_Index = "COMO FUNCIONA",
+                            EmailContato = "contato@upfirst.com.br",
+                            EnderecoLinha1 = "Av. Dr. Nelson d''Ávila, 1837",
+                            EnderecoLinha2 = "Centro - Sao Jose dos Campos",
+                            EnderecoLinha3 = "",
                             Logo = "/assets/images/upfirst_logo.svg",
-                            NotaDeCorte = 0m,
-                            Texto1_Index = "O objetivo desta plataforma é conectar suas FINANÇAS aos seus sonhos, através de nossos métodos você irá trilhar o caminho do conhecimento rumo ao seu objetivo de vida. Vem conosco !!!"
+                            LogoBackground = "RGB(6,26,55)",
+                            NotaDeCorte = 5m,
+                            Texto1_Index = "O objetivo desta plataforma é conectar suas FINANÇAS aos seus sonhos, através de nossos métodos você irá trilhar o caminho do conhecimento rumo ao seu objetivo de vida. Vem conosco !!!",
+                            Texto2_Index = "Sucesso financeiro é ter dinheiro suficiente para fazer aquilo que você deseja, de forma planejada. Nossos cursos te dará a direção, e proporcionarão ferramentas para que você se torne uma pessoa financeiramente bem-sucedida, ter dinheiro suficiente para cobrir o seu custo de vida e realizar projetos futuros, sem precisar se endividar, por exemplo.",
+                            Texto3_Index = "Você aprenderá a prosperar financeiramente através de 5 bases simples: 1. Mudança de mentalidade financeira; 2. Poupar; 3. Investir; 4. Renda Extra; e 5. Simplificação. Você descobrirá oportunidades incríveis para aumentar as receitas, controlar as despesas, investir em ativos de alta rentabilidade, viver um estilo de vida simples e abundante! Quando você enriquece o mundo se torna um lugar melhor!",
+                            TextoAlvo_Index = "A meta é a vida abundante! O que você não tem é pelo que você ainda não conhece. Você possui uma mente infinitamente criativa, uma capacidade infinita de ser uma pessoa rica. Só precisa aprender a usá-la.",
+                            TextoComputador_Index = "Pesquisas demonstram que 95% das pessoas se aponsentam com renda insuficiente na velhice, e dependem do governo ou de parentes. Milhões de brasileiros vivem essa realidade. Você pode planejar agora as finanças dos próximos anos e virar essa equação em seu favor. Te pegaremos pela mão e te auxiliaremos a planejar a sua reserva financeira para hoje e para o futuro.",
+                            TextoGrafico_Index = "A parte mais trabalhosa de enriquecer é tomar deliberadamente a decisão de começar. Todas as demais etapas são bem mais simples. O que você precisa fazer agora é decidir se tornar uma pessoa próspera financeiramente e começar a agir!",
+                            Titulo = "ESF",
+                            Video_Index = "/assets/videos/institucional.mp4"
                         });
                 });
 
@@ -321,25 +510,13 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Nome = "FUNDAMENTAL",
-                            Preco = 5.1m
-                        },
-                        new
-                        {
                             Id = 2,
                             Nome = "EDUCAÇÃO FINANCEIRA",
-                            Preco = 5.2m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Nome = "INVESTIMENTOS",
-                            Preco = 5.3m
+                            Preco = 399.00m
                         });
                 });
 
-            modelBuilder.Entity("DAL.Models.CursoAluno", b =>
+            modelBuilder.Entity("DAL.Models.Matricula", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -349,14 +526,17 @@ namespace DAL.Migrations
                     b.Property<int>("AlunoId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("CursoConcluido")
+                        .HasColumnType("bit");
+
                     b.Property<int>("CursoId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Liberado")
+                    b.Property<bool>("Liberada")
                         .HasColumnType("bit");
+
+                    b.Property<int>("PagamentoId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -364,28 +544,10 @@ namespace DAL.Migrations
 
                     b.HasIndex("CursoId");
 
-                    b.ToTable("CursosAlunos");
-                });
+                    b.HasIndex("PagamentoId")
+                        .IsUnique();
 
-            modelBuilder.Entity("DAL.Models.MercadoPago_Ipn", b =>
-                {
-                    b.Property<int>("MercadoPago_IpnId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Topic")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MercadoPago_IpnId");
-
-                    b.ToTable("MercadoPago_Ipns");
+                    b.ToTable("Matriculas");
                 });
 
             modelBuilder.Entity("DAL.Models.MercadoPago_WebHook", b =>
@@ -441,29 +603,47 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            AvaliacaoId = 1,
-                            CursoId = 1,
+                            Id = 3,
+                            AvaliacaoId = 2,
+                            CursoId = 2,
                             Descricao = "Modulo 1",
                             NumeroModulo = 1
                         },
                         new
                         {
-                            Id = 2,
-                            CursoId = 1,
+                            Id = 4,
+                            AvaliacaoId = 3,
+                            CursoId = 2,
                             Descricao = "Modulo 2",
                             NumeroModulo = 2
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 5,
+                            AvaliacaoId = 4,
                             CursoId = 2,
-                            Descricao = "Modulo 1",
-                            NumeroModulo = 1
+                            Descricao = "Modulo 3",
+                            NumeroModulo = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AvaliacaoId = 5,
+                            CursoId = 2,
+                            Descricao = "Modulo 4",
+                            NumeroModulo = 4
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AvaliacaoId = 6,
+                            CursoId = 2,
+                            Descricao = "Modulo 5",
+                            NumeroModulo = 5
                         });
                 });
 
-            modelBuilder.Entity("DAL.Models.ModuloAluno", b =>
+            modelBuilder.Entity("DAL.Models.Nota", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -473,33 +653,19 @@ namespace DAL.Migrations
                     b.Property<int>("AlunoId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("AvaliacaoLiberada")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("CursoAlunoId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Liberado")
-                        .HasColumnType("bit");
-
                     b.Property<int>("ModuloId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Nota")
+                    b.Property<decimal>("Valor")
                         .HasColumnType("decimal(3, 1)");
-
-                    b.Property<int>("NumeroModulo")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AlunoId");
 
-                    b.HasIndex("CursoAlunoId");
-
                     b.HasIndex("ModuloId");
 
-                    b.ToTable("ModulosAlunos");
+                    b.ToTable("Notas");
                 });
 
             modelBuilder.Entity("DAL.Models.Pagamento", b =>
@@ -508,12 +674,6 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AlunoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CursoId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
@@ -540,10 +700,6 @@ namespace DAL.Migrations
                         .HasColumnType("decimal(5, 2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AlunoId");
-
-                    b.HasIndex("CursoId");
 
                     b.ToTable("Pagamentos");
                 });
@@ -579,6 +735,66 @@ namespace DAL.Migrations
                             Id = 2,
                             AvaliacaoId = 1,
                             Descricao = "Quanto é 2 x 6 ?"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AvaliacaoId = 2,
+                            Descricao = "Qual alternativa não faz parte das 5 bases deste curso?"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AvaliacaoId = 3,
+                            Descricao = "Marque a única alternativa incorreta. As 6 leis da autorresponsabilidade financeira são?"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AvaliacaoId = 4,
+                            Descricao = "Marque as 3 alternativas corretas. Riqueza verdadeira é aquela que combina as três dimensões humanas, quais são elas?"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AvaliacaoId = 5,
+                            Descricao = "Na aula sobre construção de RENDA EXTRA, ensinamos que para se tornar um especialista em sua área de atuação é preciso concluir um macrociclo de 1.000 horas. O macrociclo é formado por 22 semanas de microciclos aplicados. A pergunta é: um microciclo de 45 horas semanais é composto por?"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AvaliacaoId = 6,
+                            Descricao = "Marque a única alternativa correta. Na aula sobre SIMPLIFICAÇÃO, ensinamos o seguinte conceito:"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AvaliacaoId = 2,
+                            Descricao = "Qual alternativa não faz parte dos 11 pilares do MAF – Mapa de Autoavaliação Financeira?"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AvaliacaoId = 3,
+                            Descricao = "De acordo com a aula 3 deste módulo 2, o segredo dos vencedores é?"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AvaliacaoId = 4,
+                            Descricao = "De quem é a célebre frase mencionada na aula 1 deste módulo 3: “Para que as coisas mudem, você tem que mudar.... Para que as coisas melhorem, você tem que melhorar.... Podemos ter mais do que já temos, porque podemos nos tornar melhores do que somos.”."
+                        },
+                        new
+                        {
+                            Id = 12,
+                            AvaliacaoId = 5,
+                            Descricao = "A média de ganho de um especialista é?"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            AvaliacaoId = 6,
+                            Descricao = "A quantidade de salários sugeridos que você ganha, para compor a sua reserva financeira é?"
                         });
                 });
 
@@ -607,26 +823,20 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Descricao = "PLANEJAMENTO FINANCEIRO",
+                            Id = 7,
+                            Descricao = "Qual seu conhecimento em despesas e receitas?",
                             QuestionarioId = 1
                         },
                         new
                         {
-                            Id = 2,
-                            Descricao = "CONHECE O QUE É BOLSA DE VALORES?",
+                            Id = 8,
+                            Descricao = "Qual seu conhecimento em investimentos?",
                             QuestionarioId = 1
                         },
                         new
                         {
-                            Id = 3,
-                            Descricao = "OUTRAS PERGUNTAS PARA O USUÁRIO",
-                            QuestionarioId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Descricao = "MAIS UMA PERGUNTA AQUI",
+                            Id = 9,
+                            Descricao = "Qual o seu conhecimento em controle financeiro?",
                             QuestionarioId = 1
                         });
                 });
@@ -731,7 +941,415 @@ namespace DAL.Migrations
                             Correta = false,
                             Descricao = "14",
                             PerguntaAvaliacaoId = 2
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Correta = false,
+                            Descricao = "Mudança de mentalidade financeira",
+                            PerguntaAvaliacaoId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Correta = false,
+                            Descricao = "Se for criticar as pessoas, cale-se",
+                            PerguntaAvaliacaoId = 4
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Correta = true,
+                            Descricao = "Dimensão do SER, caracterizado pela CRENÇA DE IDENTIDADE",
+                            PerguntaAvaliacaoId = 5
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Correta = false,
+                            Descricao = "7 horas de trabalho, e 2 horas de estudos diários",
+                            PerguntaAvaliacaoId = 6
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Correta = false,
+                            Descricao = "Aumente o seu padrão de vida à medida em que sua renda aumentar",
+                            PerguntaAvaliacaoId = 7
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Correta = false,
+                            Descricao = "Poupar",
+                            PerguntaAvaliacaoId = 3
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Correta = false,
+                            Descricao = "Investir",
+                            PerguntaAvaliacaoId = 3
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Correta = false,
+                            Descricao = "Renda extra",
+                            PerguntaAvaliacaoId = 3
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Correta = false,
+                            Descricao = "Simplificação",
+                            PerguntaAvaliacaoId = 3
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Correta = true,
+                            Descricao = "Gastar",
+                            PerguntaAvaliacaoId = 3
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Correta = false,
+                            Descricao = "Se for reclamar das circunstâncias, dê sugestão",
+                            PerguntaAvaliacaoId = 4
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Correta = true,
+                            Descricao = "Se for investir, invista na caderneta de poupança",
+                            PerguntaAvaliacaoId = 4
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Correta = false,
+                            Descricao = "Se for buscar culpados, busque a solução",
+                            PerguntaAvaliacaoId = 4
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Correta = false,
+                            Descricao = "Se for se fazer de vítima, faça-se de vencedor",
+                            PerguntaAvaliacaoId = 4
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Correta = false,
+                            Descricao = "Se for justificar os seus erros, aprenda com eles",
+                            PerguntaAvaliacaoId = 4
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Correta = false,
+                            Descricao = "Se for julgar alguém, julgue a atitude dessa pessoa",
+                            PerguntaAvaliacaoId = 4
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Correta = true,
+                            Descricao = "Dimensão do FAZER, caracterizado pela CRENÇA DE CAPACIDADE",
+                            PerguntaAvaliacaoId = 5
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Correta = true,
+                            Descricao = "Dimensão do TER, caracterizado pela CRENÇA DE MERECIMENTO",
+                            PerguntaAvaliacaoId = 5
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Correta = false,
+                            Descricao = "Dimensão da ECONOMIA, caracterizado pela CRENÇA DE POUPAR",
+                            PerguntaAvaliacaoId = 5
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Correta = false,
+                            Descricao = "Dimensão do TRABALHO, caracterizado pela CRENÇA DE PRODUZIR",
+                            PerguntaAvaliacaoId = 5
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Correta = false,
+                            Descricao = "6 horas de trabalho, e 3 horas de estudos diários",
+                            PerguntaAvaliacaoId = 6
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Correta = false,
+                            Descricao = "9 horas de trabalho, e 1 hora de estudos diários",
+                            PerguntaAvaliacaoId = 6
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Correta = true,
+                            Descricao = "8 horas de trabalho, e 1 hora de estudos diários",
+                            PerguntaAvaliacaoId = 6
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Correta = false,
+                            Descricao = "1 hora de trabalho, e 8 horas de estudos diários",
+                            PerguntaAvaliacaoId = 6
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Correta = false,
+                            Descricao = "Aumente a sua renda à medida em que o seu padrão de vida aumentar",
+                            PerguntaAvaliacaoId = 7
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Correta = true,
+                            Descricao = "Aumente o seu padrão de vida somente após alcançar o objetivo definido em seu plano financeiro",
+                            PerguntaAvaliacaoId = 7
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Correta = false,
+                            Descricao = "Simplifique a sua vida simplesmente aumentando o seu padrão de vida",
+                            PerguntaAvaliacaoId = 7
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Correta = false,
+                            Descricao = "Simplifique a sua vida simplesmente aumentando a sua renda",
+                            PerguntaAvaliacaoId = 7
+                        },
+                        new
+                        {
+                            Id = 37,
+                            Correta = false,
+                            Descricao = "Pagar a si mesmo",
+                            PerguntaAvaliacaoId = 8
+                        },
+                        new
+                        {
+                            Id = 38,
+                            Correta = true,
+                            Descricao = "Pagar as dívidas",
+                            PerguntaAvaliacaoId = 8
+                        },
+                        new
+                        {
+                            Id = 39,
+                            Correta = false,
+                            Descricao = "Poupar para a sua segurança financeira",
+                            PerguntaAvaliacaoId = 8
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Correta = false,
+                            Descricao = "Investir",
+                            PerguntaAvaliacaoId = 8
+                        },
+                        new
+                        {
+                            Id = 41,
+                            Correta = false,
+                            Descricao = "Seguros",
+                            PerguntaAvaliacaoId = 8
+                        },
+                        new
+                        {
+                            Id = 42,
+                            Correta = false,
+                            Descricao = "Ter um bom rendimento mensal",
+                            PerguntaAvaliacaoId = 10
+                        },
+                        new
+                        {
+                            Id = 43,
+                            Correta = false,
+                            Descricao = "Saber diferenciar dívidas de contas mensais",
+                            PerguntaAvaliacaoId = 10
+                        },
+                        new
+                        {
+                            Id = 44,
+                            Correta = true,
+                            Descricao = "Ser diligente",
+                            PerguntaAvaliacaoId = 10
+                        },
+                        new
+                        {
+                            Id = 45,
+                            Correta = false,
+                            Descricao = "Ser uma pessoa inteligente",
+                            PerguntaAvaliacaoId = 10
+                        },
+                        new
+                        {
+                            Id = 46,
+                            Correta = false,
+                            Descricao = "Ter uma aplicação específica para os estudos dos filhos",
+                            PerguntaAvaliacaoId = 10
+                        },
+                        new
+                        {
+                            Id = 47,
+                            Correta = false,
+                            Descricao = "Investir em ativos de alta rentabilidade",
+                            PerguntaAvaliacaoId = 10
+                        },
+                        new
+                        {
+                            Id = 48,
+                            Correta = false,
+                            Descricao = "Wallace D. Wattles",
+                            PerguntaAvaliacaoId = 11
+                        },
+                        new
+                        {
+                            Id = 49,
+                            Correta = false,
+                            Descricao = "Bob Proctor",
+                            PerguntaAvaliacaoId = 11
+                        },
+                        new
+                        {
+                            Id = 50,
+                            Correta = false,
+                            Descricao = "Paulo Vieira",
+                            PerguntaAvaliacaoId = 11
+                        },
+                        new
+                        {
+                            Id = 51,
+                            Correta = true,
+                            Descricao = "Jim Rohn",
+                            PerguntaAvaliacaoId = 11
+                        },
+                        new
+                        {
+                            Id = 52,
+                            Correta = false,
+                            Descricao = "Paul Mackenna",
+                            PerguntaAvaliacaoId = 11
+                        },
+                        new
+                        {
+                            Id = 53,
+                            Correta = false,
+                            Descricao = "Especialista nível I: Ganha 3 vezes mais que um profissional comum",
+                            PerguntaAvaliacaoId = 12
+                        },
+                        new
+                        {
+                            Id = 54,
+                            Correta = false,
+                            Descricao = "Especialista nível II: Ganha 6 vezes mais que um profissional comum",
+                            PerguntaAvaliacaoId = 12
+                        },
+                        new
+                        {
+                            Id = 55,
+                            Correta = true,
+                            Descricao = "Especialista nível III: Ganha 8 vezes mais que um profissional comum",
+                            PerguntaAvaliacaoId = 12
+                        },
+                        new
+                        {
+                            Id = 56,
+                            Correta = false,
+                            Descricao = "Especialista nível IV: Ganha 12 vezes mais que um profissional comum",
+                            PerguntaAvaliacaoId = 12
+                        },
+                        new
+                        {
+                            Id = 57,
+                            Correta = false,
+                            Descricao = "Especialista nível V: Ganha 15 vezes mais que um profissional comum",
+                            PerguntaAvaliacaoId = 12
+                        },
+                        new
+                        {
+                            Id = 58,
+                            Correta = false,
+                            Descricao = "Para formação de sua PROTEÇÃO FINANCEIRA: 6 salários para empregados; 12 salários para autônomos ou empreendedores",
+                            PerguntaAvaliacaoId = 13
+                        },
+                        new
+                        {
+                            Id = 59,
+                            Correta = false,
+                            Descricao = "Para formação de sua SEGURANÇA FINANCEIRA: 120 salários",
+                            PerguntaAvaliacaoId = 13
+                        },
+                        new
+                        {
+                            Id = 60,
+                            Correta = true,
+                            Descricao = "Para formação de sua LIBERDADE FINANCEIRA: 240 salários",
+                            PerguntaAvaliacaoId = 13
                         });
+                });
+
+            modelBuilder.Entity("DAL.Models.StatusAulas", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AulaAssistindoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AulaPodeMarcarAssistidaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AvaliacaoLiberadaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MatriculaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UltimoModuloLiberadoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatriculaId");
+
+                    b.ToTable("StatusAulas");
+                });
+
+            modelBuilder.Entity("DAL.Models.AnotacaoAula", b =>
+                {
+                    b.HasOne("DAL.Models.Aluno", "Aluno")
+                        .WithMany()
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Aula", "Aula")
+                        .WithMany()
+                        .HasForeignKey("AulaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DAL.Models.ArquivoApoio", b =>
@@ -752,36 +1370,30 @@ namespace DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DAL.Models.AulaAluno", b =>
+            modelBuilder.Entity("DAL.Models.AulaAssistida", b =>
                 {
-                    b.HasOne("DAL.Models.Aluno", "Aluno")
-                        .WithMany("AulasAlunos")
-                        .HasForeignKey("AlunoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Models.Aula", "Aula")
-                        .WithMany("AulasAlunos")
-                        .HasForeignKey("AulaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Models.ModuloAluno", null)
-                        .WithMany("AulasAlunos")
-                        .HasForeignKey("ModuloAlunoId");
+                    b.HasOne("DAL.Models.StatusAulas", null)
+                        .WithMany("AulasAssistidas")
+                        .HasForeignKey("StatusAulasId");
                 });
 
-            modelBuilder.Entity("DAL.Models.CursoAluno", b =>
+            modelBuilder.Entity("DAL.Models.Matricula", b =>
                 {
                     b.HasOne("DAL.Models.Aluno", "Aluno")
-                        .WithMany("CursosAlunos")
+                        .WithMany()
                         .HasForeignKey("AlunoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DAL.Models.Curso", "Curso")
-                        .WithMany("CursosAlunos")
+                        .WithMany()
                         .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Pagamento", "Pagamento")
+                        .WithOne("Matricula")
+                        .HasForeignKey("DAL.Models.Matricula", "PagamentoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -799,36 +1411,17 @@ namespace DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DAL.Models.ModuloAluno", b =>
+            modelBuilder.Entity("DAL.Models.Nota", b =>
                 {
                     b.HasOne("DAL.Models.Aluno", "Aluno")
                         .WithMany()
                         .HasForeignKey("AlunoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("DAL.Models.CursoAluno", null)
-                        .WithMany("ModulosAlunos")
-                        .HasForeignKey("CursoAlunoId");
 
                     b.HasOne("DAL.Models.Modulo", "Modulo")
                         .WithMany()
                         .HasForeignKey("ModuloId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DAL.Models.Pagamento", b =>
-                {
-                    b.HasOne("DAL.Models.Aluno", "Aluno")
-                        .WithMany()
-                        .HasForeignKey("AlunoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Models.Curso", "Curso")
-                        .WithMany()
-                        .HasForeignKey("CursoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -856,6 +1449,15 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.PerguntaAvaliacao", "Pergunta")
                         .WithMany("Respostas")
                         .HasForeignKey("PerguntaAvaliacaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DAL.Models.StatusAulas", b =>
+                {
+                    b.HasOne("DAL.Models.Matricula", "Matricula")
+                        .WithMany()
+                        .HasForeignKey("MatriculaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -35,7 +35,10 @@ namespace Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var upFirstDbContext = _context.Pagamentos.Include(p => p.Aluno).Include(p => p.Curso);
+            var upFirstDbContext = _context.Pagamentos
+                .Include(p => p.Matricula)
+                    .ThenInclude(m => m.Aluno);
+
             return View(await upFirstDbContext.ToListAsync());
         }
         private void RegistrarPagamento(string forma, string externalReference, string orderId, long paymentId,
@@ -43,10 +46,10 @@ namespace Web.Controllers
         {
             ExternalReference extRef = new ExternalReference(externalReference);
 
-            _context.Pagamentos.Add(new Pagamento
+            Pagamento pagamento = new Pagamento
             {
-                AlunoId = extRef.AlunoId,
-                CursoId = extRef.CursoId,
+                //AlunoId = extRef.AlunoId,
+                //CursoId = extRef.CursoId,
                 Forma = forma,
                 Data = DateTime.Now,
                 OrderId = orderId,
@@ -55,100 +58,32 @@ namespace Web.Controllers
                 Valor = valor,
                 StatusDetail = paymentStatusDetail,
                 TipoPagamento = tipoPagamento
-            });
+            };
+
+            _context.Pagamentos.Add(pagamento);
+
+            _context.SaveChanges();
 
             if (status == "approved")
             {
-                PreencherCursosAlunos(extRef.AlunoId, extRef.CursoId);
+                RegistrarMatricula(extRef.AlunoId, extRef.CursoId, pagamento.Id);
             }
         }
-        private void PreencherCursosAlunos(int alunoId, int cursoId)
+        private void RegistrarMatricula(int alunoId, int cursoId, int pagamentoId)
         {
-            CursoAluno ca = _context.CursosAlunos.Where(ca => ca.CursoId == cursoId & ca.AlunoId == alunoId).FirstOrDefault();
+            Matricula m = _context.Matriculas.Where(m => m.CursoId == cursoId & m.AlunoId == alunoId).FirstOrDefault();
 
-            if (ca != null)
+            if (m != null)
             {
-                ca.Liberado = true;
-                _context.CursosAlunos.Update(ca);
+                m.Liberada = true;
+                _context.Matriculas.Update(m);
             }
             else
             {
-                _context.CursosAlunos.Add(new CursoAluno { AlunoId = alunoId, CursoId = cursoId, Liberado = true, Data = DateTime.Now });
-
-                PreencherModulosAlunos(alunoId, cursoId);
-                PreencherAulasAlunos(alunoId, cursoId);
+                _context.Matriculas.Add(new Matricula { AlunoId = alunoId, CursoId = cursoId, Liberada = true, PagamentoId = pagamentoId, CursoConcluido = false });
             }
 
             _context.SaveChanges();
-        }
-        private void PreencherModulosAlunos(int alunoId, int cursoId)
-        {
-            bool liberado;
-
-            Curso curso = _context.Cursos
-                .Include(c => c.Modulos)
-                .Where(c => c.Id == cursoId)
-                .SingleOrDefault();
-
-            foreach (var modulo in curso.Modulos)
-            {
-                if (modulo.NumeroModulo == 1)
-                    liberado = true;
-                else
-                    liberado = false;
-
-                _context.ModulosAlunos.Add(new ModuloAluno { AlunoId = alunoId, ModuloId = modulo.Id, Liberado = liberado, NumeroModulo = modulo.NumeroModulo });
-            }
-
-            _context.SaveChanges();
-        }
-        private void PreencherAulasAlunos(int alunoId, int cursoId)
-        {
-            Curso curso = _context.Cursos
-                .Include(c => c.Modulos)
-                    .ThenInclude(m => m.Aulas)
-                .Where(c => c.Id == cursoId)
-                .SingleOrDefault();
-
-            bool assistindo = false;
-            bool habilitarAssistida = false;
-
-            foreach (var modulo in curso.Modulos)
-            {
-
-                foreach (var aula in modulo.Aulas)
-                {
-                    // Assistindo a primeira aula
-                    if (aula.NumeroAula == 1 && modulo.NumeroModulo == 1)
-                    {
-                        assistindo = true;
-                        habilitarAssistida = true;
-                    }
-                    else
-                    {
-                        assistindo = false;
-                        habilitarAssistida = false;
-                    }
-
-                    _context.AulasAlunos.Add(new AulaAluno
-                    {
-                        AulaId = aula.Id,
-                        AlunoId = alunoId,
-                        Assistindo = assistindo,
-                        HabilitarAssistida = habilitarAssistida,
-                        NumeroAula = aula.NumeroAula
-                    });
-                }
-
-                try
-                {
-                    _context.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
         }
         public IActionResult ParametrosTeste()
         {
@@ -159,7 +94,8 @@ namespace Web.Controllers
         // Instruções: https://www.mercadopago.com.br/developers/pt/guides/notifications/webhooks/
         // Configurar WebHook: https://www.mercadopago.com/mlb/account/webhooks
         // Ajustar para: https://upfirst.com.br/en/pagamentos/MercadoPagoWebHook
-        // Teste no IIS local: http://Cyrex20.ddns.net:85/Web/us/pagamentos/MercadoPagoWebHook
+        // Ou para: https://escoladesucessofinanceiro.com/en/pagamentos/MercadoPagoWebHook
+        // Teste no IIS LOCAL (Não funciona no IIS Express): http://Cyrex20.ddns.net:85/Web/en/pagamentos/MercadoPagoWebHook
         // As vezes não funciona no IIS Local, precisa reiniciar o roteador
         public IActionResult MercadoPagoWebHook(MercadoPagoData data, string type)
         {

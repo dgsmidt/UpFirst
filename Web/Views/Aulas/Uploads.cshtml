@@ -185,6 +185,7 @@
                 </div>
             </div>*@
         <input type="button" class="btn btn-primary" value="@Localizer.Text("Go to Courses")" onclick="@("window.location.href='" + @Url.Action("Index","Cursos", new { culture = culture}) + "'");" />
+        <input type="button" class="btn btn-primary" value="@Localizer.Text("Home")" onclick="@("window.location.href='" + @Url.Action("Index","Home", new { culture = culture}) + "'");" />
     </div>
     <!-- The blueimp Gallery widget -->
     <div id="blueimp-gallery"

@@ -8,7 +8,8 @@ using DAL.Models;
 using System.IO;
 using Web.ViewModels;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Web.Utilities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Web.Controllers
 {
@@ -58,7 +59,7 @@ namespace Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CabecalhoTexto1_Index,Texto1_Index,Logo, NotaDeCorte")] Configuracao configuracao)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,CabecalhoTexto1_Index,Texto1_Index,Logo,NotaDeCorte,Video_Index,CabecalhoTexto2_Index,Texto2_Index,CabecalhoTexto3_Index,Texto3_Index,TextoAlvo_Index,TextoGrafico_Index,TextoComputador_Index,EnderecoLinha1,EnderecoLinha2,EnderecoLinha3")] Configuracao configuracao)
         {
             if (ModelState.IsValid)
             {
@@ -77,11 +78,17 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var configuracao = await _context.Configuracoes.FindAsync(id);
+            var configuracao = await _context.Configuracoes.FirstOrDefaultAsync();
+
             if (configuracao == null)
             {
                 return NotFound();
             }
+
+            FilesOnServer fs = new FilesOnServer(_hostingEnvironment);
+
+            ViewData["Video"] = new SelectList(fs.GetFilesOnServer());
+
             return View(configuracao);
         }
 
@@ -90,7 +97,7 @@ namespace Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CabecalhoTexto1_Index,Texto1_Index,Logo,NotaDeCorte")] Configuracao configuracao)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,CabecalhoTexto1_Index,Texto1_Index,Logo,NotaDeCorte,Video_Index,CabecalhoTexto2_Index,Texto2_Index,CabecalhoTexto3_Index,Texto3_Index,TextoAlvo_Index,TextoGrafico_Index,TextoComputador_Index,EnderecoLinha1,EnderecoLinha2,EnderecoLinha3,LogoBackground,EmailContato")] Configuracao configuracao)
         {
             if (id != configuracao.Id)
             {
@@ -99,7 +106,6 @@ namespace Web.Controllers
 
             if (ModelState.IsValid)
             {
-
                 try
                 {
                     _context.Update(configuracao);
@@ -116,7 +122,8 @@ namespace Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(configuracao);
         }
@@ -193,5 +200,6 @@ namespace Web.Controllers
         {
             return _context.Configuracoes.Any(e => e.Id == id);
         }
+        
     }
 }

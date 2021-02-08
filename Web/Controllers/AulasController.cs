@@ -8,13 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Models;
-using Web.ViewModels;
+using Web.Utilities;
 
 namespace Web.Controllers
 {
@@ -79,7 +78,9 @@ namespace Web.Controllers
                 ViewData["ModuloId"] = new SelectList(new List<Modulo>(), "Id", "Descricao");
             }
 
-            ViewData["Video"] = new SelectList(GetFilesOnServer());
+            FilesOnServer fs = new FilesOnServer(_hostingEnvironment);
+
+            ViewData["Video"] = new SelectList(fs.GetFilesOnServer());
 
             return View();
         }
@@ -152,26 +153,13 @@ namespace Web.Controllers
 
             ViewData["ModuloId"] = new SelectList(_context.Modulos.Where(m => m.Id == aula.ModuloId), "Id", "Descricao", aula.ModuloId);
 
-            ViewData["Video"] = new SelectList(GetFilesOnServer());
+            FilesOnServer fs = new FilesOnServer(_hostingEnvironment);
+
+            ViewData["Video"] = new SelectList(fs.GetFilesOnServer());
 
             return View(aula);
         }
-        private List<string> GetFilesOnServer()
-        {
-            // Get files into uploads folder
-            string FilePath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-
-            string[] filePaths = Directory.GetFiles(FilePath);
-
-            List<string> videosList = new List<string>();
-
-            foreach (string filePath in filePaths)
-            {
-                videosList.Add(Path.GetFileName(filePath));
-            }
-
-            return videosList;
-        }
+        
         private long GetFileSize(string fileName)
         {
             FileInfo fi = new FileInfo(Path.Combine(_hostingEnvironment.WebRootPath, "uploads/" + fileName));
@@ -190,7 +178,9 @@ namespace Web.Controllers
         {
             var resultList = new List<UploadFilesResult>();
 
-            List<string> filesOnServer = GetFilesOnServer();
+            FilesOnServer fs = new FilesOnServer(_hostingEnvironment);
+
+            List<string> filesOnServer = fs.GetFilesOnServer();
 
             foreach (var item in filesOnServer)
             {

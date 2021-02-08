@@ -247,11 +247,17 @@
   <data name="Back to Questions" xml:space="preserve">
     <value>Voltar para as Perguntas</value>
   </data>
+  <data name="Back to Users" xml:space="preserve">
+    <value>Voltar para Usuários</value>
+  </data>
   <data name="Buy" xml:space="preserve">
     <value>Comprar</value>
   </data>
   <data name="Cancel upload" xml:space="preserve">
     <value>Cancelar upload</value>
+  </data>
+  <data name="Caption Tab" xml:space="preserve">
+    <value>Título da Aba</value>
   </data>
   <data name="Change email" xml:space="preserve">
     <value>Alterar e-mail</value>
@@ -283,6 +289,9 @@
   </data>
   <data name="Confirmation link to change email sent. Please check your email." xml:space="preserve">
     <value>Link de confirmação para alteração de e-mail enviado. Por favor, verifique sua caixa de entrada.</value>
+  </data>
+  <data name="Contact E-mail" xml:space="preserve">
+    <value>E-mail de Contato</value>
   </data>
   <data name="Corporate Office" xml:space="preserve">
     <value>Escritório Corporativo</value>
@@ -417,7 +426,7 @@
     <value>Avaliação Liberada</value>
   </data>
   <data name="Evaluation Result" xml:space="preserve">
-    <value>Reusltado da Avaliação</value>
+    <value>Resultado da Avaliação</value>
   </data>
   <data name="Evaluations" xml:space="preserve">
     <value>Avaliações</value>
@@ -559,6 +568,9 @@
   <data name="Login" xml:space="preserve">
     <value>Entrar</value>
     <comment>Areas/Identity/Pages/Account/Login.cshtml</comment>
+  </data>
+  <data name="Logo Background" xml:space="preserve">
+    <value>Fundo do Logo</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>Sair</value>
@@ -915,6 +927,9 @@
   </data>
   <data name="Substance" xml:space="preserve">
     <value>Substância</value>
+  </data>
+  <data name="Support Files:" xml:space="preserve">
+    <value>Arquivos de Apoio:</value>
   </data>
   <data name="Support Material" xml:space="preserve">
     <value>Material de Apoio</value>

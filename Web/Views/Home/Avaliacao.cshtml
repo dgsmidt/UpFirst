@@ -99,7 +99,7 @@
     </div>
 </div>
 
-<script src="~/lib/jquery/jquery.min.js"></script>
+@*<script src="~/lib/jquery/jquery.min.js"></script>*@
 <script>
     $(document).ready(function () {
         $('#resultado').on('hidden.bs.modal', function (e) {
@@ -132,7 +132,7 @@
             nota = (corretas * 10 / perguntas).toFixed(1).replace(".", ",");
 
             var url = '/' + $("#culture").attr("value") + '/Home/UpdateNota/';
-            var dados = { alunoId: $("#ViewData_AlunoId_").attr("value"), moduloId: $("#ViewData_ModuloId_").attr("value"), valor: nota };
+            var dados = { alunoId: $("#ViewData_AlunoId_").attr("value"), moduloId: $("#ViewData_ModuloId_").attr("value"), cursoId: $("#ViewData_CursoId_").attr("value"), valor: nota };
 
             $.post(url, dados,
                 function (returnedData) {
@@ -180,7 +180,6 @@
             alert("Responda todas as questões !");
         }
     };
-
 
     $("#mResp").click(function (obj) {
         if ($(obj.target).prop("checked")) {

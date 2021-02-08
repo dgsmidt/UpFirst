@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL;
+using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -73,7 +75,7 @@ namespace Web.Controllers
                 //return RedirectToAction(nameof(Index));
                 return RedirectToAction("Index", "Home");
             }
-            catch 
+            catch
             {
                 return View();
             }
@@ -84,8 +86,26 @@ namespace Web.Controllers
         {
             var user = await _userManager.FindByEmailAsync(email);
 
-            await _dbContext.ExcluirAlunoAsync(user.Id);
+            var aluno = await _dbContext.Alunos.Where(a => a.Email == email).SingleOrDefaultAsync();
+
+            if (aluno != null) { 
+                await _dbContext.RemoverDadosAlunoAsync(aluno.Id);
+                _dbContext.Alunos.Remove(aluno);
+                await _dbContext.SaveChangesAsync();
+            }
+
             _ = await _userManager.DeleteAsync(user);
+
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> ExcluirMatriculas(string userId)
+        {
+            Aluno aluno = await _dbContext.Alunos
+                .Where(a => a.UserId == userId)
+                .SingleOrDefaultAsync();
+
+            if (aluno != null)
+                await _dbContext.RemoverDadosAlunoAsync(aluno.Id);
 
             return RedirectToAction("Index");
         }

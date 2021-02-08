@@ -28,3 +28,12 @@ SQL Server
 IP: 198.38.83.200
 User name: ublack_daniel
 Password: MTc9zMWNIo8QS3xBGO
+
+
+Para apontar dominios:
+
+Criar os dominios na mocha.
+No provedor de registro apontar os servidores DNS para:
+
+cns7.my-hosting-panel.com
+cns8.my-hosting-panel.com

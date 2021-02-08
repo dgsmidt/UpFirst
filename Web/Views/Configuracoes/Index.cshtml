@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th localize-content>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th localize-content>
                 @Html.DisplayNameFor(model => model.Logo)
             </th>
             <th localize-content>
@@ -24,11 +27,48 @@
             <th localize-content>
                 @Html.DisplayNameFor(model => model.Texto1_Index)
             </th>
+
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Video_Index)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.CabecalhoTexto2_Index)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Texto2_Index)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.CabecalhoTexto3_Index)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Texto3_Index)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.TextoAlvo_Index)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.TextoGrafico_Index)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.TextoComputador_Index)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.EnderecoLinha1)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.EnderecoLinha2)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.EnderecoLinha3)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Titulo)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => Model.Logo)
             </td>
@@ -41,6 +81,40 @@
             <td>
                 @Html.DisplayFor(modelItem => Model.Texto1_Index)
             </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => Model.Video_Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.CabecalhoTexto2_Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Texto2_Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.CabecalhoTexto3_Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Texto3_Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.TextoAlvo_Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.TextoGrafico_Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.TextoComputador_Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.EnderecoLinha1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.EnderecoLinha2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.EnderecoLinha3)
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@Model.Id" localize-content>Edit</a> |
                 <a asp-action="Details" asp-route-id="@Model.Id" localize-content>Details</a>
@@ -49,3 +123,5 @@
         </tr>
     </tbody>
 </table>
+
+@*<script src="~/lib/jquery/jquery.min.js"></script>*@

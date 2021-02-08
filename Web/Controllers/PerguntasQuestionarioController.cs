@@ -57,6 +57,9 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Só há um questionário
+                perguntaQuestionario.QuestionarioId = 1;
+
                 _context.Add(perguntaQuestionario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -72,7 +75,11 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var perguntaQuestionario = await _context.PerguntasQuestionario.FindAsync(id);
+            var perguntaQuestionario = await _context.PerguntasQuestionario
+                .Include(q => q.Questionario)
+                .Where(q => q.Id == id)
+                .SingleOrDefaultAsync();
+
             if (perguntaQuestionario == null)
             {
                 return NotFound();
@@ -85,7 +92,7 @@ namespace Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Descricao")] PerguntaQuestionario perguntaQuestionario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Descricao,QuestionarioId")] PerguntaQuestionario perguntaQuestionario)
         {
             if (id != perguntaQuestionario.Id)
             {

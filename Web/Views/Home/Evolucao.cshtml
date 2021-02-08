@@ -1,8 +1,8 @@
 ﻿@using DAL.Models
-@model List<ModuloAluno>
+@model List<Nota>
 
 @{
-    ViewData["Title"] = Localizer.Text("Evolution");
+    ViewData["Title"] = "Evolução";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -23,12 +23,12 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var modulo in Model)
+                @foreach (var nota in Model)
                 {
                     <tr>
-                        <td>@modulo.Modulo.Curso.Nome</td>
-                        <td>@modulo.Modulo.Descricao</td>
-                        <td>@modulo.Nota</td>
+                        <td>@nota.Modulo.Curso.Nome</td>
+                        <td>@nota.Modulo.Descricao</td>
+                        <td>@nota.Valor</td>
                     </tr>
                 }
             </tbody>

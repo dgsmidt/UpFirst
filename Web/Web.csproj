@@ -24,9 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.0.0" />
-    <PackageReference Include="LazZiya.ExpressLocalization" Version="4.0.2" />
-    <PackageReference Include="LazZiya.TagHelpers" Version="4.0.1" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Finbuckle.MultiTenant.AspNetCore" Version="6.1.0" />
+    <PackageReference Include="LazZiya.ExpressLocalization" Version="4.0.4" />
+    <PackageReference Include="LazZiya.TagHelpers" Version="5.0.0" />
     <PackageReference Include="Lexim.MercadoPago.Sdk" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.9" />
@@ -40,8 +41,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
-    <PackageReference Include="SendGrid" Version="9.21.0" />
-    <PackageReference Include="ViaCEP" Version="3.0.40" />
+    <PackageReference Include="SendGrid" Version="9.22.0" />
+    <PackageReference Include="ViaCEP" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,7 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\aulas\" />
     <Folder Include="wwwroot\lib\jQuery-File-Upload-10.31.0\css\vendor\" />
     <Folder Include="wwwroot\lib\jQuery-File-Upload-10.31.0\img\vendor\" />
   </ItemGroup>

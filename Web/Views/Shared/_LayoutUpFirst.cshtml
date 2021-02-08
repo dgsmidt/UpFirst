@@ -1,5 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@inject Web.Services.HomeConfigService HomeConfigService
+<!DOCTYPE html>
 <html lang="en">
+@{ 
+    string titulo = HomeConfigService.GetTitle();
+}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +19,7 @@
     <meta property="og:site_name" content="UpFirst" />
     <meta property="og:image" content="www.upfirst.com.br/redesocial.jpg" />
 
-    <title>UpFirst: Suas Finanças de maneira Inteligente</title>
+    <title>@titulo: Suas Finanças de maneira Inteligente</title>
     <!-- GOOGLE FONTS - MONTSERRAT -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <!-- BOOTSTRAP CSS CDN -->
@@ -25,6 +29,12 @@
 </head>
 @{
     var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+    string logoPath = await HomeConfigService.GetLogoPathAsync();
+    string enderecoLinha1 = await HomeConfigService.GetLinhaEnderecoAsync(1);
+    string enderecoLinha2 = await HomeConfigService.GetLinhaEnderecoAsync(2);
+    string enderecoLinha3 = await HomeConfigService.GetLinhaEnderecoAsync(3);
+    string logoBackground = HomeConfigService.GetLogoBackground();
+
 }
 <body>
     <!-- START STRUCTURE -->
@@ -32,9 +42,12 @@
         <header class="fixed-top">
             <partial name="_MenuPartial" />
         </header>
+
+        <script src="~/lib/jquery/jquery.min.js"></script>
+
         @RenderBody()
 
-        <footer>
+        <footer style="background-color: @logoBackground !important;">
             <div class="container">
                 <div class="row">
                     <div class="col-sm footer redesSociais">
@@ -46,7 +59,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="" href="#" role="button">
+                                <a class="" href="https://www.instagram.com/esfinanceiro/?igshid=gvbztpug3tdh" role="button">
                                     <img class="icon" src="~/assets/images/geral_nav_icon_linkedin.svg" alt="Facebook" border="0">
                                 </a>
                             </li>
@@ -55,28 +68,33 @@
                     </div>
                     <div class="col-sm footer escritorio">
                         <h2 localize-content>Corporate Office</h2>
-                        <p>
+                        @*<p>
                             Lorem ipsum dolor sit amet<br />
                             Av. Lorem ipsum, nº999,<br />
-                            21º Andar - Lorem Ipsum - LP
+                            22º Andar - Lorem Ipsum - LP
+                        </p>*@
+                        <p>
+                            @enderecoLinha1<br />
+                            @enderecoLinha2<br />
+                            @enderecoLinha3
                         </p>
                     </div>
-                    <div class="col-sm footer logoRodape">
+                    <div class="col-sm footer logoRodape bg-logo">
                         <a class="navbar-brand" href="#">
-                            <img class="logoRodape" src="~/assets/images/upfirst_logo.svg" alt="UpFirst" border="0" width="240px" height="auto">
+                            <img class="logoRodape" src="@logoPath" alt="UpFirst" border="0" width="210" height="auto">
                         </a>
                     </div>
                 </div>
             </div>
         </footer>
     </div>
+
     <!-- END STRUCTURE -->
     <!-- BOOTSTRAP  JS, Popper.js, and jQuery CDN -->
-    <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <!-- UPFIRST JS -->
-    @*<script src="~/assets/js/geral.js"></script>*@    
+    @*<script src="~/assets/js/geral.js"></script>*@
     @RenderSection("Scripts", required: false)
 </body>
 </html>

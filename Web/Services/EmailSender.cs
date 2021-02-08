@@ -10,18 +10,23 @@ namespace Web.Services
     public class EmailSender: IEmailSender
     {
         public IConfiguration Configuration { get; }
+        public IEmailConfigService EmailConfiguration { get; }
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
-        public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor, IConfiguration configuration)
+        public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor, IConfiguration configuration, IEmailConfigService emailConfig)
         {
             Configuration = configuration;
             Options = optionsAccessor.Value;
+            EmailConfiguration = emailConfig;
         }
         public Task Execute(string apiKey, string subject, string message, string email)
         {
+            string emailContato = EmailConfiguration.EmailContato();
+            string from = EmailConfiguration.From();
+
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("contato@upfirst.com.br", "UpFirst"),
+                From = new EmailAddress(emailContato, from),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

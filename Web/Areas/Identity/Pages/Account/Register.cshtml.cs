@@ -104,6 +104,11 @@ namespace WebCore.Areas.Identity.Pages.Account
 
                     await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Nome", user.Nome));
 
+                    IEnumerable<Aluno> alunos = _dbContext.Alunos.Where(a => a.Email == user.Email).ToList();
+
+                    if (alunos != null)
+                        _dbContext.Alunos.RemoveRange(alunos);
+
                     await _dbContext.Alunos.AddAsync(new Aluno { UserId = user.Id, Nome = user.Nome, Email = user.Email, WhatsApp = user.WhatsApp });
                     await _dbContext.SaveChangesAsync();
 

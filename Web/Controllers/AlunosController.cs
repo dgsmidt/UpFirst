@@ -125,8 +125,8 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var aluno = await _context.Alunos
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var aluno = await _context.Alunos.FindAsync(id);
+
             if (aluno == null)
             {
                 return NotFound();
@@ -140,9 +140,11 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var aluno = await _context.Alunos.FindAsync(id);
-            _context.Alunos.Remove(aluno);
-            await _context.SaveChangesAsync();
+            await _context.RemoverDadosAlunoAsync(id);
+            Aluno aluno = await _context.Alunos.FindAsync(id);
+
+            _context.Remove(aluno);
+
             return RedirectToAction(nameof(Index));
         }
 

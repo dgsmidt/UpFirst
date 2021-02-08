@@ -3,7 +3,7 @@
 @model List<CursoVM>
 
 @{
-    var checkoutIds = ViewData["CheckoutIds"] as List<string>;
+    //var checkoutIds = ViewData["CheckoutIds"] as List<string>;
     var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
 }
 
@@ -18,17 +18,20 @@
         <div class="col-md boxPlanos">
             <h2>@Model[i].Curso.Nome</h2>
             <p>@Model[i].Curso.Descricao</p>
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+            @*<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>*@
             <h3>@Localizer.Text("$") @Model[i].Curso.Preco</h3>
 
             @if (User.Identity.IsAuthenticated)
             {
-                <form action="@ViewData["PathProcessarPagamentoMP"]" method="POST">
-                    <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
-                            data-preference-id="@Model[i].CheckoutId" data-button-label=@Localizer.Text("Buy") data-elements-color="#a0bf38">
-                    </script>
-                    <p><a style="font-size: small;" asp-area="" asp-controller="Pagamentos" asp-action="ParametrosTeste" asp-route-culture=@culture localize-content>Test Parameters</a></p>
-                </form>
+                if (!User.IsInRole("Administrator"))
+                {
+                    <form action="@ViewData["PathProcessarPagamentoMP"]" method="POST">
+                        <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
+                                data-preference-id="@Model[i].CheckoutId" data-button-label=@Localizer.Text("Buy") data-elements-color="#a0bf38">
+                        </script>
+                        <p><a style="font-size: small;" asp-area="" asp-controller="Pagamentos" asp-action="ParametrosTeste" asp-route-culture=@culture localize-content>Test Parameters</a></p>
+                    </form>
+                }
             }
             else
             {

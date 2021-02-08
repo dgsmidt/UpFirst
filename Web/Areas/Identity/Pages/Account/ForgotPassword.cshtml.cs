@@ -64,10 +64,7 @@ namespace WebCore.Areas.Identity.Pages.Account
                 var mailHeader = _loc.GetLocalizedString(culture, "Reset password");
                 var mailBody = _loc.GetLocalizedString(culture, "Please reset your password by <a href='{0}'>clicking here</a>.", callbackUrl);
 
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                   mailHeader,
-                    mailBody);
+                await _emailSender.SendEmailAsync(Input.Email, mailHeader, mailBody);
 
                 return RedirectToPage("./ForgotPasswordConfirmation", new { culture });
             }

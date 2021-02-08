@@ -14,6 +14,10 @@ namespace DAL.Models
         public string Descricao { get; set; }
         [Display(Name = "Module Sequence")]
         public int NumeroModulo { get; set; }  // Sequencia do modulo
+        [NotMapped]
+        public bool Liberado { get; set; }
+        [NotMapped]
+        public bool AvaliacaoLiberada { get; set; }
         public Curso Curso { get; set; }
         public List<Aula> Aulas { get; set; }
         public Avaliacao Avaliacao { get; set; }

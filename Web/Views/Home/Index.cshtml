@@ -1,10 +1,13 @@
 ﻿@using DAL.Models
 @using Web.ViewModels
+@using Finbuckle.MultiTenant
+
 @model Web.ViewModels.IndexVM
 @{
     Layout = "_LayoutUpFirst";
     ViewData["Title"] = "Home Page";
     var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+    var tiName = Context.GetMultiTenantContext<TenantInfo>()?.TenantInfo.Name;
 }
 
 <main class="home" role="main">
@@ -13,13 +16,15 @@
             <div class="row">
                 <div class="col-sm box boxTexto">
                     <article>
-                        <h1>@ViewData["CabecalhoTexto1"]</h1>
-                        <p>@ViewData["Texto1"]</p>
-                        <img class="seta" src="~/assets/images/home_img_setas.svg" alt="Cadastre-se" border="0">
+                        <h1>@Model.Configuracao.CabecalhoTexto1_Index</h1>
+                        <p>@Model.Configuracao.Texto1_Index</p>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <video autoplay muted loop controls class="embed-responsive-item" src="@Model.Configuracao.Video_Index" allowfullscreen></video>
+                        </div>
                     </article>
                 </div>
-
-                <div class="col-sm box boxForm">
+                <div class="col-sm box boxForm ">
+                    @*<h1>@tiName</h1>*@
                     <h2 localize-content>Access our Exclusive Content</h2>
                     <form method="post">
                         <div asp-validation-summary="All" class="text-danger"></div>
@@ -51,14 +56,18 @@
                         <button type="submit" class="btn-upf-action" localize-content>Register</button>
                     </form>
                 </div>
+
             </div> <!-- CONTAINER  -->
+            @*<div class="col-smhalf box boxForm mt-4 offset-lg-2">*@
+
         </div>
     </section>
 
     <section class="container planos">
-        <h2 localize-content>Meet our Courses</h2>
+        <h2 localize-content>@Model.Configuracao.CabecalhoTexto2_Index</h2>
         <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetue
+            @Model.Configuracao.Texto2_Index
+            @*Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetue*@
         </p>
 
         @{List<CursoVM> modelo = new List<CursoVM>();}
@@ -82,25 +91,44 @@
     <section class="comoFunciona">
         <div class="container">
             <div class="row">
-                <h2 localize-content>How it Works</h2>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis</p>
+                <h2 localize-content>@Model.Configuracao.CabecalhoTexto3_Index</h2>
+                @*<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis</p>*@
+                <p>@Model.Configuracao.Texto3_Index</p>
             </div>
             <div class="row">
                 <div class="col-sm boxComoUsar iconAlvo">
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                    @*<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>*@
+                    <p>@Model.Configuracao.TextoAlvo_Index</p>
                 </div>
                 <div class="col-sm boxComoUsar iconGrafico">
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                    @*<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>*@
+                    <p>@Model.Configuracao.TextoGrafico_Index</p>
                 </div>
                 <div class="col-sm boxComoUsar iconNote">
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>
+                    @*<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod  delenit augue duis dolore te.</p>*@
+                    <p>@Model.Configuracao.TextoComputador_Index</p>
                 </div>
             </div>
             <hr>
         </div>
     </section>
-
-
+    <section class="testemunhos">
+        <partial name="_Testemunhos.cshtml" />
+    </section>
+    <!--Start of Tawk.to Script-->
+    @*<script src="~/js/tawkTo.js"></script>*@
+    <script type="text/javascript">
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = '@ViewData["TawkToSrc"]';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
     @* MODAL *@
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -128,6 +156,8 @@
         </div>
     </div>
 </main>
+
+
 
 @*<script src="~/lib/jquery/jquery.min.js"></script>*@
 @*<script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script>*@

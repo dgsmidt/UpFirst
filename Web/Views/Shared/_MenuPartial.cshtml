@@ -1,11 +1,13 @@
-﻿@inject Web.Services.HeaderService HeaderService
+﻿@inject Web.Services.HomeConfigService HomeConfigService
 @{
     var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
-    var items = await HeaderService.GetCursosAlunoAsync(User.Identity.Name);
-    string logoPath = await HeaderService.GetLogoPathAsync(); //@"/assets/logos/teste.svg";
+    var cursos = await HomeConfigService.GetMatriculasLiberadasAsync(User.Identity.Name);
+    string logoPath = await HomeConfigService.GetLogoPathAsync(); //@"/assets/logos/teste.svg";
+    int alunoId = await HomeConfigService.GetAlunoIdAsync(User.Identity.Name);
+    var fundoLogo = HomeConfigService.GetLogoBackground();
 }
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: @fundoLogo">
     <a class="navbar-brand" href="~/@culture">
         @*<img class="icon" src="/assets/images/upfirst_logo.svg" alt="UpFirst" border="0" width="140">*@
         <img class="icon" src="@logoPath" alt="UpFirst" border="0" width="140">
@@ -16,6 +18,8 @@
 
     <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
         <ul class="navbar-nav mr-auto">
+
+            @* Administrador*@
             @if (User.Identity.IsAuthenticated && User.IsInRole("Administrator"))
             {
                 @*<li class="nav-item active">
@@ -29,7 +33,7 @@
                     </li>*@
                 <li class="nav-item">
                     <a class="nav-link text-white" asp-controller="Aulas" asp-action="Uploads" asp-route-culture=@culture>
-                        Upload
+                        Uploads
                     </a>
                 </li>
                 <li class="nav-item dropdown active">
@@ -51,7 +55,7 @@
                         @*<a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="SelecaoAvaliacao" asp-route-culture=@culture localize-content>Make Evaluation</a>*@
                         <a class="dropdown-item" asp-area="" asp-controller="Pagamentos" asp-action="Index" asp-route-culture=@culture localize-content>Payments</a>
                         @*<a class="dropdown-item" asp-area="" asp-controller="Configuracoes" asp-action="Index" asp-route-culture=@culture localize-content>Settings</a>*@
-                        <a class="dropdown-item" asp-area="" asp-controller="CursosAlunos" asp-action="Index" asp-route-culture=@culture localize-content>Enrollments</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Matriculas" asp-action="Index" asp-route-culture=@culture localize-content>Enrollments</a>
 
                         @*<a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="GetCEPInfo" asp-route-culture=@culture localize-content>Consulta CEP</a>*@
                         @*<div class="dropdown-divider"></div>
@@ -63,7 +67,7 @@
                         Settings
                     </a>
                     <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" asp-area="" asp-controller="Configuracoes" asp-action="Index" asp-route-culture=@culture>Home</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Configuracoes" asp-action="Edit" asp-route-id="1" asp-route-culture=@culture>Home</a>
                         <a class="dropdown-item" asp-controller="Configuracoes" asp-action="UploadLogo" asp-route-culture=@culture>Logo Upload</a>
                     </div>
 
@@ -84,7 +88,6 @@
             {
                 if (User.Identity.IsAuthenticated)
                 {
-
                     <li class="nav-item dropdown active">
 
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -92,7 +95,8 @@
                         </a>
                         <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
                             @*<a class="dropdown-item" asp-controller="Home" asp-action="SelecaoAvaliacao" asp-route-alunoId="@ViewData["AlunoId"]" asp-route-culture=@culture localize-content>Make Evaluation</a>*@
-                            <a class="dropdown-item" asp-controller="Home" asp-action="Evolucao" asp-route-alunoId="@ViewData["AlunoId"]" asp-route-culture=@culture localize-content>Grades</a>
+                            <a class="dropdown-item" asp-controller="Home" asp-action="Evolucao" asp-route-alunoId="@alunoId" asp-route-culture=@culture localize-content>Grades</a>
+                            <a class="dropdown-item" asp-controller="Home" asp-action="SelectCertificado" asp-route-alunoId="@alunoId" asp-route-culture=@culture localize-content>Certificados</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown active">
@@ -100,13 +104,13 @@
                             Classroom
                         </a>
                         <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
-                            @if (items.Count == 0)
+                            @if (cursos.Count == 0)
                             {
                                 @Html.Raw(Localizer.Text("No Course Purchased"));
                             }
                             else
                             {
-                                @foreach (var item in items)
+                                @foreach (var item in cursos)
                                 {
                                     <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="SalaCurso" asp-route-culture=@culture asp-route-cursoId=@item.Id asp-route-email=@User.Identity.Name localize-content>@item.Nome</a>
                                 }
@@ -124,9 +128,6 @@
                     <a class="nav-link text-white" asp-controller="Home" asp-action="SelecaoAvaliacao" asp-route-alunoId="1" asp-route-culture=@culture localize-content>Fazer Avaliação</a>
                 </li>
                 <li class="nav-link text-white">@ViewData["AlunoId"]</li>*@
-
-
-
 
 
 

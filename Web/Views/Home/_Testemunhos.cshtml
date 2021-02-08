@@ -1,0 +1,97 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">*@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">
+@*<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>*@
+@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>*@
+
+<!-- Optional theme -->
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">*@
+<link rel="stylesheet" href="~/css/style.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<meta charset="utf-8">
+@*<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>*@
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#testimonial-slider").owlCarousel({
+        items:3,
+        itemsDesktop:[1199,3],
+        itemsDesktopSmall:[1000,2],
+        itemsTablet:[767,1],
+        pagination: false,
+        navigation:true,
+        navigationText:["",""],
+        autoPlay:false
+    });
+});
+</script>
+<div class="demo" style="background: rgba(21,28,45,1);">
+    <div class="container">
+        <div class="row text-center">
+            <h1 class="heading-title"> Testemunhos </h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="testimonial-slider" class="owl-carousel">
+                    <div class="testimonial">
+                        <p class="description">
+                            Ótimo curso, parabéns pelo excelente conteúdo!
+                        </p>
+                        <div class="pic">
+                            <img src="~/images/Affluent-Women-Mailing-Lists.jpg" alt="" />
+                        </div>
+                        <div class="testimonial-prof">
+                            <h4>William</h4>
+                            @*<small>Web Developer</small>*@
+                        </div>
+                    </div>
+
+                    <div class="testimonial">
+                        <p class="description">
+                            O conhecimento que adquiri está fazendo a diferença na minha vida financeira.
+                        </p>
+                        <div class="pic">
+                            <img src="~/images/person-2.jpg" alt="" />
+                        </div>
+                        <div class="testimonial-prof">
+                            <h4>Roberto</h4>
+                            @*<small>Web Designer</small>*@
+                        </div>
+                    </div>
+
+                    <div class="testimonial">
+                        <p class="description">
+                            Estou ansioso por mais cursos... Muito bom, recomendo à todos!
+                        </p>
+                        <div class="pic">
+                            <img src="~/images/Sam-Revilter.jpg" alt="" />
+                        </div>
+                        <div class="testimonial-prof">
+                            <h4>Marcelo Silva</h4>
+                            @*<small>Web Designer</small>*@
+                        </div>
+                    </div>
+
+                    <div class="testimonial">
+                        <p class="description">
+                            Curso muito bom. Adelson Gomes nos orienta através de uma jornada realmente transformadora.
+                        </p>
+                        <div class="pic">
+                            <img src="~/images/team4-large.jpg" alt="" />
+                        </div>
+                        <div class="testimonial-prof">
+                            <h4>Ricardo Ribeiro</h4>
+                            @*<small>Web Developer</small>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

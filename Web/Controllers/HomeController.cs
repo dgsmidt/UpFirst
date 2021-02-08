@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DAL;
 using DAL.Models;
+using Finbuckle.MultiTenant;
 using LazZiya.ExpressLocalization;
 using LazZiya.TagHelpers.Alerts;
 using MercadoPago;
@@ -258,6 +259,8 @@ namespace Web.Controllers
                 }
             }
 
+            modelo.Configuracao = await _dbContext.Configuracoes.FirstOrDefaultAsync();
+
             modelo.Cursos = _dbContext.Cursos.ToList();
 
             return View(modelo);
@@ -268,6 +271,10 @@ namespace Web.Controllers
             QuestionarioVM model;
             Aluno aluno;
 
+            var ti = HttpContext.GetMultiTenantContext<TenantInfo>()?.TenantInfo;
+
+            ViewData["TawkToSrc"] = Configuration.GetSection("TawkTo").GetSection("Src").Value;
+
             ViewData["AlunoId"] = 0;
 
             var request = _httpContext.HttpContext.Request;
@@ -275,27 +282,26 @@ namespace Web.Controllers
 
             ViewData["PathProcessarPagamentoMP"] = basePath + "/" + culture + "/home/processar_pagamentoMP";
 
+            var configs = await _dbContext.Configuracoes.FirstOrDefaultAsync();
+
             IndexVM viewModel = new IndexVM
             {
                 InputModel = new InputModel(),
-
-                Cursos = await _dbContext.Cursos.ToListAsync()
+                Cursos = await _dbContext.Cursos.ToListAsync(),
+                Configuracao = configs
             };
 
-            
+            //ViewData["CabecalhoTexto1"] = configs.CabecalhoTexto1_Index;
+            //ViewData["Texto1"] = configs.Texto1_Index;
 
-            var configs = await _dbContext.Configuracoes.FirstOrDefaultAsync();
-
-            ViewData["CabecalhoTexto1"] = configs.CabecalhoTexto1_Index;
-            ViewData["Texto1"] = configs.Texto1_Index;
-
+            // Se esta logado
             if (User.Identity.IsAuthenticated)
             {
                 string userName = _userManager.GetUserName(User);
 
                 aluno = _dbContext.Alunos.Where(q => q.Email == userName).SingleOrDefault();
 
-                if (aluno == null)
+                if (aluno == null && !User.IsInRole("Administrator"))
                 {
                     ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
 
@@ -311,6 +317,8 @@ namespace Web.Controllers
                     _dbContext.Alunos.Add(aluno);
 
                     await _dbContext.SaveChangesAsync();
+
+                    ViewData["AlunoId"] = aluno.Id;
                 }
 
                 if (aluno != null)
@@ -322,17 +330,24 @@ namespace Web.Controllers
                         checkoutIds.Add(GetCheckoutMercadoPago("Curso " + RemoveDiacritics(item.Nome), item.Preco, aluno.Id, item.Id));
                     }
 
-                    ViewData["CheckoutIds"] = checkoutIds;
-
-                    
+                    //ViewData["CheckoutIds"] = checkoutIds;
 
                     viewModel.CheckoutIds = checkoutIds;
 
-                    if (aluno.NotaQuestionario == 0)
+                    if (!User.IsInRole("Administrator") && aluno.NotaQuestionario == 0)
                     {
                         model = new QuestionarioVM { Questionario = new Questionario { Perguntas = await _dbContext.PerguntasQuestionario.ToListAsync() }, AlunoId = aluno.Id };
 
                         return View("Questionario", model);
+                    }
+                }
+                else
+                {
+                    viewModel.CheckoutIds = checkoutIds;
+
+                    foreach (var curso in viewModel.Cursos)
+                    {
+                        viewModel.CheckoutIds.Add("");
                     }
                 }
             }
@@ -398,98 +413,101 @@ namespace Web.Controllers
                     .ThenInclude(m => m.Aulas)
                 .FirstOrDefault();
 
-            List<AulaAluno> aa = _dbContext.AulasAlunos.Where(aa => aa.AlunoId == alunoId).ToList();
+            //List<AulaAluno> aa = _dbContext.AulasAlunos.Where(aa => aa.AlunoId == alunoId).ToList();
 
-            if (avaliacao != null)
-            {
-                // Para cada aula do modulo
-                foreach (var item in avaliacao.Modulo.Aulas)
-                {
-                    // Verificar se assistiu
-                    if (!aa.Find(aa => aa.AulaId == item.Id).Assistida)
-                    {
-                        return View("DeveAssistirTodasAulas");
-                    }
-                }
+            //if (avaliacao != null)
+            //{
+            //    // Para cada aula do modulo
+            //    foreach (var item in avaliacao.Modulo.Aulas)
+            //    {
+            //        // Verificar se assistiu
+            //        if (!aa.Find(aa => aa.AulaId == item.Id).Assistida)
+            //        {
+            //            return View("DeveAssistirTodasAulas");
+            //        }
+            //    }
 
-                ViewData["AlunoId"] = alunoId;
-                ViewData["ModuloId"] = avaliacao.ModuloId;
-                ViewData["Cursoid"] = avaliacao.Modulo.CursoId;
+            ViewData["AlunoId"] = alunoId;
+            ViewData["ModuloId"] = avaliacao.ModuloId;
+            ViewData["Cursoid"] = avaliacao.Modulo.CursoId;
 
-                decimal notaCorte = _dbContext.Configuracoes
-                    .Select(c => c.NotaDeCorte)
-                    .FirstOrDefault();
-            }
-            else
-            {
-                return View("Error", new ErrorViewModel { RequestId = "Não há avaliações." });
-            }
+            //    decimal notaCorte = _dbContext.Configuracoes
+            //        .Select(c => c.NotaDeCorte)
+            //        .FirstOrDefault();
+            //}
+            //else
+            //{
+            //    return View("Error", new ErrorViewModel { RequestId = "Não há avaliações." });
+            //}
 
             return View(avaliacao);
         }
         [HttpPost]
-        public async Task<JsonResult> UpdateNota(int alunoId, int moduloId, decimal valor)
+        public async Task<JsonResult> UpdateNota(int alunoId, int moduloId, int cursoId, decimal valor)
         {
             bool aprovado = false;
             bool haMaisModulos = false;
 
-            ModuloAluno moduloAluno = _dbContext.ModulosAlunos
-                //.Include(ma => ma.Modulo)
-                //    .ThenInclude(x => x.Aulas)
-                .Where(ma => ma.AlunoId == alunoId && ma.ModuloId == moduloId)
-                .SingleOrDefault();
+            Matricula matricula = await _dbContext.Matriculas
+                .Where(m => m.AlunoId == alunoId && m.CursoId == cursoId)
+                .SingleOrDefaultAsync();
 
-            AulaAluno aulaAluno = _dbContext.AulasAlunos
-                .Where(aa => aa.Assistindo && aa.AlunoId == alunoId)
-                .SingleOrDefault();
+            Modulo modulo = await _dbContext.Modulos.FindAsync(moduloId);
 
-            moduloAluno.Nota = valor;
+            Curso curso = await _dbContext.Cursos
+                .Include(c => c.Modulos)
+                .Where(c => c.Id == cursoId)
+                .SingleOrDefaultAsync();
 
-            decimal notaCorte = _dbContext.Configuracoes
+            Nota nota = await _dbContext.Notas
+                .Where(n => n.AlunoId == alunoId && n.ModuloId == moduloId)
+                .SingleOrDefaultAsync();
+
+            if (nota == null)
+            {
+                _dbContext.Notas.Add(new Nota { Valor = valor, AlunoId = alunoId, ModuloId = moduloId });
+            }
+            else
+            {
+                nota.Valor = valor;
+            }
+
+            decimal notaCorte = await _dbContext.Configuracoes
                 .Select(c => c.NotaDeCorte)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
-            if (valor >= notaCorte) // Se nota >= nota de corte
+            if (valor >= notaCorte)
             {
                 aprovado = true;
-                // Desabilitar avaliação e desligar flag de assistindo das aulas do módulo 
-                if (aulaAluno != null)
-                    aulaAluno.Assistindo = false;
 
-                moduloAluno.AvaliacaoLiberada = false;
+                StatusAulas statusAulas = await _dbContext.StatusAulas
+                    .Where(s => s.MatriculaId == matricula.Id)
+                    .SingleOrDefaultAsync();
+
+                statusAulas.AvaliacaoLiberadaId = 0;
 
                 // Liberar o proximo modulo
-                ModuloAluno moduloLiberar = _dbContext.ModulosAlunos
-                    .Include(ma => ma.AulasAlunos)
-                    .Where(ma => ma.AlunoId == alunoId && ma.NumeroModulo == moduloAluno.NumeroModulo + 1)
-                    .SingleOrDefault();
+                Modulo moduloLiberar = await _dbContext.Modulos
+                    .Include(m => m.Aulas)
+                    .Where(m => m.CursoId == cursoId && m.NumeroModulo == modulo.NumeroModulo + 1)
+                    .SingleOrDefaultAsync();
 
                 if (moduloLiberar != null) // Há mais módulos no curso
                 {
                     haMaisModulos = true;
-                    moduloLiberar.Liberado = true;
+                    statusAulas.UltimoModuloLiberadoId = moduloLiberar.Id;
 
                     // Ativar a primeira aula do novo módulo
-                    Modulo modulo = _dbContext.Modulos
-                        .Include(m => m.Aulas)
-                        .Where(m => m.Id == moduloLiberar.ModuloId).SingleOrDefault();
+                    statusAulas.AulaPodeMarcarAssistidaId = statusAulas.AulaAssistindoId = moduloLiberar
+                        .Aulas.Where(a => a.NumeroAula == 1)
+                        .Select(a => a.Id)
+                        .SingleOrDefault();
 
-                    foreach (var aula in modulo.Aulas)
-                    {
-                        AulaAluno aa = _dbContext.AulasAlunos
-                                .Where(aa => aa.AulaId == aula.Id && aa.AlunoId == alunoId)
-                                .SingleOrDefault();
-
-                        aa.Assistida = false;
-
-                        if (aula.NumeroAula == 1)
-                        {
-                            aa.HabilitarAssistida = true;
-                            aa.Assistindo = true;
-                        }
-
-                        await _dbContext.SaveChangesAsync();
-                    }
+                    await _dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    matricula.CursoConcluido = true;
                 }
             }
 
@@ -548,33 +566,33 @@ namespace Web.Controllers
 
         //    return View(model);
         //}
-        public async Task<IActionResult> SelecaoCurso()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            var userId = user?.Id;
+        //public async Task<IActionResult> SelecaoCurso()
+        //{
+        //    var user = await _userManager.GetUserAsync(User);
+        //    var userId = user?.Id;
 
-            var aluno = await _dbContext.Alunos.Where(a => a.UserId == userId).FirstOrDefaultAsync();
+        //    var aluno = await _dbContext.Alunos.Where(a => a.UserId == userId).FirstOrDefaultAsync();
 
-            ViewData["AlunoId"] = aluno.Id;
+        //    ViewData["AlunoId"] = aluno.Id;
 
-            var cursosAlunos = await _dbContext.CursosAlunos
-                .Where(ca => ca.AlunoId == aluno.Id && ca.Liberado)
-                .Include(ca => ca.Curso)
-                .OrderBy(ca => ca.CursoId)
-                .ToListAsync();
+        //    var cursosAlunos = await _dbContext.CursosAlunos
+        //        .Where(ca => ca.AlunoId == aluno.Id && ca.Liberado)
+        //        .Include(ca => ca.Curso)
+        //        .OrderBy(ca => ca.CursoId)
+        //        .ToListAsync();
 
-            List<Curso> cursos = new List<Curso>();
+        //    List<Curso> cursos = new List<Curso>();
 
-            if (cursosAlunos != null)
-            {
-                foreach (var item in cursosAlunos)
-                {
-                    cursos.Add(item.Curso);
-                }
-            }
+        //    if (cursosAlunos != null)
+        //    {
+        //        foreach (var item in cursosAlunos)
+        //        {
+        //            cursos.Add(item.Curso);
+        //        }
+        //    }
 
-            return View(cursos);
-        }
+        //    return View(cursos);
+        //}
         [HttpPost]
         public async Task<IActionResult> Questionario(QuestionarioVM model)
         {
@@ -634,24 +652,55 @@ namespace Web.Controllers
         {
             return Redirect("~/planos.html");
         }
-        public async Task<IActionResult> Evolucao(int alunoId)
+        public async Task<IActionResult> Certificado(int matriculaId)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                Aluno aluno = _dbContext.Alunos
-                    .Where(q => q.UserId == _userManager.GetUserId(User))
+            Matricula matricula = await _dbContext.Matriculas
+                .Include(m => m.Aluno)
+                .Where(m => m.Id == matriculaId)
+                .SingleOrDefaultAsync();
+
+            ViewData["NomeAluno"] = matricula.Aluno.Nome;
+
+            return View();
+        }
+        public async Task<IActionResult> SelectCertificado(int? alunoId)
+        {
+            if (alunoId is null)
+                alunoId = _dbContext.Alunos
+                    .Where(a => a.UserId == _userManager.GetUserId(User))
+                    .Select(a => a.Id)
                     .SingleOrDefault();
 
-                if (aluno != null) alunoId = aluno.Id;
-            }
+            Aluno aluno = await _dbContext.Alunos.FindAsync(alunoId);
 
-            List<ModuloAluno> modulosAluno = await _dbContext.ModulosAlunos
-                .Include(ma => ma.Modulo)
+            IEnumerable<Matricula> matriculasConcluidas = await _dbContext.Matriculas
+                .Include(m => m.Curso)
+                .Include(m => m.Aluno)
+                .Where(m => m.AlunoId == alunoId && m.CursoConcluido)
+                .ToListAsync();
+
+            return View(matriculasConcluidas);
+        }
+        public async Task<IActionResult> Evolucao(int alunoId)
+        {
+            // Para descobrir qual aluno está logado, ignorando o parametro alunoId
+
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    Aluno aluno = _dbContext.Alunos
+            //        .Where(q => q.UserId == _userManager.GetUserId(User))
+            //        .SingleOrDefault();
+
+            //    if (aluno != null) alunoId = aluno.Id;
+            //}
+
+            List<Nota> notas = await _dbContext.Notas
+                .Include(n => n.Aluno)
+                .Include(n => n.Modulo)
                     .ThenInclude(m => m.Curso)
-                .Where(ma => ma.AlunoId == alunoId).ToListAsync();
+                .Where(n => n.AlunoId == alunoId).ToListAsync();
 
-
-            return View(modulosAluno);
+            return View(notas);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -16,7 +16,5 @@ namespace DAL.Models
         [Display(Name = "Questionnaire")]
         [Column(TypeName = "decimal(3, 1)")]
         public decimal NotaQuestionario { get; set; }
-        public List<AulaAluno> AulasAlunos { get; set; }
-        public List<CursoAluno> CursosAlunos { get; set; }
     }
 }

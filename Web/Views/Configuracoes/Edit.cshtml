@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
 }
 
 <h1 localize-content>@ViewData["Title"]</h1>
@@ -14,9 +15,24 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
+                <label asp-for="Titulo" class="control-label" localize-content>Tab Caption</label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Logo" class="control-label" localize-content>Logo</label>
                 <input asp-for="Logo" class="form-control" />
                 <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogoBackground" class="control-label" localize-content>Logo Background</label>
+                <input asp-for="LogoBackground" class="form-control" />
+                <span asp-validation-for="LogoBackground" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailContato" class="control-label" localize-content>Contact E-mail</label>
+                <input asp-for="EmailContato" class="form-control" />
+                <span asp-validation-for="EmailContato" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NotaDeCorte" class="control-label" localize-content>Passing Score</label>
@@ -33,6 +49,95 @@
                 <input asp-for="Texto1_Index" class="form-control" />
                 <span asp-validation-for="Texto1_Index" class="text-danger"></span>
             </div>
+
+            @*<div class="form-group">
+                    <label asp-for="Video_Index" class="control-label" localize-content>Vídeo Institucional</label>
+                    <input asp-for="Video_Index" class="form-control" />
+                    <span asp-validation-for="Video_Index" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="Video_Index" class="control-label"></label>
+                <div class="input-group" mb-3>
+                    <input asp-for="Video_Index" class="form-control" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#exampleModal">Escolher</button>
+                    </div>
+                    <span asp-validation-for="Video_Index" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="CabecalhoTexto2_Index" class="control-label" localize-content>Cabeçalho 2</label>
+                <input asp-for="CabecalhoTexto2_Index" class="form-control" />
+                <span asp-validation-for="CabecalhoTexto2_Index" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Texto2_Index" class="control-label" localize-content>Texto 2</label>
+                <input asp-for="Texto2_Index" class="form-control" />
+                <span asp-validation-for="Texto2_Index" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CabecalhoTexto3_Index" class="control-label" localize-content>Cabeçalho 3</label>
+                <input asp-for="CabecalhoTexto3_Index" class="form-control" />
+                <span asp-validation-for="CabecalhoTexto3_Index" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Texto3_Index" class="control-label" localize-content>Texto 3</label>
+                <input asp-for="Texto3_Index" class="form-control" />
+                <span asp-validation-for="Texto3_Index" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TextoAlvo_Index" class="control-label" localize-content>Texto Alvo</label>
+                <input asp-for="TextoAlvo_Index" class="form-control" />
+                <span asp-validation-for="TextoAlvo_Index" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TextoGrafico_Index" class="control-label" localize-content>Texto Gráfico</label>
+                <input asp-for="TextoGrafico_Index" class="form-control" />
+                <span asp-validation-for="TextoGrafico_Index" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TextoComputador_Index" class="control-label" localize-content>Texto Computador</label>
+                <input asp-for="TextoComputador_Index" class="form-control" />
+                <span asp-validation-for="TextoComputador_Index" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnderecoLinha1" class="control-label" localize-content>Endereço Linha 1</label>
+                <input asp-for="EnderecoLinha1" class="form-control" />
+                <span asp-validation-for="EnderecoLinha1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnderecoLinha2" class="control-label" localize-content>Endereço Linha 2</label>
+                <input asp-for="EnderecoLinha2" class="form-control" />
+                <span asp-validation-for="EnderecoLinha2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnderecoLinha3" class="control-label" localize-content>Endereço Linha 3</label>
+                <input asp-for="EnderecoLinha3" class="form-control" />
+                <span asp-validation-for="EnderecoLinha3" class="text-danger"></span>
+            </div>
+
+            <div id="exampleModal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Arquivos no Servidor</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Escolha o vídeo institucional.</p>
+                            <select id="SelectVideo" asp-for="Video_Index" class="form-control" asp-items="ViewBag.Video"></select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="@("window.location.href='" + @Url.Action("Uploads","Aulas", new { culture = @culture }) + "'");">Fazer Upload</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" onclick="ModalOkClicked()">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value=@Localizer.Text("Save") class="btn btn-primary" />
             </div>
@@ -41,6 +146,14 @@
 </div>
 
 <div>
-    <a asp-action="Index" localize-content>Back to List</a>
+    <a asp-controller="Home" asp-action="Index" localize-content>Home</a>
 </div>
 
+@*<script src="~/lib/jquery/jquery.min.js"></script>*@
+
+<script>
+    function ModalOkClicked() {
+        $('#Video_Index').val("/uploads/" + $('#SelectVideo').val());
+        $('#exampleModal').modal('toggle');
+    }
+</script>

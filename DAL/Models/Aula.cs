@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Models
 {
@@ -14,9 +15,17 @@ namespace DAL.Models
         [Display(Name = "Online Video")]
         public string Video { get; set; }
         public string MaterialApoio { get; set; }
+        [NotMapped]
+        public bool Assistida { get; set; }
+        [NotMapped]
+        public bool Assistindo { get; set; }
+        [NotMapped]
+        public bool PodeMarcarAssistida { get; set; }
+        [NotMapped]
+        public string Anotacoes { get; set; }
         [Display(Name = "Module")]
         public Modulo Modulo { get; set; }
-        public List<AulaAluno> AulasAlunos { get; set; }
+        //public List<AulaAluno> AulasAlunos { get; set; }
         public IList<ArquivoApoio> ArquivosApoio { get; set; }
     }
 }

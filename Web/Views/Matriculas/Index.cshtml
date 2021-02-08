@@ -1,0 +1,70 @@
+﻿@model IEnumerable<DAL.Models.Matricula>
+
+@{
+    ViewData["Title"] = "Enrollments";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<p>
+    @*<a asp-action="Create">Create New</a>*@
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Aluno)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Aluno.Email)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Aluno.WhatsApp)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Curso)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Pagamento.Data)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Liberada)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Aluno.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Aluno.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Aluno.WhatsApp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Curso.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pagamento.Data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Liberada)
+            </td>
+            @*<td>
+                <a asp-action="ExcluirMatricula" asp-route-alunoId="@item.AlunoId" asp-route-cursoId="@item.CursoId" localize-content>Excluir</a>
+            </td>*@
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@*<script src="~/lib/jquery/jquery.min.js"></script>*@

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using DAL;
+using DAL.Models;
 using LazZiya.ExpressLocalization;
 using LazZiya.ExpressLocalization.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
@@ -89,7 +90,7 @@ namespace WebCore.Areas.Identity.Pages.Account.Manage
                 throw new InvalidOperationException($"Unexpected error occurred deleting user with ID '{userId}'.");
             }
 
-            await _dbContext.ExcluirAlunoAsync(user.Id);
+            await _dbContext.RemoverAlunoAsync(user.Id);
 
             await _signInManager.SignOutAsync();
 

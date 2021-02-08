@@ -35,5 +35,6 @@ namespace Web.ViewModels
         public List<Curso> Cursos { get; set; }
         public InputModel InputModel { get; set; }
         public List<string> CheckoutIds { get; set; }
+        public Configuracao Configuracao { get; set; }
     }
 }

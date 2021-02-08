@@ -36,5 +36,11 @@
     "inputFiles": [
       "wwwroot/js/arquivos.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/sala_aula.min.js",
+    "inputFiles": [
+      "wwwroot/js/sala_aula.js"
+    ]
   }
 ]

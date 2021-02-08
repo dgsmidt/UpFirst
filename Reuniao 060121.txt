@@ -1,0 +1,16 @@
+club
+co
+live
+
+
+show (bixado)
+app
+
+
+OK Acertar o logo do rodape, quando muda arquivo de logo ele nao atualiza
+OK Escola De Sucesso: usar base propria
+OK Tirar a seta na página index em baixo de "Suas Finanças de Maneira Inteligente.." e colocar um vídeo
+OK Tirar a descricão dos cursos na tela inicial se já houver descrição configurada no Configurar
+OK Poder configurar todos os textos da página Inicial
+OK Cadastro pela pagina Index dá pau
+OK Liberar login atraves do google para escola de sucesso

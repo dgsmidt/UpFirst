@@ -10,8 +10,8 @@ namespace DAL.Models
     public class Pagamento
     {
         public int Id { get; set; }
-        public int CursoId { get; set; }
-        public int AlunoId { get; set; }
+        //public int CursoId { get; set; }
+        //public int AlunoId { get; set; }
         [Column(TypeName = "decimal(5, 2)")]
         [Display(Name = "Amount")]
         public decimal Valor { get; set; }
@@ -30,9 +30,10 @@ namespace DAL.Models
         public string StatusDetail { get; set; }
         // Status da opecao no Mercado Pago
         public string Status { get; set; }
-        [Display(Name = "Course")]
-        public Curso Curso { get; set; }
+        //[Display(Name = "Course")]
+        //public Curso Curso { get; set; }
         [Display(Name = "Student")]
-        public Aluno Aluno { get; set; }
+        //public Aluno Aluno { get; set; }
+        public Matricula Matricula { get; set; }
     }
 }

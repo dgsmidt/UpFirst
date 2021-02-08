@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th localize-content>
+                @Html.DisplayNameFor(model => model.Matricula.Aluno.Nome)
+            </th>
+            <th localize-content>
                 @Html.DisplayNameFor(model => model.Valor)
             </th>
             <th>
@@ -36,18 +39,21 @@
             <th localize-content>
                 @Html.DisplayNameFor(model => model.StatusDetail)
             </th>
-            <th localize-content>
-                @Html.DisplayNameFor(model => model.Curso)
-            </th>
-            <th localize-content>
-                @Html.DisplayNameFor(model => model.Aluno)
-            </th>
+            @*<th localize-content>
+            @Html.DisplayNameFor(model => model.Curso)
+        </th>
+        <th localize-content>
+            @Html.DisplayNameFor(model => model.Aluno)
+        </th>*@
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Matricula.Aluno.Nome)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Valor)
             </td>
@@ -72,12 +78,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.StatusDetail)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Curso.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Aluno.UserId)
-            </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.Curso.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Aluno.UserId)
+        </td>*@
             <td>
                 @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
             <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
@@ -87,3 +93,4 @@
 }
     </tbody>
 </table>
+@*<script src="~/lib/jquery/jquery.min.js"></script>*@

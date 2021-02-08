@@ -1,0 +1,15 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Matrículas Excluídas";
+
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<h6>As matrículas do aluno <b>@ViewData["NomeAluno"]</b> foram excluídas.</h6>
+
+<div class="mt-5">
+    <a asp-controller="Users" asp-action="Index" localize-content>Back to Users</a>
+</div>

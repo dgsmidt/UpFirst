@@ -1,0 +1,22 @@
+saaskit
+Finbuckle.MultiTenant
+cloudscribe
+OrchardCore
+aspnetboilerplate
+
+ALICE@INITECH.COM
+Pass123$
+
+BOB@MEGACORP.COM
+Pass123$
+
+Como armazenar os Tenants Infos
+https://www.finbuckle.com/MultiTenant/Docs/Stores
+
+Dois tenants são definidos nos exemplos:
+
+finbuckle
+initech
+
+É possível excluir o parametro {culture=en} da definicao de rota e usar ?culture=pt-br ou ?culture=en ao final da url
+

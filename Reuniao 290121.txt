@@ -1,0 +1,54 @@
+Inabilitar download do video ao clicar com botão direito sobre a aula
+Colocar ESF nos emails em vez de UpFirst
+Criar cadastro para testemunhos, com foto e texto: irá aparecer abaixo da linha no Footer
+Configurar o RGB do fundo da Header para combinar com o fundo do logo, background do Footer tambem:
+
+O fundo logo esf é RGB(6,26,55)
+
+footer está em geral.css
+
+footer {
+	background-color: rgba(5,26,55,1.0);
+	margin: 0px;
+	padding: 30px;
+	color: #fff;
+}
+
+
+Header é em _menuPartial:
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #051a37 !important;">
+
+usava classe "bg-dark"
+
+.bg-dark {
+    background-color: #343a40!important;
+}
+
+The escoladesucessofinanceiro.com server blocked this message from being delivered.
+
+webmail.escoladesucessofinanceiro.com
+esf@escoladesucessofinanceiro.com
+ESF@12345#
+
+Tawk.to
+esf@escoladesucessofinanceiro.com
+Csr@12345#
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/60146e47a9a34e36b971e53f/1et7stirv';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+
+
