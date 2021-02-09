@@ -232,7 +232,12 @@ section.intruducao article {
 
 .boxForm {
 	background-color: rgba(21,28,45,1.0);
-	max-width: 35%;
+}
+
+@media only screen and (min-width: 961px) {
+	.boxForm {
+		max-width: 35%;
+	}
 }
 
 .boxForm form {

@@ -1,0 +1,41 @@
+﻿@model DAL.Models.Desconto
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<h4>Desconto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="Valor" class="control-label"></label>
+                <input asp-for="Valor" class="form-control" />
+                <span asp-validation-for="Valor" class="text-danger"></span>
+            </div>*@
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">%</span>
+                </div>
+                <input asp-for="Valor" type="number" class="form-control" placeholder="@Localizer.Text("Value")" aria-label="@Localizer.Text("Value")" aria-describedby="basic-addon1">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer.Text("Create")" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" localize-content>Back to List</a>
+</div>
+
