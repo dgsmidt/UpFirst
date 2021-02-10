@@ -120,6 +120,9 @@
   <data name="$" xml:space="preserve">
     <value>R$</value>
   </data>
+  <data name="(%) Discount" xml:space="preserve">
+    <value>(%) Desconto</value>
+  </data>
   <data name="(%) Value" xml:space="preserve">
     <value>(%) Valor</value>
   </data>

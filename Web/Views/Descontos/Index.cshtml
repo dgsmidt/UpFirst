@@ -36,7 +36,7 @@
                     <a asp-action="Details" asp-route-id="@item.Id" localize-content>Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id" localize-content>Delete</a> 
                     @*<a asp-action="" onclick="GerarCupom(@item.Id)" localize-content>Generate Coupon</a>*@
-                    <button class="btn btn-primary ml-5" onclick="GerarCupom(@item.Id)" localize-content>Generate Coupon</button>
+                    <button class="btn btn-primary ml-5" onclick="GerarCupom(@item.Valor)" localize-content>Generate Coupon</button>
 
                 </td>
             </tr>
@@ -45,7 +45,16 @@
 </table>
 
 <script>
-    function GerarCupom(id){
-        alert(id);
+    function GerarCupom(valor){
+        //alert(id);
+        var url = '/pt-br/Descontos/GetCupom/';
+        var dados = { percentualDesconto: valor};
+
+        $.get(url, dados,
+            function (returnedData) {
+                alert(returnedData.codigo);
+                //console.log(returnedData);
+            }
+        );
     }
 </script>

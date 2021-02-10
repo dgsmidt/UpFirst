@@ -19,6 +19,29 @@ namespace Web.Controllers
             _context = context;
         }
 
+        public async Task<JsonResult> CheckCupom(string codigo)
+        {
+            string retorno = "Ok";
+
+            Cupom cupom = await _context.Cupons.Where(c => c.Codigo == codigo).SingleOrDefaultAsync();
+
+            if (cupom == null)
+            {
+                retorno = "naoExiste";
+            }
+
+            if (cupom.Utilizado)
+            {
+                retorno = "jaUtilizado";
+            }
+
+            if (DateTime.Compare(cupom.Validade, DateTime.Now) < 0)
+            {
+                retorno = "expirado";
+            }
+
+            return Json(new { retorno = retorno });
+        }
         // GET: Cupons
         public async Task<IActionResult> Index()
         {

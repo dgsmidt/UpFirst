@@ -115,7 +115,33 @@ namespace Web.Controllers
             }
             return View(desconto);
         }
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        public async Task<JsonResult> GetCupom(decimal percentualDesconto)
+        {
+            string codigo = RandomString(6);
 
+            // Enquanto ja existe cupom com este codigo
+            while (await _context.Cupons.Where(c=>c.Codigo == codigo).SingleOrDefaultAsync() != null)
+                codigo = RandomString(6);
+
+            _context.Cupons.Add(new Cupom { 
+                Codigo = codigo, 
+                Data = DateTime.Now, 
+                Desconto = percentualDesconto, 
+                Utilizado = false, 
+                Validade = DateTime.Now.AddMonths(3) 
+            });
+
+            await _context.SaveChangesAsync();
+
+            return Json(new { codigo = codigo });
+        }
         // GET: Descontos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

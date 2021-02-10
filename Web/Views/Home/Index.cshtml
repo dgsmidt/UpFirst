@@ -176,7 +176,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Não, comprar sem Cupom</button>
-                    <button id="btnOkDesconto" type="button" class="btn btn-primary" data-dismiss="modal" disabled onclick="ContinuarCompra()">Sim, usar o cupom</button>
+                    <button id="btnOkDesconto" type="button" class="btn btn-primary" disabled onclick="CheckCupom()">Sim, usar o cupom</button>
                 </div>
             </div>
         </div>
@@ -191,8 +191,32 @@
     function Hide() {
         $('#myModal').modal('hide');
     };
-    function ContinuarCompra() {
-        alert($('#numeroCupom').val());
+
+    function CheckCupom() {
+        var url = '/pt-br/Cupons/CheckCupom/';
+        var dados = { codigo: $('#numeroCupom').val() };
+
+        $.post(url, dados,
+            function (returnedData) {
+                switch (returnedData.retorno) {
+                    case "naoExiste":
+                        alert('Código inválido');
+                        break;
+
+                    case "jaUtilizado":
+                        alert('Cupom já utilizado');
+                        break;
+
+                    case "expirado":
+                        alert('Cupom expirado');
+                        break;
+
+                    default:
+                        $('#modalDesconto').modal('toggle');
+                        $('#numeroCupom').val('');
+                }
+            }
+        );
     }
 
     function CheckEnableOK() {

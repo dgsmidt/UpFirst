@@ -14,6 +14,7 @@ namespace DAL.Models
         public DateTime Data { get; set; }
         public DateTime Validade { get; set; }
         [Column(TypeName = "decimal(6, 2)")]
+        [Display(Name = "(%) Discount")]
         public decimal Desconto { get; set; }
         public bool Utilizado { get; set; }
     }
