@@ -1,0 +1,102 @@
+﻿@model IEnumerable<DAL.Models.Pagamento>
+
+@{
+    ViewData["Title"] = "Payments";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+@*<p>
+    <a asp-action="Create" localize-content>Create New</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Matricula.Aluno.Nome)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Forma)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.PaymentId)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.TipoPagamento)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.StatusDetail)
+            </th>
+            <th localize-content>
+                @Html.DisplayNameFor(model => model.Cupom)
+            </th>
+            @*<th localize-content>
+            @Html.DisplayNameFor(model => model.Curso)
+        </th>
+        <th localize-content>
+            @Html.DisplayNameFor(model => model.Aluno)
+        </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Matricula.Aluno.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Forma)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoPagamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusDetail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cupom)
+            </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.Curso.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Aluno.UserId)
+        </td>*@
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@*<script src="~/lib/jquery/jquery.min.js"></script>*@

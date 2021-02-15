@@ -1,0 +1,156 @@
+﻿@inject Upfirst.Services.HomeConfigService HomeConfigService
+@{
+    var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+    var cursos = await HomeConfigService.GetMatriculasLiberadasAsync(User.Identity.Name);
+    string logoPath = await HomeConfigService.GetLogoPathAsync(); //@"/assets/logos/teste.svg";
+    int alunoId = await HomeConfigService.GetAlunoIdAsync(User.Identity.Name);
+    var fundoLogo = HomeConfigService.GetLogoBackground();
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: @fundoLogo">
+    <a class="navbar-brand" href="~/@culture">
+        @*<img class="icon" src="/assets/images/upfirst_logo.svg" alt="UpFirst" border="0" width="140">*@
+        <img class="icon" src="@logoPath" alt="UpFirst" border="0" width="140">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
+        <ul class="navbar-nav mr-auto">
+
+            @* Administrador*@
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Administrator"))
+            {
+                @*<li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(página atual)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>*@
+                @*<li class="nav-item">
+                        <a class="nav-link" asp-controller="Configuracoes" asp-action="UploadLogo" asp-route-culture=@culture>Logo Upload</a>
+                    </li>*@
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-controller="Aulas" asp-action="Uploads" asp-route-culture=@culture>
+                        Uploads
+                    </a>
+                </li>
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Menu
+                    </a>
+                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-area="" asp-controller="Cursos" asp-action="Index" asp-route-culture=@culture localize-content>Courses</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index" asp-route-culture=@culture localize-content>Users</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="PerguntasQuestionario" asp-action="Index" asp-route-culture=@culture localize-content>Quiz</a>
+                        @*<a class="dropdown-item" asp-area="" asp-controller="Aulas" asp-action="Index" asp-route-culture=@culture localize-content>Lessons</a>
+                            <a class="dropdown-item" asp-area="" asp-controller="Modulos" asp-action="Index" asp-route-culture=@culture localize-content>Modules</a>*@
+                        @*<a class="dropdown-item" asp-area="" asp-controller="Avaliacoes" asp-action="Index" asp-route-culture=@culture localize-content>Evaluations</a>*@
+                        @*<a class="dropdown-item" asp-area="" asp-controller="PerguntasAvaliacao" asp-action="Index" asp-route-culture=@culture localize-content>Questions</a>*@
+                        @*<a class="dropdown-item" asp-area="" asp-controller="RespostasAvaliacao" asp-action="Index" asp-route-culture=@culture localize-content>Answers</a>*@
+                        <a class="dropdown-item" asp-area="" asp-controller="Alunos" asp-action="Index" asp-route-culture=@culture localize-content>Students</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="TestarQuestionario" asp-route-alunoId="1" asp-route-questionarioId="1" asp-route-culture=@culture localize-content>Test Quiz</a>
+                        @*<a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="SelecaoCurso" asp-route-culture=@culture localize-content>Classroom</a>*@
+                        @*<a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="SelecaoAvaliacao" asp-route-culture=@culture localize-content>Make Evaluation</a>*@
+                        <a class="dropdown-item" asp-area="" asp-controller="Pagamentos" asp-action="Index" asp-route-culture=@culture localize-content>Payments</a>
+                        @*<a class="dropdown-item" asp-area="" asp-controller="Configuracoes" asp-action="Index" asp-route-culture=@culture localize-content>Settings</a>*@
+                        <a class="dropdown-item" asp-area="" asp-controller="Matriculas" asp-action="Index" asp-route-culture=@culture localize-content>Enrollments</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Cupons" asp-action="Index" asp-route-culture=@culture localize-content>Coupons</a>
+
+                        @*<a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="GetCEPInfo" asp-route-culture=@culture localize-content>Consulta CEP</a>*@
+                        @*<div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Algo mais aqui</a>*@
+                    </div>
+                </li>
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" localize-content>
+                        Settings
+                    </a>
+                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-area="" asp-controller="Configuracoes" asp-action="Edit" asp-route-id="1" asp-route-culture=@culture>Home</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Descontos" asp-action="Index" asp-route-culture=@culture localize-content>Discounts</a>
+                        <a class="dropdown-item" asp-controller="Configuracoes" asp-action="UploadLogo" asp-route-culture=@culture>Logo Upload</a>
+                    </div>
+
+                </li>
+                @*<li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" localize-content>
+                            Classroom
+                        </a>
+                        <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="SelecaoCurso" asp-route-culture=@culture localize-content>Enter</a>
+                        </div>
+                    </li>*@
+                @*<li class="nav-item">
+                        <a class="nav-link disabled" href="#">Desativado</a>
+                    </li>*@
+            }
+            else // Aluno
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item dropdown active">
+
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Menu
+                        </a>
+                        <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                            @*<a class="dropdown-item" asp-controller="Home" asp-action="SelecaoAvaliacao" asp-route-alunoId="@ViewData["AlunoId"]" asp-route-culture=@culture localize-content>Make Evaluation</a>*@
+                            <a class="dropdown-item" asp-controller="Home" asp-action="Evolucao" asp-route-alunoId="@alunoId" asp-route-culture=@culture localize-content>Grades</a>
+                            <a class="dropdown-item" asp-controller="Home" asp-action="SelectCertificado" asp-route-alunoId="@alunoId" asp-route-culture=@culture localize-content>Certificados</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" localize-content>
+                            Classroom
+                        </a>
+                        <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                            @if (cursos.Count == 0)
+                            {
+                                @Html.Raw(Localizer.Text("No Course Purchased"));
+                            }
+                            else
+                            {
+                                @foreach (var item in cursos)
+                                {
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="SalaCurso" asp-route-culture=@culture asp-route-cursoId=@item.Id asp-route-email=@User.Identity.Name localize-content>@item.Nome</a>
+                                }
+                                @*<a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="SelecaoCurso" asp-route-culture=@culture localize-content>Enter</a>*@
+
+                            }
+                        </div>
+                    </li>
+
+
+                }
+            }
+
+            @*<li class="nav-item my-auto">
+                    <a class="nav-link text-white" asp-controller="Home" asp-action="SelecaoAvaliacao" asp-route-alunoId="1" asp-route-culture=@culture localize-content>Fazer Avaliação</a>
+                </li>
+                <li class="nav-link text-white">@ViewData["AlunoId"]</li>*@
+
+
+
+
+            <!--<li class="nav-item my-auto">
+            <a class="nav-link text-white" asp-area="" asp-controller="SalaAulas" asp-action="Index" asp-route-alunoId="1" asp-route-cursoId="1" asp-route-culture=@culture localize-content>Sala C1</a>-->
+            @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-whatever="" localize-content>Classroom</button>*@
+            <!--</li>
+            <li class="nav-link text-white">
+                <a class="nav-link text-white" asp-area="" asp-controller="SalaAulas" asp-action="Index" asp-route-alunoId="1" asp-route-cursoId="2" asp-route-culture=@culture localize-content>Sala C2</a>
+            </li>
+            <li class="nav-item my-auto">
+                <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Avaliacao" asp-route-alunoId="1" asp-route-moduloId="2" asp-route-culture=@culture localize-content>Testar Avaliação</a>
+            </li>-->
+            @*<li class="nav-item my-auto">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="TestarQuestionario" asp-route-alunoId="1" asp-route-questionarioId="1" asp-route-culture=@culture localize-content>Testar Questionário</a>
+                </li>*@
+        </ul>
+
+        <div class="form-inline my-2 my-lg-0">
+            <partial name="_LoginPartial" />
+        </div>
+    </div>
+</nav>

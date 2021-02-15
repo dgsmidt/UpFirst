@@ -30,6 +30,7 @@ namespace DAL.Models
         public string StatusDetail { get; set; }
         // Status da opecao no Mercado Pago
         public string Status { get; set; }
+        public string Cupom { get; set; }
         //[Display(Name = "Course")]
         //public Curso Curso { get; set; }
         [Display(Name = "Student")]

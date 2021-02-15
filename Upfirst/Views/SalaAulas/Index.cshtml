@@ -1,0 +1,183 @@
+﻿@model Upfirst.ViewModels.SalaAulaVM
+
+@{
+    Layout = "_LayoutUpFirst";
+    ViewData["Title"] = "Sala de Aula";
+    var anotacoes = "";
+    var avaliacaoText = "";
+    var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+
+    if (culture == "en")
+    {
+        avaliacaoText = "Evaluation";
+    }
+    else
+    {
+        avaliacaoText = "Avaliação";
+    }
+}
+
+<main class="othersPages" role="main">
+    <input class="form-control" id="assistindoAulaId" hidden />
+    <input class="form-control" value="@Model.StatusAulas.Matricula.AlunoId" id="alunoId" hidden />
+    <input class="form-control" value="@Model.StatusAulas.Matricula.Id" id="matriculaId" hidden />
+    @*<div class="container">
+            <div class="row">
+                <div class="col col-lg-2">
+                    <label class="text-white">AulaId</label>
+                    <input class="form-control" id="assistindoAulaId" /><br />
+                </div>
+                <div class="col col-lg-2">
+                    <label class="text-white">AlunoId</label>
+                    <input class="form-control" value="@Model.Alunos[0].Id" id="alunoId" />
+                </div>
+            </div>
+        </div>*@
+    <section class="container-fluid aula">
+        <div class="row">
+
+            <div class="col-3 menuAulas">
+                <h2>@Model.Curso.Nome</h2>
+                @foreach (var modulo in Model.Curso.Modulos.Where(m => m.Liberado))
+                {
+                    <ul class="modulo ativo">
+                        @* Tem a classe desativo tambem*@
+
+                        @modulo.Descricao
+                        @foreach (var aula in modulo.Aulas)
+                        {
+                            @*<li class="realizado"><a href="#">Aula 01</a></li>
+                                <li class="ativo"><a href="#">Aula 02</a></li>*@
+                            @*@if (aula.AulasAlunos.Count > 0)
+                                {
+                                    var classToAdd = "li-aula";
+                                    if (aula.AulasAlunos[0].Assistindo)
+                                    {
+                                        classToAdd += " ativo";
+                                        anotacoes = aula.AulasAlunos[0].Anotacoes;
+                                    }
+                                    if (aula.AulasAlunos[0].Assistida) classToAdd += " realizado";
+                                    <li @Html.Raw("class='" + classToAdd + "'")><a id="@aula.Id" class="itemAula" name="@aula.Video" style="cursor: pointer">@aula.Descricao</a></li>
+                                }
+                                else
+                                {
+                                    <li class="li-aula"><a id="@aula.Id" class="itemAula" name="@aula.Video" style="cursor: pointer">@aula.Descricao</a></li>
+
+                                }*@
+
+                            var classToAdd = "li-aula";
+                            if (aula.Assistindo)
+                            {
+                                classToAdd += " ativo";
+                                anotacoes = aula.Anotacoes;
+                            }
+                            if (aula.Assistida) classToAdd += " realizado";
+                            <li @Html.Raw("class='" + classToAdd + "'")><a id="@aula.Id" class="itemAula" name="@aula.Video" style="cursor: pointer">@aula.Descricao</a></li>
+                        }
+                        @*Avaliação*@
+                        @*<li class="li-aula"><a class="itemAula" asp-controller="Home" asp-action="Avaliacao" asp-route-alunoId="@ViewData["AlunoId"]" asp-route-avaliacaoId="@modulo.AvaliacaoId" style="cursor: pointer" localize-content>Evaluation</a></li>*@
+
+                    </ul>
+                    @*<button id="avaliacao_@modulo.AvaliacaoId" disabled class="btn btn-primary mb-5" localize-content>Avaliação</button>*@
+                    if (modulo.AvaliacaoLiberada && modulo.AvaliacaoId != null)
+                    {
+                        <input id="avaliacao_@modulo.AvaliacaoId" type="button" class="btn btn-primary mb-5 btn-avaliacao" value="@avaliacaoText" onclick="@("window.location.href='" + @Url.Action("Avaliacao", "Home", new { alunoId = @Model.StatusAulas.Matricula.AlunoId, avaliacaoId =  @modulo.AvaliacaoId}) + "'");" />
+                    }
+                    else
+                    {
+                        <input id="avaliacao_@modulo.AvaliacaoId" type="button" hidden class="btn btn-primary mb-5 btn-avaliacao" value="@avaliacaoText" onclick="@("window.location.href='" + @Url.Action("Avaliacao", "Home", new { alunoId = @Model.StatusAulas.Matricula.AlunoId, avaliacaoId =  @modulo.AvaliacaoId}) + "'");" />
+                    }
+
+                }
+
+                <img class="btn-menu-video abrirMenu" onclick="AbrirMenu()" src="~/assets/images/abre_menu_video.svg" alt="abrir menu" border="0">
+                <img class="btn-menu-video fecharMenu" onclick="FecharMenu()" src="~/assets/images/fecha_menu_video.svg" alt="fechar menu" border="0">
+
+            </div>
+            <div class="col-9 videoAula">
+
+                <h1 id="nomeAula"></h1>
+                <section class="video">
+                    @*https://player.vimeo.com/video/141439971
+                        https://player.vimeo.com/video/141561250
+                        https://player.vimeo.com/video/444387842
+                        https://player.vimeo.com/video/116629498
+                        https://player.vimeo.com/video/436144408
+                        https://player.vimeo.com/video/116619880*@
+                    <div id="videoFrame" style="padding:56.25% 0 0 0;position:relative;">
+                        @*<iframe id="iFrame" src="" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>*@
+                        @*<iframe id="iFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                            src=""
+                            frameborder="0"
+                            allowfullscreen
+                            ></iframe>*@
+                    </div>
+                    @*<script src="https://player.vimeo.com/api/player.js"></script>*@
+                    <input id="checkAssistida" type="checkbox" class="mr-2 mt-2" localize-content />@Localizer.Text("Watched")
+                </section>
+
+                <section class="anotacaoAula">
+                    <h3 localize-content>Make notes of this Class:</h3>
+                    <form>
+                        <textarea class="form-control" id="validationTextarea" placeholder="@Localizer.Text("Make your notes here ...")" required="">@anotacoes</textarea>
+                    </form>
+                    @*<button id="btnSalvarAnotacoes" class="btn btn-primary mt-2">Salvar</button>*@
+                </section>
+
+                <section class="descricaoAula">
+                    <!--<h3 localize-content>Support Material:</h3>
+                    <p id="materialApoio">-->
+                        @*Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetue*@
+                    <!--</p>-->
+                    <h3 localize-content>Support Material:</h3>
+                    <p id="arquivosApoio">
+                        @*<a href="https://example.com">Website</a>*@
+                        @*Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetue*@
+                    </p>
+
+                </section>
+
+            </div>
+        </div>
+    </section>
+
+    @*<input type="text" id="YoutubeUrl" style="width:300px" />
+        <input type="button" id="PlayVideo" value="Play" />
+        <hr />
+        <iframe id="YouTubevideo" width="420" height="315"
+                frameborder="0" style="display:none"
+                allowfullscreen></iframe>*@
+</main>
+
+<!-- Button trigger modal -->
+@*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        Launch demo modal
+    </button>*@
+
+<!-- Modal -->
+<div class="modal fade" id="avaliacaoLiberada" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Avaliação Liberada</h5>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
+            </div>
+            <div class="modal-body" localize-content>
+                You can now evaluate this module !
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" localize-content>Close</button>
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script src="~/lib/jquery/jquery.min.js"></script>*@
+
+@* Para debugar usar ~/js/sala_aula.js *@
+<script src="~/js/sala_aula.min.js"></script>
+
+

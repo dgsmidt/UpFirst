@@ -13,8 +13,8 @@ namespace DAL.Models
         public string Nome { get; set; }
         public string Email { get; set; }
         public string WhatsApp { get; set; }
-        [Display(Name = "Questionnaire")]
         [Column(TypeName = "decimal(3, 1)")]
+        [Display(Name = "Questionnaire")]
         public decimal NotaQuestionario { get; set; }
     }
 }

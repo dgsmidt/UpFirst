@@ -1,0 +1,22 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Comprar";
+    var culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+}
+
+<h1>Comprar</h1>
+
+<h6>Curso: @ViewData["CursoNome"]</h6>
+<h6>Preço: @ViewData["CursoPreco"]</h6>
+<h6>Desconto: @ViewData["ValorDesconto"]</h6>
+<h6>Total: @ViewData["Total"]</h6>
+
+
+<form action="@ViewData["PathProcessarPagamentoMP"]" method="POST">
+    <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
+            data-preference-id="@ViewData["CheckoutId"]" data-button-label=@Localizer.Text("Pay") data-elements-color="#a0bf38">
+    </script>
+    <p><a style="font-size: small;" asp-area="" asp-controller="Pagamentos" asp-action="ParametrosTeste" asp-route-culture=@culture localize-content>Test Parameters</a></p>
+</form>
