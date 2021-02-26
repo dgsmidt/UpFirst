@@ -95,7 +95,8 @@ namespace WebCore.Areas.Identity.Pages.Account.Manage
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = _loc.GetLocalizedString(culture, "Your password has been set.");
 
-            return RedirectToPage($"~/{culture}");
+            //return RedirectToPage($"~/{culture}");
+            return RedirectToPage();
         }
     }
 }

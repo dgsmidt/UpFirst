@@ -40,7 +40,6 @@ namespace Upfirst
             {
                 new CultureInfo("pt-br"),
                 new CultureInfo("en")
-
             };
 
             services.AddCors();

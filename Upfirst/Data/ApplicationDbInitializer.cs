@@ -23,7 +23,7 @@ namespace Upfirst.Data
                 if (result1.Succeeded)
                 {
                     userManager.AddToRoleAsync(user1, "Administrator").Wait();
-                    userManager.AddClaimAsync(user1, new System.Security.Claims.Claim("Nome", user1.Nome));
+                    userManager.AddClaimAsync(user1, new System.Security.Claims.Claim("Nome", user1.Nome)).Wait();
                 }
             }
 

@@ -289,6 +289,9 @@
     <value>Configurar aplicativo autenticador</value>
     <comment>Areas/Identity/Pages/Account/Manage/EnableAuthenticator.cshtml</comment>
   </data>
+  <data name="Confirm email change" xml:space="preserve">
+    <value>Confirmação de mudança de e-mail</value>
+  </data>
   <data name="Confirm Password" xml:space="preserve">
     <value>Confirme a Senha</value>
   </data>
@@ -973,6 +976,9 @@
   <data name="Text" xml:space="preserve">
     <value>Texto</value>
   </data>
+  <data name="Thank you for confirming your email change." xml:space="preserve">
+    <value>Obrigado por confirmar sua mudança de e-mail.</value>
+  </data>
   <data name="Thank you for confirming your email." xml:space="preserve">
     <value>Obrigado por confirmar o seu e-mail.</value>
     <comment>Areas/Identity/Pages/Account/ConfirmEmail.cshtml</comment>
@@ -1144,7 +1150,7 @@
     <comment>Custom back end message</comment>
   </data>
   <data name="Your email is unchanged." xml:space="preserve">
-    <value>Se e-mal está inalterado.</value>
+    <value>Seu e-mail não foi alterado.</value>
   </data>
   <data name="Your login is protected with an authenticator app. Enter your authenticator code below." xml:space="preserve">
     <value>Seu login é protegido com um aplicativo autenticador. Digite o seu código autenticador abaixo.</value>
