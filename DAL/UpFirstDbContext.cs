@@ -50,6 +50,9 @@ namespace DAL
         public DbSet<StatusAulas> StatusAulas { get; set; }
         public DbSet<AulaAssistida> AulasAssistidas { get; set; }
         public DbSet<Nota> Notas { get; set; }
+        public DbSet<Cupom> Cupons { get; set; }
+        public DbSet<Desconto> Descontos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

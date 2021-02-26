@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{80F45DAD-B123-42E8-A447-11AA997649E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Upfirst", "Upfirst\Upfirst.csproj", "{80F45DAD-B123-42E8-A447-11AA997649E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{6A69A5AB-53DC-49FE-AF91-48D659FF84D2}"
 EndProject

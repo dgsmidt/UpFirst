@@ -1,0 +1,124 @@
+﻿@model Upfirst.ViewModels.CursosVM
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<h1 localize-content>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" localize-content>Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th localize-content>
+                Course Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Cursos)
+        {
+            string selectedRow = "";
+            if (item.Id == Model.SelectedId)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.Id" localize-content>Select</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id" localize-content>Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" localize-content>Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" localize-content>Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Modulos != null)
+{
+    <h3 localize-content>Selected Course Modules</h3>
+    <p>
+        <a asp-controller="Modulos" asp-action="Create" asp-route-cursoId="@Model.SelectedId" localize-content>Create New</a>
+    </p>
+    <table class="table">
+        <tr>
+            <th localize-content>Description</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.Modulos)
+        {
+            string selectedRow = "";
+            if (item.Id == Model.ModuloId)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-moduloId="@item.Id" localize-content>Select</a> |
+                    <a asp-controller="Modulos" asp-action="Edit" asp-route-id="@item.Id" localize-content>Edit</a> |
+                    @if (item.AvaliacaoId == null)
+                    {
+                        <a asp-controller="Avaliacoes" asp-action="Create" asp-route-moduloId="@item.Id" localize-content>New Evaluation</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Avaliacoes" asp-action="Index" asp-route-id="@item.AvaliacaoId" localize-content>Edit Evaluation</a>
+                    }
+
+                    <a asp-controller="Modulos" asp-action="Delete" asp-route-id="@item.Id" localize-content> | @Localizer.Text("Delete")</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@if (Model.Aulas != null)
+{
+    <h3 localize-content>Selected Module Lessons</h3>
+    <p>
+        <a asp-controller="Aulas" asp-action="Create" asp-route-moduloId="@Model.ModuloId" localize-content>Create New</a>
+    </p>
+    <table class="table">
+        <tr>
+            <th localize-content>Description</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.Aulas)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    <a asp-controller="Aulas" asp-action="Edit" asp-route-moduloId="@Model.ModuloId" asp-route-id="@item.Id" localize-content>Edit</a> |
+                    <a asp-controller="Aulas" asp-action="Delete" asp-route-moduloId="@Model.ModuloId" asp-route-id="@item.Id" localize-content>Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@*<script src="~/lib/jquery/jquery.min.js"></script>*@
+
+<script>
+    $(document).scroll(function () {
+        localStorage['page'] = document.URL;
+        localStorage['scrollTop'] = $(document).scrollTop();
+    });
+
+    $(document).ready(function () {
+        if (localStorage['page'] == document.URL) {
+            $(document).scrollTop(localStorage['scrollTop']);
+        }
+    });
+</script>
