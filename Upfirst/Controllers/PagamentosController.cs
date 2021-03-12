@@ -110,8 +110,8 @@ namespace Upfirst.Controllers
 
             switch (type)
             {
-                case "test":
-                    break;
+                //case "test":
+                //    break;
 
                 case "payment":
                     try
@@ -120,35 +120,35 @@ namespace Upfirst.Controllers
 
                         string tipoPagemento = string.Empty;
 
-                        switch (pay.PaymentTypeId)
-                        {
-                            case PaymentTypeId.account_money:
-                                tipoPagemento = "account_money";
-                                break;
-                            case PaymentTypeId.ticket:
-                                tipoPagemento = "ticket";
-                                break;
-                            case PaymentTypeId.bank_transfer:
-                                tipoPagemento = "bank_transfer";
-                                break;
-                            case PaymentTypeId.atm:
-                                tipoPagemento = "atm";
-                                break;
-                            case PaymentTypeId.credit_card:
-                                tipoPagemento = "credit_card";
-                                break;
-                            case PaymentTypeId.debit_card:
-                                tipoPagemento = "debit_card";
-                                break;
-                            case PaymentTypeId.prepaid_card:
-                                tipoPagemento = "prepaid_card";
-                                break;
-                            case PaymentTypeId.digital_currency:
-                                tipoPagemento = "account_money";
-                                break;
-                            default:
-                                break;
-                        }
+                        //switch (pay.PaymentTypeId)
+                        //{
+                        //    case PaymentTypeId.account_money:
+                        //        tipoPagemento = "account_money";
+                        //        break;
+                        //    case PaymentTypeId.ticket:
+                        //        tipoPagemento = "ticket";
+                        //        break;
+                        //    case PaymentTypeId.bank_transfer:
+                        //        tipoPagemento = "bank_transfer";
+                        //        break;
+                        //    case PaymentTypeId.atm:
+                        //        tipoPagemento = "atm";
+                        //        break;
+                        //    case PaymentTypeId.credit_card:
+                        //        tipoPagemento = "credit_card";
+                        //        break;
+                        //    case PaymentTypeId.debit_card:
+                        //        tipoPagemento = "debit_card";
+                        //        break;
+                        //    case PaymentTypeId.prepaid_card:
+                        //        tipoPagemento = "prepaid_card";
+                        //        break;
+                        //    case PaymentTypeId.digital_currency:
+                        //        tipoPagemento = "account_money";
+                        //        break;
+                        //    default:
+                        //        break;
+                        //}
 
                         RegistrarPagamento(
                             "Mercado Pago",

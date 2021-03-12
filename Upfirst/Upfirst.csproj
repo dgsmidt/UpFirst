@@ -92,4 +92,6 @@
     <None Include="wwwroot\lib\jQuery-File-Upload-10.31.0\wdio\wdio.conf.js" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>

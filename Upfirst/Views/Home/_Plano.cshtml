@@ -30,7 +30,7 @@
                         <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
                                 data-preference-id="@Model[i].CheckoutId" data-button-label=@Localizer.Text("Buy") data-elements-color="#a0bf38">
                         </script>
-                        <p><a style="font-size: small;" asp-area="" asp-controller="Pagamentos" asp-action="ParametrosTeste" asp-route-culture=@culture localize-content>Test Parameters</a></p>
+                        @*<p><a style="font-size: small;" asp-area="" asp-controller="Pagamentos" asp-action="ParametrosTeste" asp-route-culture=@culture localize-content>Test Parameters</a></p>*@
                     </form>
                 }
             }
