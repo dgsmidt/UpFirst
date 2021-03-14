@@ -307,7 +307,6 @@ namespace Upfirst.Controllers
             QuestionarioVM model;
             Aluno aluno;
 
-
             ViewData["TawkToSrc"] = Configuration.GetSection("TawkTo").GetSection("Src").Value;
 
             ViewData["AlunoId"] = 0;
