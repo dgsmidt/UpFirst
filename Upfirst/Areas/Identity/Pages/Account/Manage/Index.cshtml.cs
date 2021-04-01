@@ -1,5 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
+using DAL;
+using DAL.Models;
 using LazZiya.ExpressLocalization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,23 +17,29 @@ namespace WebCore.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UpFirstDbContext _dbContext;
         private readonly ISharedCultureLocalizer _loc;
         private readonly string culture;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            UpFirstDbContext dbContext,
             ISharedCultureLocalizer loc)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _loc = loc;
+            _dbContext = dbContext;
             culture = System.Globalization.CultureInfo.CurrentCulture.Name;
         }
 
         [Display(Name = "User name")]
         public string Username { get; set; }
+        [Display(Name = "Nome")]
+        public string Nome { get; set; }
 
+        public string NomeUsuario { get; set; }
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -41,6 +52,8 @@ namespace WebCore.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            [Display(Name = "Name")]
+            public string Nome { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -50,9 +63,12 @@ namespace WebCore.Areas.Identity.Pages.Account.Manage
 
             Username = userName;
 
+            NomeUsuario = user.Nome;
+
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Nome = user.Nome
             };
         }
 
@@ -93,6 +109,36 @@ namespace WebCore.Areas.Identity.Pages.Account.Manage
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = _loc.GetLocalizedString(culture, "Unexpected error when trying to set phone number.");
+                    return RedirectToPage();
+                }
+            }
+
+            if (Input.Nome != user.Nome)
+            {
+                user.Nome = Input.Nome;
+
+                Aluno a = _dbContext.Alunos.Where(a => a.UserId == user.Id).SingleOrDefault();
+
+                if (a != null)
+                {
+                    a.Nome = user.Nome;
+                    await _dbContext.SaveChangesAsync();
+                }
+
+                var claims = await _userManager.GetClaimsAsync(user);
+                var result = await _userManager.RemoveClaimsAsync(user, claims);
+
+                if (!result.Succeeded)
+                {
+                    StatusMessage = _loc.GetLocalizedString(culture, "Cannot remove user existing claims.");
+                    return RedirectToPage();
+                }
+
+                result = await _userManager.AddClaimAsync(user, new Claim("Nome", user.Nome));
+
+                if (!result.Succeeded)
+                {
+                    StatusMessage = _loc.GetLocalizedString(culture, "Cannot add claim to user.");
                     return RedirectToPage();
                 }
             }

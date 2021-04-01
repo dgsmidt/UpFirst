@@ -288,6 +288,8 @@ namespace Upfirst.Controllers
                 }
             }
 
+            modelo.CheckoutIds = new List<String>();
+
             modelo.Configuracao = await _dbContext.Configuracoes.FirstOrDefaultAsync();
 
             modelo.Cursos = _dbContext.Cursos.ToList();
@@ -333,11 +335,12 @@ namespace Upfirst.Controllers
             {
                 string userName = _userManager.GetUserName(User);
 
+                ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+
                 aluno = _dbContext.Alunos.Where(q => q.Email == userName).SingleOrDefault();
 
                 if (aluno == null && !User.IsInRole("Administrator"))
                 {
-                    ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
 
                     if (applicationUser != null)
                     {

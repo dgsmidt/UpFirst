@@ -76,7 +76,14 @@
             {
                 if (i + i2 < Model.Cursos.Count())
                 {
-                    modelo.Add(new CursoVM { Curso = Model.Cursos[i + i2], CheckoutId = Model.CheckoutIds[i + i2] });
+                    if (Model.CheckoutIds.Count > 0)
+                    {
+                        modelo.Add(new CursoVM { Curso = Model.Cursos[i + i2], CheckoutId = Model.CheckoutIds[i + i2] });
+                    }
+                    else
+                    {
+                        modelo.Add(new CursoVM { Curso = Model.Cursos[i + i2], CheckoutId = "" });
+                    }
                 }
             }
 
@@ -126,7 +133,6 @@
     })();
     </script>
     <!--End of Tawk.to Script-->
-
     <!-- Modal Cupom Desconto-->
     <!--<div class="modal fade" id="modalDesconto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -147,8 +153,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">-->
-                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Não, comprar sem Cupom</button>*@
-                    <!--<button id="btnOkDesconto" type="button" class="btn btn-primary" disabled onclick="CheckCupom()">Ok</button>
+    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Não, comprar sem Cupom</button>*@
+    <!--<button id="btnOkDesconto" type="button" class="btn btn-primary" disabled onclick="CheckCupom()">Ok</button>
                 </div>
             </div>
         </div>
@@ -159,7 +165,7 @@
 @*<script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script>*@
 <script>
 
-    
+
 
     //function CheckEnableOK() {
     //    alert('ok');
